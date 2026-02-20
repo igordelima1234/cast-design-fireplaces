@@ -4,56 +4,76 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PortableText from '../../components/PortableText.astro';
 import { safeFetch } from '../../../sanity/lib/client';
 
+// DFW cities served — used for getStaticPaths fallback until Sanity has data
+const legacyCities = [
+  { city: 'Dallas',       slug: 'dallas',       state: 'TX' },
+  { city: 'Fort Worth',   slug: 'fort-worth',   state: 'TX' },
+  { city: 'Plano',        slug: 'plano',         state: 'TX' },
+  { city: 'Southlake',    slug: 'southlake',     state: 'TX' },
+  { city: 'McKinney',     slug: 'mckinney',      state: 'TX' },
+  { city: 'Frisco',       slug: 'frisco',        state: 'TX' },
+  { city: 'Allen',        slug: 'allen',         state: 'TX' },
+  { city: 'Prosper',      slug: 'prosper',       state: 'TX' },
+  { city: 'Flower Mound', slug: 'flower-mound',  state: 'TX' },
+  { city: 'Keller',       slug: 'keller',        state: 'TX' },
+  { city: 'Colleyville',  slug: 'colleyville',   state: 'TX' },
+  { city: 'Grapevine',    slug: 'grapevine',     state: 'TX' },
+];
+
 export async function getStaticPaths() {
-  const posts = await safeFetch<{ slug: string }[]>(
-    `*[_type == "post"]{ "slug": slug.current }`
+  const sanityAreas = await safeFetch<{ slug: string }[]>(
+    `*[_type == "serviceArea"]{ "slug": slug.current }`
   );
-  return (posts ?? []).map((p) => ({ params: { slug: p.slug } }));
+
+  // Merge Sanity slugs + legacy slugs so all city pages always build
+  const legacySlugs = [
+    'dallas','fort-worth','plano','southlake','mckinney',
+    'frisco','allen','prosper','flower-mound','keller','colleyville','grapevine',
+  ];
+  const sanitySlugs = (sanityAreas ?? []).map((a) => a.slug);
+  const allSlugs = [...new Set([...sanitySlugs, ...legacySlugs])];
+  return allSlugs.map((slug) => ({ params: { slug } }));
 }
 
 const { slug } = Astro.params;
 
-const post = await safeFetch<any>(
-  `*[_type == "post" && slug.current == $slug][0]{
+// Try Sanity first
+const sanityArea = await safeFetch<any>(
+  `*[_type == "serviceArea" && slug.current == $slug][0]{
+    city,
     "slug": slug.current,
-    title,
-    excerpt,
-    category,
-    "categorySlug": lower(category),
-    readTime,
-    "date": coalesce(
-      select(
-        dateTime(publishedAt) != null => string::split(publishedAt, "T")[0]
-      ),
-      ""
-    ),
-    author,
-    "image": mainImage.asset->url,
-    "imageAlt": mainImage.alt,
-    body,
-    "relatedImages": [],
-    "relatedPosts": *[_type == "post" && slug.current != $slug][0..2]{
-      "slug": slug.current,
-      title,
-      category,
-      "image": mainImage.asset->url,
-      readTime
-    }
+    state,
+    "heroImage": heroImage.asset->url,
+    "heroAlt": heroImage.alt,
+    seoDescription,
+    body
   }`,
   { slug }
 );
 
-// 404 gracefully if post not found
-if (!post) {
-  return Astro.redirect('/blog');
+// Build the area object — Sanity data takes priority, legacy fills the rest
+const legacyData = legacyCities.find((c) => c.slug === slug);
+
+const area = sanityArea ?? (legacyData ? {
+  city: legacyData.city,
+  slug: legacyData.slug,
+  state: legacyData.state,
+  heroImage: '/images/Gramercy- Meadow-257.jpg',
+  heroAlt: `Cast stone fireplace in ${legacyData.city}, ${legacyData.state}`,
+  seoDescription: `Cast Design Fireplaces delivers and installs premium cast stone fireplace mantels, surrounds, and range hoods in ${legacyData.city}, ${legacyData.state}. Schedule a free consultation today.`,
+  body: null,
+} : null);
+
+if (!area) {
+  return Astro.redirect('/service-areas');
 }
 ---
 
 <BaseLayout
-  title={`${post.title} | Cast Design Fireplaces Blog`}
-  description={post.excerpt}
-  canonical={`/blog/${post.slug}`}
-  ogImage={post.image}
+  title={`Cast Stone Fireplaces in ${area.city}, ${area.state} | Cast Design Fireplaces`}
+  description={area.seoDescription ?? `Premium cast stone fireplace mantels and surrounds delivered to ${area.city}, ${area.state}.`}
+  canonical={`/service-areas/${area.slug}`}
+  ogImage={area.heroImage}
 >
 
   <!-- ═══ TOP BAR ═══ -->
@@ -83,7 +103,7 @@ if (!post) {
     </div>
   </div>
 
-  <!-- ═══ NAV ═══ -->
+  <!-- ═══ NAVIGATION ═══ -->
   <nav class="nav" aria-label="Main navigation">
     <div class="container">
       <a href="/" class="nav__logo" aria-label="Cast Design Fireplaces – Home">
@@ -160,141 +180,126 @@ if (!post) {
     document.addEventListener('keydown', (e) => { if (e.key==='Escape') closeMenu(); });
   </script>
 
-  <!-- ═══ POST HERO IMAGE ═══ -->
+  <!-- ═══ HERO ═══ -->
   <div class="post-hero">
     <img
       class="post-hero__img"
-      src={post.image ?? '/images/Ashton.jpeg'}
-      alt={post.imageAlt ?? post.title}
+      src={area.heroImage ?? '/images/Gramercy- Meadow-257.jpg'}
+      alt={area.heroAlt ?? `Cast stone fireplace in ${area.city}, ${area.state}`}
       fetchpriority="high"
     />
     <div class="post-hero__overlay" aria-hidden="true"></div>
   </div>
 
-  <!-- ═══ ARTICLE ═══ -->
-  <article class="post-article" itemscope itemtype="https://schema.org/Article">
-
-    <!-- Header -->
-    <header class="post-header">
-      <div class="post-header__container">
-
-        <!-- Breadcrumb -->
-        <nav class="post-breadcrumb" aria-label="Breadcrumb">
-          <a href="/blog">← Back to Blog</a>
-          <span aria-hidden="true">/</span>
-          <span>{post.category}</span>
-        </nav>
-
-        <div class="post-header__meta">
-          <span class="blog-post-cat">{post.category}</span>
-          <span class="blog-meta-sep" aria-hidden="true">·</span>
-          <span class="blog-post-time">{post.readTime}</span>
-          <span class="blog-meta-sep" aria-hidden="true">·</span>
-          <time class="blog-post-date" itemprop="datePublished">{post.date}</time>
-        </div>
-
-        <h1 class="post-header__title" itemprop="headline">{post.title}</h1>
-        <p class="post-header__excerpt">{post.excerpt}</p>
-
-        <div class="post-header__author">
-          <div class="post-header__author-avatar" aria-hidden="true">CD</div>
-          <div>
-            <div class="post-header__author-name" itemprop="author">{post.author}</div>
-            <div class="post-header__author-role">Cast Design Fireplaces · Irving, TX</div>
-          </div>
-        </div>
-
+  <!-- ═══ HEADER ═══ -->
+  <header class="post-header">
+    <div class="post-header__container">
+      <nav class="post-breadcrumb" aria-label="Breadcrumb">
+        <a href="/service-areas">← All Service Areas</a>
+        <span aria-hidden="true">/</span>
+        <span>{area.state}</span>
+      </nav>
+      <div class="post-header__meta">
+        <span class="blog-post-cat">Service Area</span>
+        <span class="blog-meta-sep" aria-hidden="true">·</span>
+        <span class="blog-post-time">Dallas–Fort Worth</span>
       </div>
-    </header>
-
-    <!-- Body -->
-    <div class="post-body">
-      <div class="post-body__container">
-
-        <!-- Main content -->
-        <div class="post-content" itemprop="articleBody">
-          {post.body && post.body.length > 0
-            ? <PortableText value={post.body} />
-            : <p class="post-p" style="color: var(--color-text-muted);">Content coming soon.</p>
-          }
-        </div>
-
-        <!-- Sidebar -->
-        <aside class="post-sidebar" aria-label="Article sidebar">
-
-          <!-- Sticky CTA card -->
-          <div class="post-sidebar__cta">
-            <div class="post-sidebar__cta-label">Ready to get started?</div>
-            <h3 class="post-sidebar__cta-title">Schedule a Free In-Home Consultation</h3>
-            <p class="post-sidebar__cta-body">Our designers come to you — no showroom visit required. Get a custom design concept and fixed-price quote at no cost.</p>
-            <a href="/contact" class="btn btn-primary" style="width:100%; justify-content:center; margin-bottom:12px;">
-              Book Free Consultation →
-            </a>
-            <a href="tel:+12146214820" class="post-sidebar__phone">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-              </svg>
-              (214) 621-4820
-            </a>
-          </div>
-
-          <!-- Gallery mini strip -->
-          {post.relatedImages && post.relatedImages.length > 0 && (
-            <div class="post-sidebar__gallery">
-              <div class="post-sidebar__gallery-label">Our Work</div>
-              <div class="post-sidebar__gallery-grid">
-                {post.relatedImages.map((img: string, i: number) => (
-                  <a href="/gallery" class="post-sidebar__gallery-item" aria-label="View gallery">
-                    <img src={img} alt="Cast Design fireplace project" loading="lazy" />
-                  </a>
-                ))}
-              </div>
-              <a href="/gallery" class="blog-read-more blog-read-more--sm" style="margin-top:12px; display:inline-flex;">
-                View Full Gallery
-                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </a>
-            </div>
-          )}
-
-        </aside>
-
-      </div>
+      <h1 class="post-header__title">
+        Cast Stone Fireplaces in {area.city}, {area.state}
+      </h1>
+      <p class="post-header__excerpt">
+        {area.seoDescription}
+      </p>
     </div>
+  </header>
 
-  </article>
+  <!-- ═══ BODY ═══ -->
+  <div class="post-body">
+    <div class="post-body__container">
 
-  <!-- ═══ RELATED POSTS ═══ -->
-  <section class="post-related" aria-labelledby="related-heading">
-    <div class="container">
-      <h2 class="blog-grid-section__heading" id="related-heading">Keep Reading</h2>
-      <div class="blog-grid">
-        {post.relatedPosts.map((rp: any) => (
-          <article class="blog-card">
-            <a href={`/blog/${rp.slug}`} class="blog-card__img-wrap" tabindex="-1" aria-hidden="true">
-              <img src={rp.image} alt={rp.title} loading="lazy" class="blog-card__img" />
+      <!-- Main content -->
+      <div class="post-content">
+        {area.body && area.body.length > 0
+          ? <PortableText value={area.body} />
+          : (
+            <>
+              <p class="post-intro">
+                Cast Design Fireplaces has been serving {area.city} homeowners, builders, and interior designers since 2004. We design, fabricate, and install premium cast stone fireplace mantels, surrounds, outdoor fireplaces, and range hoods — custom-built to your exact specifications.
+              </p>
+              <h2 class="post-h2">Why {area.city} Homeowners Choose Cast Design</h2>
+              <p class="post-p">
+                Every project we take on in {area.city} starts with a free in-home consultation. Our designers come to you, assess the space, discuss your style preferences, and produce a detailed design concept — at no cost. From there, we fabricate your piece at our Irving studio and deliver and install it in your home.
+              </p>
+              <h2 class="post-h2">Our Products</h2>
+              <p class="post-p">
+                We produce cast stone fireplace mantels, full fireplace surrounds, outdoor fireplaces, cast stone range hoods, corbels, columns, and other architectural stone elements. All pieces are made to order — custom dimensions, profiles, and finishes available.
+              </p>
+              <h2 class="post-h2">Lead Times &amp; Installation</h2>
+              <p class="post-p">
+                Typical lead time from design approval to installation is 4–8 weeks. Installation is performed by our own crew — we don't subcontract. Most residential installations are completed in a single day.
+              </p>
+            </>
+          )
+        }
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="post-sidebar" aria-label="Contact sidebar">
+        <div class="post-sidebar__cta">
+          <div class="post-sidebar__cta-label">Serving {area.city}, {area.state}</div>
+          <h3 class="post-sidebar__cta-title">Free In-Home Consultation</h3>
+          <p class="post-sidebar__cta-body">
+            Our designers come to your {area.city} home — no showroom visit required. Get a custom design and fixed-price quote at no cost.
+          </p>
+          <a href="/contact" class="btn btn-primary" style="width:100%; justify-content:center; margin-bottom:12px;">
+            Book Free Consultation →
+          </a>
+          <a href="tel:+12146214820" class="post-sidebar__phone">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+            </svg>
+            (214) 621-4820
+          </a>
+        </div>
+
+        <div class="post-sidebar__gallery">
+          <div class="post-sidebar__gallery-label">Recent Work</div>
+          <div class="post-sidebar__gallery-grid">
+            <a href="/gallery" class="post-sidebar__gallery-item" aria-label="View gallery">
+              <img src="/images/Ashton.jpeg" alt="Cast stone fireplace mantel" loading="lazy" />
             </a>
-            <div class="blog-card__body">
-              <div class="blog-card__meta">
-                <span class="blog-post-cat">{rp.category}</span>
-                <span class="blog-meta-sep" aria-hidden="true">·</span>
-                <span class="blog-post-time">{rp.readTime}</span>
-              </div>
-              <h3 class="blog-card__title">
-                <a href={`/blog/${rp.slug}`}>{rp.title}</a>
-              </h3>
-              <div class="blog-card__footer" style="margin-top:auto; padding-top:12px; border-top: 1px solid var(--color-cream-dark);">
-                <a href={`/blog/${rp.slug}`} class="blog-read-more blog-read-more--sm">
-                  Read
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </article>
-        ))}
+            <a href="/gallery" class="post-sidebar__gallery-item" aria-label="View gallery">
+              <img src="/images/Gramercy- Meadow-257.jpg" alt="Cast stone fireplace surround" loading="lazy" />
+            </a>
+          </div>
+          <a href="/gallery" class="blog-read-more blog-read-more--sm" style="margin-top:12px; display:inline-flex;">
+            View Full Gallery
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ═══ CTA BANNER ═══ -->
+  <section class="blog-cta" aria-labelledby="city-cta-heading">
+    <div class="container">
+      <div class="blog-cta__inner">
+        <div class="blog-cta__text">
+          <p class="hero__eyebrow" style="color: var(--color-gold-light)">Ready to get started?</p>
+          <h2 class="blog-cta__title" id="city-cta-heading">
+            Serving {area.city} &amp; All of DFW
+          </h2>
+          <p class="blog-cta__sub">
+            Browse our gallery for inspiration, then schedule a free in-home consultation. We'll design, build, and install — no showroom required.
+          </p>
+        </div>
+        <div class="blog-cta__actions">
+          <a href="/gallery" class="btn btn-outline">Browse Gallery</a>
+          <a href="/contact" class="btn btn-primary">Free Consultation →</a>
+        </div>
       </div>
     </div>
   </section>
@@ -328,7 +333,6 @@ if (!post) {
             <li><a href="/products/outdoor-fireplaces">Outdoor Fireplaces</a></li>
             <li><a href="/products/range-hoods">Range Hoods</a></li>
             <li><a href="/products/corbels-columns">Corbels &amp; Columns</a></li>
-            <li><a href="/products/balustrades">Balustrades &amp; Railings</a></li>
           </ul>
         </div>
         <div class="footer__col">
@@ -339,15 +343,6 @@ if (!post) {
             <li><a href="/gallery">Gallery</a></li>
             <li><a href="/blog">Blog</a></li>
             <li><a href="/contact">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer__col">
-          <h4>Resources</h4>
-          <ul>
-            <li><a href="/blog/how-to-choose-fireplace-mantel">Choosing a Mantel</a></li>
-            <li><a href="/blog/cast-stone-vs-natural-stone">Cast Stone vs. Natural Stone</a></li>
-            <li><a href="/blog/fireplace-design-trends-2025">2025 Design Trends</a></li>
-            <li><a href="/faq">FAQs</a></li>
           </ul>
         </div>
         <div class="footer__col">

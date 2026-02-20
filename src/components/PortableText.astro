@@ -1,0 +1,20 @@
+---
+import { PortableText } from 'astro-portabletext';
+
+interface Props {
+  value: any[];
+}
+
+const { value } = Astro.props;
+
+const components = {
+  block: {
+    h2: ({ children }: any) => `<h2 class="post-h2">${children}</h2>`,
+    h3: ({ children }: any) => `<h3 class="post-h3">${children}</h3>`,
+    normal: ({ children }: any) => `<p class="post-p">${children}</p>`,
+    blockquote: ({ children }: any) => `<blockquote class="post-pullquote">${children}</blockquote>`,
+  },
+};
+---
+
+<PortableText value={value} components={components} />

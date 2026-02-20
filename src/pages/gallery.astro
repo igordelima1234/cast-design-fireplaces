@@ -1,5 +1,7 @@
 ---
+export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { safeFetch } from '../../sanity/lib/client';
 
 const categories = [
   { label: 'All',               slug: 'all' },
@@ -10,9 +12,25 @@ const categories = [
   { label: 'Corbels & Columns', slug: 'corbels-columns' },
 ];
 
-// 20 named products — images pulled from /public/images/
-// When a product management CMS is added, swap this array with a fetch.
-const products = [
+// Fetch products from Sanity; fall back to empty if none published yet
+const rawProducts = await safeFetch<any[]>(
+  `*[_type == "product"] | order(_createdAt asc) {
+    "slug": slug.current,
+    name,
+    category,
+    catLabel,
+    finish,
+    "cover": coverImage.asset->url,
+    tagline,
+    description
+  }`
+);
+
+const products = rawProducts ?? [];
+
+// ─── Legacy hardcoded products kept as fallback when Sanity has no data ──────
+// Once products are added in Studio this array is never shown.
+const legacyProducts = [
   {
     slug:     'ashton',
     name:     'The Ashton',
@@ -254,6 +272,9 @@ const products = [
     specs: { width: '54" – 84"', height: '60" – 70"', depth: '6" shelf', finish: 'Smooth Limestone' },
   },
 ];
+
+// Use Sanity data if available, otherwise show legacy hardcoded products
+const displayProducts = products.length > 0 ? products : legacyProducts;
 ---
 
 <BaseLayout
@@ -397,7 +418,7 @@ const products = [
   <section class="gallery-grid-section" aria-label="Product gallery">
     <div class="container">
       <div class="gallery-grid" id="gallery-grid">
-        {products.map((product, i) => (
+        {displayProducts.map((product: any, i: number) => (
           <a
             href={`/gallery/${product.slug}`}
             class="gallery-card"

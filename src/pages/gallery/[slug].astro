@@ -1,11 +1,21 @@
 ---
+export const prerender = true;
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { safeFetch } from '../../../sanity/lib/client';
 
-// ─── Product data ──────────────────────────────────────────────────────────
-// When a CMS is connected, replace getStaticPaths body with a fetch.
-// ──────────────────────────────────────────────────────────────────────────
+export async function getStaticPaths() {
+  // Fetch all product slugs from Sanity for static path generation.
+  // Falls back to legacy hardcoded list if Sanity has no data yet.
+  const sanityProducts = await safeFetch<{ slug: string }[]>(
+    `*[_type == "product"]{ "slug": slug.current }`
+  );
 
-export function getStaticPaths() {
+  // If Sanity has products, use those slugs. Otherwise fall through to legacy.
+  if (sanityProducts && sanityProducts.length > 0) {
+    return sanityProducts.map((p) => ({ params: { slug: p.slug } }));
+  }
+
+  // ─── Legacy hardcoded product list (used until Sanity has data) ────────────
   const products = [
     {
       slug:     'ashton',
@@ -271,17 +281,63 @@ export function getStaticPaths() {
 
   return products.map((product) => ({
     params: { slug: product.slug },
-    props:  { product, allProducts: products },
+    props:  { legacyProduct: product, legacyAll: products },
   }));
 }
 
-const { product, allProducts } = Astro.props;
+const { slug } = Astro.params;
+const { legacyProduct, legacyAll } = Astro.props;
 
-// Resolve related products from slugs
-const relatedProducts = (product.relatedSlugs ?? [])
-  .map((s: string) => allProducts.find((p: any) => p.slug === s))
-  .filter(Boolean)
-  .slice(0, 3);
+// Try to fetch this product from Sanity first
+const sanityProduct = await safeFetch<any>(
+  `*[_type == "product" && slug.current == $slug][0]{
+    "slug": slug.current,
+    name,
+    category,
+    catLabel,
+    finish,
+    "cover": coverImage.asset->url,
+    "images": [coverImage.asset->url] + images[].asset->url,
+    tagline,
+    description,
+    "specs": specs[]{ key, value },
+    "relatedProducts": relatedProducts[]->{
+      "slug": slug.current,
+      name,
+      catLabel,
+      "cover": coverImage.asset->url,
+      tagline
+    }
+  }`,
+  { slug }
+);
+
+// Use Sanity data if available, otherwise fall back to legacy hardcoded
+let product: any;
+let relatedProducts: any[];
+
+if (sanityProduct) {
+  product = sanityProduct;
+  // Sanity product: specs is array of {key, value}; images may have nulls
+  product.images = (product.images ?? []).filter(Boolean);
+  if (!product.images.length && product.cover) product.images = [product.cover];
+  relatedProducts = sanityProduct.relatedProducts ?? [];
+} else if (legacyProduct) {
+  // Legacy fallback
+  product = {
+    ...legacyProduct,
+    // Normalize specs from object to array of {key, value}
+    specs: Object.entries(legacyProduct.specs ?? {}).map(([key, value]) => ({ key, value })),
+  };
+  relatedProducts = (legacyProduct.relatedSlugs ?? [])
+    .map((s: string) => legacyAll?.find((p: any) => p.slug === s))
+    .filter(Boolean)
+    .slice(0, 3)
+    .map((rp: any) => ({ ...rp, cover: rp.cover }));
+} else {
+  // Neither found — shouldn't happen but redirect gracefully
+  return Astro.redirect('/gallery');
+}
 
 // Active image index is managed client-side
 ---
@@ -487,10 +543,10 @@ const relatedProducts = (product.relatedSlugs ?? [])
             <div class="product-specs">
               <h3 class="product-specs__heading">Standard Specifications</h3>
               <dl class="product-specs__list">
-                {Object.entries(product.specs).map(([key, val]) => (
+                {(product.specs ?? []).map((spec: any) => (
                   <>
-                    <dt>{key}</dt>
-                    <dd>{val as string}</dd>
+                    <dt>{spec.key}</dt>
+                    <dd>{spec.value}</dd>
                   </>
                 ))}
               </dl>

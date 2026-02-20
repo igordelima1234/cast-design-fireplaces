@@ -1,10 +1,7 @@
 ---
+export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-// ─── Placeholder posts ───────────────────────────────────────────────────────
-// When Sanity is connected, replace this array with a GROQ fetch:
-//   const posts = await sanityClient.fetch(`*[_type == "post"] | order(publishedAt desc) { ... }`)
-// ─────────────────────────────────────────────────────────────────────────────
+import { safeFetch } from '../../sanity/lib/client';
 
 const categories = [
   { slug: 'all',          label: 'All Posts' },
@@ -15,88 +12,33 @@ const categories = [
   { slug: 'news',         label: 'Company News' },
 ];
 
-const posts = [
-  {
-    slug:        'how-to-choose-fireplace-mantel',
-    title:       'How to Choose the Right Fireplace Mantel for Your Home',
-    excerpt:     'From proportion and profile to finish and material, picking the perfect mantel comes down to a handful of key decisions. Here\'s how our designers approach it.',
-    category:    'Design Tips',
-    categorySlug:'design-tips',
-    readTime:    '6 min read',
-    date:        'January 14, 2025',
-    image:       '/images/Ashton.jpeg',
-    featured:    true,
-  },
-  {
-    slug:        'cast-stone-vs-natural-stone',
-    title:       'Cast Stone vs. Natural Stone: Which Is Right for Your Project?',
-    excerpt:     'Both materials offer timeless beauty — but they differ dramatically in weight, cost, and customization potential. We break down the real differences.',
-    category:    'Materials',
-    categorySlug:'materials',
-    readTime:    '5 min read',
-    date:        'December 30, 2024',
-    image:       '/images/FM-1.jpeg',
-    featured:    false,
-  },
-  {
-    slug:        'fireplace-design-trends-2025',
-    title:       '2025 Fireplace Design Trends: What DFW Homeowners Are Requesting',
-    excerpt:     'Tall surrounds, limewash finishes, and organic forms are dominating our order books this year. Here\'s what\'s driving the shift in the DFW luxury market.',
-    category:    'Inspiration',
-    categorySlug:'inspiration',
-    readTime:    '4 min read',
-    date:        'December 10, 2024',
-    image:       '/images/Gramercy- Meadow-257.jpg',
-    featured:    false,
-  },
-  {
-    slug:        'outdoor-fireplace-planning-guide',
-    title:       'The Complete Guide to Planning an Outdoor Cast Stone Fireplace',
-    excerpt:     'Siting, sizing, fuel type, and finish — everything you need to know before breaking ground on an outdoor fireplace for your DFW backyard.',
-    category:    'How-To',
-    categorySlug:'how-to',
-    readTime:    '8 min read',
-    date:        'November 18, 2024',
-    image:       '/images/Gramercy Remodel- Sunnyland-188.jpg',
-    featured:    false,
-  },
-  {
-    slug:        'range-hood-styles-kitchen',
-    title:       'Range Hood Styles That Elevate Any Kitchen Design',
-    excerpt:     'A cast stone range hood isn\'t just ventilation — it\'s the centerpiece of your kitchen. These are the profiles our clients love most.',
-    category:    'Inspiration',
-    categorySlug:'inspiration',
-    readTime:    '5 min read',
-    date:        'November 2, 2024',
-    image:       '/images/Ashton 2.jpeg',
-    featured:    false,
-  },
-  {
-    slug:        'cast-stone-care-maintenance',
-    title:       'How to Care for Your Cast Stone Fireplace: A Seasonal Guide',
-    excerpt:     'Cast stone is remarkably low-maintenance — but a little seasonal attention keeps it looking showroom-fresh for decades. Here\'s our recommended routine.',
-    category:    'How-To',
-    categorySlug:'how-to',
-    readTime:    '4 min read',
-    date:        'October 15, 2024',
-    image:       '/images/FM-2.jpeg',
-    featured:    false,
-  },
-  {
-    slug:        'gramercy-meadow-project',
-    title:       'Project Spotlight: The Gramercy Surround in a Southlake New Build',
-    excerpt:     'When the architect called for something that felt like it had been there for a century, we delivered the Gramercy — in a home that hadn\'t been built yet.',
-    category:    'Inspiration',
-    categorySlug:'inspiration',
-    readTime:    '3 min read',
-    date:        'September 28, 2024',
-    image:       '/images/Gramercy- Meadow-288 Large.jpeg',
-    featured:    false,
-  },
-];
+// Fetch all posts from Sanity, ordered newest first
+const rawPosts = await safeFetch<any[]>(
+  `*[_type == "post"] | order(publishedAt desc) {
+    "slug": slug.current,
+    title,
+    excerpt,
+    category,
+    readTime,
+    "date": coalesce(
+      select(
+        dateTime(publishedAt) != null => string::split(publishedAt, "T")[0]
+      ),
+      ""
+    ),
+    "image": mainImage.asset->url,
+    "featured": false
+  }`
+);
 
-const featured = posts.find(p => p.featured)!;
-const grid     = posts.filter(p => !p.featured);
+// Graceful empty-state: if no posts in Sanity yet, show nothing
+const posts = rawPosts ?? [];
+
+// Mark the first post as featured if we have any
+if (posts.length > 0) posts[0].featured = true;
+
+const featured = posts.find((p: any) => p.featured) ?? null;
+const grid     = posts.filter((p: any) => !p.featured);
 ---
 
 <BaseLayout
@@ -249,84 +191,92 @@ const grid     = posts.filter(p => !p.featured);
   </div>
 
   <!-- ═══ FEATURED POST ═══ -->
-  <section class="blog-featured" aria-labelledby="featured-heading">
-    <div class="container">
-      <a href={`/blog/${featured.slug}`} class="blog-featured__card" aria-label={`Read: ${featured.title}`}>
-        <div class="blog-featured__img-wrap">
-          <img
-            src={featured.image}
-            alt={featured.title}
-            loading="lazy"
-            class="blog-featured__img"
-          />
-          <span class="blog-featured__badge">Featured</span>
-        </div>
-        <div class="blog-featured__body">
-          <div class="blog-featured__meta">
-            <span class="blog-post-cat">{featured.category}</span>
-            <span class="blog-meta-sep" aria-hidden="true">·</span>
-            <span class="blog-post-time">{featured.readTime}</span>
-            <span class="blog-meta-sep" aria-hidden="true">·</span>
-            <time class="blog-post-date">{featured.date}</time>
+  {featured && (
+    <section class="blog-featured" aria-labelledby="featured-heading">
+      <div class="container">
+        <a href={`/blog/${featured.slug}`} class="blog-featured__card" aria-label={`Read: ${featured.title}`}>
+          <div class="blog-featured__img-wrap">
+            <img
+              src={featured.image ?? '/images/Ashton.jpeg'}
+              alt={featured.title}
+              loading="lazy"
+              class="blog-featured__img"
+            />
+            <span class="blog-featured__badge">Featured</span>
           </div>
-          <h2 class="blog-featured__title" id="featured-heading">{featured.title}</h2>
-          <p class="blog-featured__excerpt">{featured.excerpt}</p>
-          <span class="blog-read-more">
-            Read Article
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-            </svg>
-          </span>
-        </div>
-      </a>
-    </div>
-  </section>
+          <div class="blog-featured__body">
+            <div class="blog-featured__meta">
+              <span class="blog-post-cat">{featured.category}</span>
+              {featured.readTime && <>
+                <span class="blog-meta-sep" aria-hidden="true">·</span>
+                <span class="blog-post-time">{featured.readTime}</span>
+              </>}
+              {featured.date && <>
+                <span class="blog-meta-sep" aria-hidden="true">·</span>
+                <time class="blog-post-date">{featured.date}</time>
+              </>}
+            </div>
+            <h2 class="blog-featured__title" id="featured-heading">{featured.title}</h2>
+            <p class="blog-featured__excerpt">{featured.excerpt}</p>
+            <span class="blog-read-more">
+              Read Article
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </span>
+          </div>
+        </a>
+      </div>
+    </section>
+  )}
 
   <!-- ═══ POST GRID ═══ -->
   <section class="blog-grid-section" aria-labelledby="posts-heading">
     <div class="container">
       <h2 class="blog-grid-section__heading" id="posts-heading">Latest Articles</h2>
-      <div class="blog-grid">
-        {grid.map((post) => (
-          <article class="blog-card">
-            <a href={`/blog/${post.slug}`} class="blog-card__img-wrap" tabindex="-1" aria-hidden="true">
-              <img
-                src={post.image}
-                alt={post.title}
-                loading="lazy"
-                class="blog-card__img"
-              />
-            </a>
-            <div class="blog-card__body">
-              <div class="blog-card__meta">
-                <span class="blog-post-cat">{post.category}</span>
-                <span class="blog-meta-sep" aria-hidden="true">·</span>
-                <span class="blog-post-time">{post.readTime}</span>
-              </div>
-              <h3 class="blog-card__title">
-                <a href={`/blog/${post.slug}`}>{post.title}</a>
-              </h3>
-              <p class="blog-card__excerpt">{post.excerpt}</p>
-              <div class="blog-card__footer">
-                <time class="blog-post-date">{post.date}</time>
-                <a href={`/blog/${post.slug}`} class="blog-read-more blog-read-more--sm">
-                  Read
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </article>
-        ))}
-      </div>
 
-      <!-- Load more placeholder — wire to Sanity pagination later -->
-      <div class="blog-load-more">
-        <button class="btn btn-outline-dark" disabled aria-label="More posts coming soon">
-          More Articles Coming Soon
-        </button>
-      </div>
+      {grid.length === 0 && posts.length === 0 ? (
+        <p style="text-align: center; color: var(--color-text-muted); padding: 48px 0;">
+          Articles coming soon — check back shortly.
+        </p>
+      ) : (
+        <div class="blog-grid">
+          {grid.map((post: any) => (
+            <article class="blog-card">
+              <a href={`/blog/${post.slug}`} class="blog-card__img-wrap" tabindex="-1" aria-hidden="true">
+                <img
+                  src={post.image ?? '/images/Ashton.jpeg'}
+                  alt={post.title}
+                  loading="lazy"
+                  class="blog-card__img"
+                />
+              </a>
+              <div class="blog-card__body">
+                <div class="blog-card__meta">
+                  <span class="blog-post-cat">{post.category}</span>
+                  {post.readTime && <>
+                    <span class="blog-meta-sep" aria-hidden="true">·</span>
+                    <span class="blog-post-time">{post.readTime}</span>
+                  </>}
+                </div>
+                <h3 class="blog-card__title">
+                  <a href={`/blog/${post.slug}`}>{post.title}</a>
+                </h3>
+                <p class="blog-card__excerpt">{post.excerpt}</p>
+                <div class="blog-card__footer">
+                  {post.date && <time class="blog-post-date">{post.date}</time>}
+                  <a href={`/blog/${post.slug}`} class="blog-read-more blog-read-more--sm">
+                    Read
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
     </div>
   </section>
 

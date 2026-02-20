@@ -6,8 +6,8 @@ import { schemaTypes } from './schemaTypes';
 export default defineConfig({
   name: 'cast-design',
   title: 'Cast Design Fireplaces',
-  projectId: process.env.SANITY_PROJECT_ID!,
-  dataset: process.env.SANITY_DATASET ?? 'production',
+  projectId: 'nhzcbxp2',
+  dataset: 'production',
   plugins: [structureTool(), visionTool()],
   schema: {
     types: schemaTypes,

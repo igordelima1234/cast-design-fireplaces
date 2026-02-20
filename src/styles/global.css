@@ -1363,7 +1363,58 @@ ul { list-style: none; }
   .top-bar__areas { display: none; }
   .nav__links { display: none; }
   .nav__hamburger { display: flex; }
-  .hero__heading { font-size: 2.2rem; }
+
+  /* ── Mobile hero: image banner on top, text on white below ── */
+  .hero {
+    height: auto;
+    min-height: unset;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hero__slides {
+    position: relative;
+    inset: unset;
+    height: 52vw;
+    min-height: 220px;
+    max-height: 320px;
+    flex-shrink: 0;
+  }
+  .hero__slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .hero__overlay { display: none; }
+  .hero__content {
+    position: relative;
+    z-index: auto;
+    background: var(--color-white);
+    padding: 32px 0 40px;
+  }
+  .hero__eyebrow { color: var(--color-gold); }
+  .hero__heading {
+    font-size: 2rem;
+    color: var(--color-stone);
+  }
+  .hero__heading em { color: var(--color-gold); }
+  .hero__sub { color: var(--color-text-muted); }
+  /* Swap white outline btn to dark on white bg */
+  .hero__actions .btn-outline {
+    color: var(--color-stone);
+    border-color: var(--color-stone);
+  }
+  .hero__actions .btn-outline:hover {
+    background: var(--color-stone);
+    color: var(--color-white);
+  }
+  /* Make buttons full-width on mobile */
+  .hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hero__actions .btn { justify-content: center; }
+  /* ────────────────────────────────────────────────────────── */
   .process .container,
   .about .container,
   .cta-banner .container { grid-template-columns: 1fr; gap: 40px; }

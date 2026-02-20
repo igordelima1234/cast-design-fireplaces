@@ -125,12 +125,14 @@ const galleryImages = [
 
   <!-- ═══ HERO ═══ -->
   <section class="hero" aria-label="Hero">
-    <img
-      class="hero__bg-img"
-      src="/images/CAST-Design-Company-Modern-Fireplace-Mantel-Modern Living Room.jpg"
-      alt="Luxury cast stone fireplace mantel in a modern Dallas living room"
-      fetchpriority="high"
-    />
+    <div class="hero__slides" aria-hidden="true">
+      <img class="hero__slide hero__slide--active" src="/images/CAST-Design-Company-Modern-Fireplace-Mantel-Modern Living Room.jpg" alt="" fetchpriority="high" />
+      <img class="hero__slide" src="/images/Gramercy- Meadow-257.jpg" alt="" loading="lazy" />
+      <img class="hero__slide" src="/images/Gramercy- Meadow-288 Large.jpeg" alt="" loading="lazy" />
+      <img class="hero__slide" src="/images/377950669_3593078944314893_9071390339427414552_n.jpg" alt="" loading="lazy" />
+      <img class="hero__slide" src="/images/IMG_1284 Large.jpeg" alt="" loading="lazy" />
+      <img class="hero__slide" src="/images/Gramercy Remodel- Sunnyland-188.jpg" alt="" loading="lazy" />
+    </div>
     <div class="hero__overlay" aria-hidden="true"></div>
     <div class="hero__content">
       <div class="container">
@@ -565,5 +567,15 @@ const galleryImages = [
       </div>
     </div>
   </footer>
+
+  <script>
+    const slides = document.querySelectorAll<HTMLImageElement>('.hero__slide');
+    let current = 0;
+    setInterval(() => {
+      slides[current].classList.remove('hero__slide--active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('hero__slide--active');
+    }, 3000);
+  </script>
 
 </BaseLayout>

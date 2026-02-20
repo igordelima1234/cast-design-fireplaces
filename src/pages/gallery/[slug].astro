@@ -1,0 +1,686 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// ─── Product data ──────────────────────────────────────────────────────────
+// When a CMS is connected, replace getStaticPaths body with a fetch.
+// ──────────────────────────────────────────────────────────────────────────
+
+export function getStaticPaths() {
+  const products = [
+    {
+      slug:     'ashton',
+      name:     'The Ashton',
+      category: 'fireplace-mantels',
+      catLabel: 'Fireplace Mantel',
+      finish:   'Smooth Limestone',
+      cover:    '/images/Ashton.jpeg',
+      images:   ['/images/Ashton.jpeg', '/images/Ashton 2.jpeg'],
+      tagline:  'A clean-lined transitional mantel with restrained corbel detail — our most-requested profile.',
+      description: 'The Ashton strikes the perfect balance between classic proportion and modern restraint. Refined leg corbels, a generous shelf, and a smooth limestone finish that pairs beautifully with virtually any interior palette. Available in custom widths from 48" to 84".',
+      specs: { 'Width': '48" – 84"', 'Height': '50" – 58"', 'Shelf Depth': '6"', 'Finish': 'Smooth Limestone' },
+      relatedSlugs: ['ashton-arched', 'gramercy', 'bradford'],
+    },
+    {
+      slug:     'gramercy',
+      name:     'The Gramercy',
+      category: 'fireplace-surrounds',
+      catLabel: 'Fireplace Surround',
+      finish:   'Smooth Limestone',
+      cover:    '/images/Gramercy- Meadow-257.jpg',
+      images:   ['/images/Gramercy- Meadow-257.jpg', '/images/Gramercy- Meadow-288 Large.jpeg', '/images/Gramercy- Meadow-288.jpg'],
+      tagline:  'A full cast stone surround with commanding proportions — built to anchor great rooms.',
+      description: 'The Gramercy is our signature full-surround profile. Tall, confident, and classical without being fussy. The leg-to-shelf proportion is engineered to work in rooms with 9\' to 14\' ceilings. As seen in a recent Southlake new build, the smooth limestone finish gives it a quarried, timeless quality from day one.',
+      specs: { 'Width': '60" – 96"', 'Height': '54" – 72"', 'Shelf Depth': '7"', 'Finish': 'Smooth Limestone' },
+      relatedSlugs: ['gramercy-remodel', 'westlake', 'newport'],
+    },
+    {
+      slug:     'gramercy-remodel',
+      name:     'Gramercy — Sunnyland Remodel',
+      category: 'fireplace-surrounds',
+      catLabel: 'Fireplace Surround',
+      finish:   'Aged Buff',
+      cover:    '/images/Gramercy Remodel- Sunnyland-188.jpg',
+      images:   ['/images/Gramercy Remodel- Sunnyland-188.jpg'],
+      tagline:  'The Gramercy profile in aged buff — fitted into a 1950s Fort Worth remodel.',
+      description: 'A full Gramercy surround installed during a comprehensive remodel of a mid-century Fort Worth home. The aged buff finish was selected to complement the existing brick and wood tones throughout the space. A rewarding example of cast stone breathing new life into an older home.',
+      specs: { 'Width': '72"', 'Height': '60"', 'Shelf Depth': '7"', 'Finish': 'Aged Buff' },
+      relatedSlugs: ['gramercy', 'westlake', 'cambridge'],
+    },
+    {
+      slug:     'modern-living-room',
+      name:     'The Modern Linear',
+      category: 'fireplace-mantels',
+      catLabel: 'Fireplace Mantel',
+      finish:   'Matte White',
+      cover:    '/images/CAST-Design-Company-Modern-Fireplace-Mantel-Modern Living Room.jpg',
+      images:   ['/images/CAST-Design-Company-Modern-Fireplace-Mantel-Modern Living Room.jpg'],
+      tagline:  'Ultra-clean profile with zero ornamentation — designed for contemporary living rooms.',
+      description: 'The Modern Linear mantel strips everything back to the essential: a flat fascia, minimal reveal, and a floating shelf. The matte white finish integrates seamlessly with drywall surrounds and modern tile work. Ideal for gas fireplaces in open-plan spaces.',
+      specs: { 'Width': '48" – 72"', 'Height': '44" – 52"', 'Shelf Depth': '5"', 'Finish': 'Matte White' },
+      relatedSlugs: ['transitional-slim', 'ashton', 'range-hood-bell'],
+    },
+    {
+      slug:     'fm-classic',
+      name:     'The Classic Surround',
+      category: 'fireplace-surrounds',
+      catLabel: 'Fireplace Surround',
+      finish:   'Smooth Limestone',
+      cover:    '/images/FM-1.jpeg',
+      images:   ['/images/FM-1.jpeg', '/images/FM-2.jpeg'],
+      tagline:  'Traditional proportions with refined moulding detail — a perennial bestseller.',
+      description: 'Our Classic Surround has been in continuous production since our founding. The leg mouldings are based on classical Tuscan pilaster proportions, and the keystone detail at the crown is a signature touch. Available in smooth limestone or lightly textured buff.',
+      specs: { 'Width': '48" – 78"', 'Height': '50" – 60"', 'Shelf Depth': '6"', 'Finish': 'Smooth Limestone / Buff' },
+      relatedSlugs: ['gramercy', 'westlake', 'ashton'],
+    },
+    {
+      slug:     'outdoor-stone-1',
+      name:     'The Presidio Outdoor',
+      category: 'outdoor-fireplaces',
+      catLabel: 'Outdoor Fireplace',
+      finish:   'Rough-Hewn Buff',
+      cover:    '/images/377950669_3593078944314893_9071390339427414552_n.jpg',
+      images:   ['/images/377950669_3593078944314893_9071390339427414552_n.jpg'],
+      tagline:  'A full outdoor fireplace surround built for Texas scale — and nine months of entertaining.',
+      description: 'The Presidio is our flagship outdoor fireplace design. At 84" wide and 96" tall, it commands the patio without overwhelming it. The rough-hewn buff finish is sealed for outdoor exposure and develops a beautiful patina over time. Designed for wood-burning fireplaces with optional gas conversion.',
+      specs: { 'Width': '84"', 'Height': '96"', 'Hearth': 'Custom slab', 'Finish': 'Rough-Hewn Buff (exterior sealed)' },
+      relatedSlugs: ['hacienda', 'outdoor-linear', 'outdoor-courtyard'],
+    },
+    {
+      slug:     'img-1284',
+      name:     'The Belmont',
+      category: 'fireplace-mantels',
+      catLabel: 'Fireplace Mantel',
+      finish:   'Smooth Limestone',
+      cover:    '/images/IMG_1284 Large.jpeg',
+      images:   ['/images/IMG_1284 Large.jpeg', '/images/IMG_1284.jpg'],
+      tagline:  'A statement mantel with bold breakfront shelf and detailed frieze.',
+      description: 'The Belmont is our most formal mantel — a breakfront shelf with ovolo moulding, a carved frieze panel, and tapering pilaster legs with capital detail. Designed for traditional and transitional interiors where the fireplace is meant to be the room\'s anchor. Available in smooth limestone only.',
+      specs: { 'Width': '54" – 84"', 'Height': '54" – 64"', 'Shelf Depth': '7"', 'Finish': 'Smooth Limestone' },
+      relatedSlugs: ['cambridge', 'bradford', 'newport'],
+    },
+    {
+      slug:     'ashton-arched',
+      name:     'The Ashton — Arched',
+      category: 'fireplace-surrounds',
+      catLabel: 'Fireplace Surround',
+      finish:   'Smooth Limestone',
+      cover:    '/images/Ashton 2.jpeg',
+      images:   ['/images/Ashton 2.jpeg', '/images/Ashton.jpeg'],
+      tagline:  'The Ashton profile reimagined with a soft organic arch — our most-requested 2025 design.',
+      description: 'A soft arched firebox opening transforms the familiar Ashton proportions into something distinctly current. The arch radius is gentle — more organic than formal — and pairs beautifully with limewash plaster or Venetian plaster on the surrounding wall. Available with or without corbel detail.',
+      specs: { 'Width': '54" – 78"', 'Height': '52" – 62"', 'Shelf Depth': '6"', 'Finish': 'Smooth Limestone' },
+      relatedSlugs: ['ashton', 'gramercy', 'transitional-slim'],
+    },
+    {
+      slug:     'range-hood-bell',
+      name:     'The Bellcurve Range Hood',
+      category: 'range-hoods',
+      catLabel: 'Range Hood',
+      finish:   'Smooth Limestone',
+      cover:    '/images/FM-2.jpeg',
+      images:   ['/images/FM-2.jpeg', '/images/FM-1.jpeg'],
+      tagline:  'A gently curved bell-profile range hood that reads beautifully in any kitchen.',
+      description: 'The Bellcurve is our most versatile range hood — the gentle curve works in traditional, transitional, and even contemporary kitchens. Sized to cover 30", 36", or 48" inserts. The smooth limestone finish integrates with painted cabinetry, and we can match any custom dimension your kitchen designer specifies.',
+      specs: { 'Width': '36" – 60"', 'Height': '30" – 42"', 'Insert Fit': 'Custom liner', 'Finish': 'Smooth Limestone' },
+      relatedSlugs: ['range-hood-corbel', 'range-hood-full-surround', 'ashton'],
+    },
+    {
+      slug:     'corbel-set-tuscan',
+      name:     'Tuscan Corbel Set',
+      category: 'corbels-columns',
+      catLabel: 'Corbels & Columns',
+      finish:   'Smooth Limestone',
+      cover:    '/images/Gramercy- Meadow-288.jpg',
+      images:   ['/images/Gramercy- Meadow-288.jpg', '/images/Gramercy- Meadow-288 Large.jpeg'],
+      tagline:  'Classically proportioned Tuscan corbels — sold in sets for mantels, shelving, and built-ins.',
+      description: 'Our Tuscan corbel set is the most popular standalone architectural element we produce. Used for floating shelf support, kitchen hood side brackets, and mantel leg details. Proportioned to the classical Tuscan order, they integrate naturally with both traditional and transitional millwork.',
+      specs: { 'Projections': '6", 8", 10", 12"', 'Sets': 'Pairs & sets of 4', 'Finish': 'Smooth Limestone / Buff' },
+      relatedSlugs: ['column-pairs', 'ashton', 'range-hood-corbel'],
+    },
+    {
+      slug:     'bradford',
+      name:     'The Bradford',
+      category: 'fireplace-mantels',
+      catLabel: 'Fireplace Mantel',
+      finish:   'Textured Buff',
+      cover:    '/images/Gramercy- Meadow-288 Large.jpeg',
+      images:   ['/images/Gramercy- Meadow-288 Large.jpeg', '/images/Gramercy- Meadow-257.jpg'],
+      tagline:  'Warm textured buff finish with a classic broken-pediment shelf detail.',
+      description: 'The Bradford is our warmest-looking mantel — a lightly textured buff finish picks up natural and artificial light differently at different times of day, giving the stone a living quality. The broken-pediment shelf is a hallmark of Georgian architecture and suits formal traditional interiors beautifully.',
+      specs: { 'Width': '54" – 84"', 'Height': '52" – 62"', 'Shelf Depth': '7"', 'Finish': 'Textured Buff' },
+      relatedSlugs: ['cambridge', 'img-1284', 'gramercy'],
+    },
+    {
+      slug:     'transitional-slim',
+      name:     'The Sloane',
+      category: 'fireplace-mantels',
+      catLabel: 'Fireplace Mantel',
+      finish:   'Matte White',
+      cover:    '/images/CAST-Design-Company-Modern-Fireplace-Mantel-Modern Living Room.jpg',
+      images:   ['/images/CAST-Design-Company-Modern-Fireplace-Mantel-Modern Living Room.jpg', '/images/FM-1.jpeg'],
+      tagline:  'Slim-profile transitional mantel — effortless in open-plan spaces.',
+      description: 'The Sloane was designed for the transitional interiors that dominate DFW new builds: clean lines, no fussy detail, a shelf that\'s wide enough to style but not so deep it protrudes into the room. The matte white finish is identical across multiple units, perfect for spec builds where consistency matters.',
+      specs: { 'Width': '48" – 72"', 'Height': '46" – 54"', 'Shelf Depth': '5.5"', 'Finish': 'Matte White / Smooth Limestone' },
+      relatedSlugs: ['modern-living-room', 'ashton', 'ashton-arched'],
+    },
+    {
+      slug:     'outdoor-courtyard',
+      name:     'The Hacienda',
+      category: 'outdoor-fireplaces',
+      catLabel: 'Outdoor Fireplace',
+      finish:   'Rough-Hewn Limestone',
+      cover:    '/images/Gramercy Remodel- Sunnyland-188.jpg',
+      images:   ['/images/Gramercy Remodel- Sunnyland-188.jpg', '/images/377950669_3593078944314893_9071390339427414552_n.jpg'],
+      tagline:  'Courtyard-scale outdoor fireplace with full stone chimney — built for DFW\'s outdoor living culture.',
+      description: 'The Hacienda is designed for properties where the outdoor fireplace needs to feel like a permanent architectural feature, not an add-on. Full chimney construction in rough-hewn limestone with a deep-set firebox. Suitable for both wood-burning and gas fuel sources. Structural engineering consultation included.',
+      specs: { 'Width': '72" – 96"', 'Height': 'Up to 120" (custom)', 'Hearth': 'Custom slab', 'Finish': 'Rough-Hewn Limestone' },
+      relatedSlugs: ['outdoor-stone-1', 'outdoor-linear', 'gramercy-remodel'],
+    },
+    {
+      slug:     'range-hood-corbel',
+      name:     'The Corbel Range Hood',
+      category: 'range-hoods',
+      catLabel: 'Range Hood',
+      finish:   'Smooth Limestone',
+      cover:    '/images/FM-1.jpeg',
+      images:   ['/images/FM-1.jpeg', '/images/FM-2.jpeg'],
+      tagline:  'A flat-front range hood with signature corbel brackets — architectural presence over any range.',
+      description: 'A flat fascia with our signature Tuscan corbels at the lower corners adds architectural character without going fully ornate. Perfect for transitional and modern-traditional kitchens where the hood is the focal point of the kitchen wall. Available with or without a decorative frieze panel.',
+      specs: { 'Width': '36" – 54"', 'Height': '28" – 40"', 'Insert Fit': 'Custom liner', 'Finish': 'Smooth Limestone' },
+      relatedSlugs: ['range-hood-bell', 'range-hood-full-surround', 'corbel-set-tuscan'],
+    },
+    {
+      slug:     'westlake',
+      name:     'The Westlake',
+      category: 'fireplace-surrounds',
+      catLabel: 'Fireplace Surround',
+      finish:   'Smooth Limestone',
+      cover:    '/images/Gramercy- Meadow-257.jpg',
+      images:   ['/images/Gramercy- Meadow-257.jpg', '/images/FM-1.jpeg'],
+      tagline:  'A full-height surround with integrated hearth slab — made for new builds.',
+      description: 'The Westlake is a complete fireplace package: full surround with integrated hearth slab and optional raised hearth. Designed to be spec\'d at the architect or builder stage, it ships in four pieces and installs in one day. Popular in Southlake, Westlake, and Colleyville new construction.',
+      specs: { 'Width': '60" – 84"', 'Height': '54" – 68"', 'Shelf Depth': '6" + hearth slab', 'Finish': 'Smooth Limestone' },
+      relatedSlugs: ['gramercy', 'fm-classic', 'newport'],
+    },
+    {
+      slug:     'column-pairs',
+      name:     'Fluted Column Pairs',
+      category: 'corbels-columns',
+      catLabel: 'Corbels & Columns',
+      finish:   'Smooth Limestone',
+      cover:    '/images/Gramercy- Meadow-288.jpg',
+      images:   ['/images/Gramercy- Meadow-288.jpg', '/images/Ashton.jpeg'],
+      tagline:  'Fluted cast stone columns for entryways, porticos, and interior architectural features.',
+      description: 'Our fluted columns are available in full-round and half-round (pilaster) profiles. Used for entryway framing, interior accent columns, and as flanking elements on large fireplace walls. Standard shaft heights from 8\' to 12\'; custom heights available. Base and capital sold separately or as a set.',
+      specs: { 'Diameter': '8", 10", 12"', 'Height': '8\' – 12\' (custom)', 'Profile': 'Full-round / Half-round', 'Finish': 'Smooth Limestone' },
+      relatedSlugs: ['corbel-set-tuscan', 'gramercy', 'ashton'],
+    },
+    {
+      slug:     'cambridge',
+      name:     'The Cambridge',
+      category: 'fireplace-mantels',
+      catLabel: 'Fireplace Mantel',
+      finish:   'Aged Limestone',
+      cover:    '/images/IMG_1284 Large.jpeg',
+      images:   ['/images/IMG_1284 Large.jpeg', '/images/Ashton.jpeg'],
+      tagline:  'An aged limestone finish gives this traditional mantel the look of a hundred-year-old piece.',
+      description: 'The Cambridge combines a classical fluted-leg profile with our aged limestone finish — a proprietary surface treatment that mimics the patina of antique carved stone. Ideal for traditional interiors, historic renovations, and clients who want their fireplace to look as though it arrived with the house.',
+      specs: { 'Width': '52" – 80"', 'Height': '52" – 62"', 'Shelf Depth': '6.5"', 'Finish': 'Aged Limestone' },
+      relatedSlugs: ['bradford', 'img-1284', 'gramercy'],
+    },
+    {
+      slug:     'range-hood-full-surround',
+      name:     'The Hearth Kitchen Hood',
+      category: 'range-hoods',
+      catLabel: 'Range Hood',
+      finish:   'Smooth Limestone',
+      cover:    '/images/Ashton 2.jpeg',
+      images:   ['/images/Ashton 2.jpeg', '/images/FM-2.jpeg'],
+      tagline:  'A full floor-to-ceiling surround that transforms your cooking alcove into a hearth.',
+      description: 'Our most dramatic range hood offering — a full cast stone surround that frames the cooking alcove from countertop to ceiling, creating something that looks more like a fireplace than a kitchen fixture. Spectacular in great rooms with open kitchens. Requires early-stage coordination with your contractor.',
+      specs: { 'Width': '48" – 72"', 'Height': 'Floor-to-ceiling (custom)', 'Depth': 'Custom', 'Finish': 'Smooth Limestone' },
+      relatedSlugs: ['range-hood-bell', 'range-hood-corbel', 'gramercy'],
+    },
+    {
+      slug:     'outdoor-linear',
+      name:     'The Terrace Linear',
+      category: 'outdoor-fireplaces',
+      catLabel: 'Outdoor Fireplace',
+      finish:   'Smooth Limestone',
+      cover:    '/images/CAST-Design-Company-Modern-Fireplace-Mantel-Modern Living Room.jpg',
+      images:   ['/images/CAST-Design-Company-Modern-Fireplace-Mantel-Modern Living Room.jpg', '/images/Gramercy Remodel- Sunnyland-188.jpg'],
+      tagline:  'A modern linear outdoor fireplace — clean, horizontal, and unmistakably contemporary.',
+      description: 'The Terrace Linear is our response to the demand for contemporary outdoor fireplaces. A low-profile horizontal form with a wide linear firebox opening — proportioned more like a fire feature than a traditional fireplace. Works beautifully in pool decks and covered outdoor rooms with modern architecture.',
+      specs: { 'Width': '60" – 96"', 'Height': '48" – 60"', 'Hearth': 'Custom slab', 'Finish': 'Smooth Limestone' },
+      relatedSlugs: ['outdoor-stone-1', 'outdoor-courtyard', 'modern-living-room'],
+    },
+    {
+      slug:     'newport',
+      name:     'The Newport',
+      category: 'fireplace-mantels',
+      catLabel: 'Fireplace Mantel',
+      finish:   'Smooth Limestone',
+      cover:    '/images/Gramercy- Meadow-288 Large.jpeg',
+      images:   ['/images/Gramercy- Meadow-288 Large.jpeg', '/images/Gramercy- Meadow-257.jpg'],
+      tagline:  'A tall, elegantly proportioned mantel designed for rooms with 10\' or higher ceilings.',
+      description: 'The Newport was designed specifically for the tall ceilings common in DFW luxury new builds. At 60"–70" finished height, it fills vertical space that shorter mantels leave awkward and bare. The profile is classical but refined — a slightly taller shelf, longer legs, and a delicate ogee moulding at the crown.',
+      specs: { 'Width': '54" – 84"', 'Height': '60" – 70"', 'Shelf Depth': '6"', 'Finish': 'Smooth Limestone' },
+      relatedSlugs: ['img-1284', 'bradford', 'cambridge'],
+    },
+  ];
+
+  return products.map((product) => ({
+    params: { slug: product.slug },
+    props:  { product, allProducts: products },
+  }));
+}
+
+const { product, allProducts } = Astro.props;
+
+// Resolve related products from slugs
+const relatedProducts = (product.relatedSlugs ?? [])
+  .map((s: string) => allProducts.find((p: any) => p.slug === s))
+  .filter(Boolean)
+  .slice(0, 3);
+
+// Active image index is managed client-side
+---
+
+<BaseLayout
+  title={`${product.name} | Gallery | Cast Design Fireplaces`}
+  description={product.tagline}
+  canonical={`/gallery/${product.slug}`}
+  ogImage={product.cover}
+>
+
+  <!-- ═══ TOP BAR ═══ -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="top-bar__areas">
+        <span>Areas We Serve</span>
+        <a href="/service-areas/dallas">Dallas</a>
+        <span class="sep">·</span>
+        <a href="/service-areas/fort-worth">Fort Worth</a>
+        <span class="sep">·</span>
+        <a href="/service-areas/plano">Plano</a>
+        <span class="sep">·</span>
+        <a href="/service-areas/southlake">Southlake</a>
+        <span class="sep">·</span>
+        <a href="/service-areas/mckinney">McKinney</a>
+        <span class="sep">·</span>
+        <a href="/service-areas">All DFW</a>
+      </div>
+      <div class="top-bar__phone">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+        </svg>
+        Call for a Free Consultation&nbsp;
+        <a href="tel:+12146214820">(214) 621-4820</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ NAV ═══ -->
+  <nav class="nav" aria-label="Main navigation">
+    <div class="container">
+      <a href="/" class="nav__logo" aria-label="Cast Design Fireplaces – Home">
+        <span class="nav__logo-main">Cast Design</span>
+        <span class="nav__logo-sub">Fireplaces &amp; Stone</span>
+      </a>
+      <ul class="nav__links" role="list">
+        <li><a href="/gallery" class="nav__active">Gallery</a></li>
+        <li><a href="/products">Products</a></li>
+        <li><a href="/process">Our Process</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/service-areas">Service Areas</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/contact" class="nav__cta">Free Consultation</a></li>
+      </ul>
+      <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══ MOBILE MENU ═══ -->
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <div class="mobile-menu__backdrop"></div>
+    <div class="mobile-menu__panel">
+      <div class="mobile-menu__header">
+        <a href="/" class="nav__logo" aria-label="Cast Design Fireplaces – Home">
+          <span class="nav__logo-main">Cast Design</span>
+          <span class="nav__logo-sub">Fireplaces &amp; Stone</span>
+        </a>
+        <button class="mobile-menu__close" aria-label="Close menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <nav class="mobile-menu__nav" aria-label="Mobile navigation">
+        <ul role="list">
+          <li><a href="/gallery">Gallery</a></li>
+          <li><a href="/products">Products</a></li>
+          <li><a href="/process">Our Process</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/service-areas">Service Areas</a></li>
+          <li><a href="/blog">Blog</a></li>
+        </ul>
+      </nav>
+      <div class="mobile-menu__footer">
+        <a href="/contact" class="mobile-menu__cta">
+          Schedule Free Consultation
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+        <a href="tel:+12146214820" class="mobile-menu__call">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+          </svg>
+          (214) 621-4820
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const hamburger = document.querySelector<HTMLButtonElement>('.nav__hamburger');
+    const closeBtn  = document.querySelector<HTMLButtonElement>('.mobile-menu__close');
+    const backdrop  = document.querySelector<HTMLElement>('.mobile-menu__backdrop');
+    const menu      = document.querySelector<HTMLElement>('.mobile-menu');
+    function openMenu()  { menu!.classList.add('is-open'); menu!.setAttribute('aria-hidden','false'); hamburger!.setAttribute('aria-expanded','true');  document.body.style.overflow='hidden'; }
+    function closeMenu() { menu!.classList.remove('is-open'); menu!.setAttribute('aria-hidden','true'); hamburger!.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+    hamburger?.addEventListener('click', openMenu);
+    closeBtn?.addEventListener('click', closeMenu);
+    backdrop?.addEventListener('click', closeMenu);
+    document.addEventListener('keydown', (e) => { if (e.key==='Escape') closeMenu(); });
+  </script>
+
+  <!-- ═══ PRODUCT DETAIL ═══ -->
+  <div class="product-detail">
+
+    <!-- Breadcrumb bar -->
+    <div class="product-breadcrumb-bar">
+      <div class="container">
+        <nav class="product-breadcrumb" aria-label="Breadcrumb">
+          <a href="/gallery">← Gallery</a>
+          <span aria-hidden="true">/</span>
+          <a href={`/gallery?filter=${product.category}`}>{product.catLabel}</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{product.name}</span>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="product-detail__body">
+      <div class="container">
+        <div class="product-detail__grid">
+
+          <!-- LEFT: Image viewer -->
+          <div class="product-viewer">
+
+            <!-- Main image -->
+            <div class="product-viewer__main" id="viewer-main">
+              <img
+                src={product.images[0]}
+                alt={product.name}
+                class="product-viewer__main-img"
+                id="viewer-main-img"
+                fetchpriority="high"
+              />
+              {product.images.length > 1 && (
+                <div class="product-viewer__nav" aria-label="Image navigation">
+                  <button class="product-viewer__arrow product-viewer__arrow--prev" id="viewer-prev" aria-label="Previous image">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>
+                  </button>
+                  <button class="product-viewer__arrow product-viewer__arrow--next" id="viewer-next" aria-label="Next image">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                  </button>
+                </div>
+              )}
+              <!-- Image counter -->
+              {product.images.length > 1 && (
+                <div class="product-viewer__counter" id="viewer-counter" aria-live="polite">
+                  1 / {product.images.length}
+                </div>
+              )}
+            </div>
+
+            <!-- Thumbnails -->
+            {product.images.length > 1 && (
+              <div class="product-viewer__thumbs" id="viewer-thumbs" role="list" aria-label="Image thumbnails">
+                {product.images.map((img: string, i: number) => (
+                  <button
+                    class={`product-viewer__thumb${i === 0 ? ' is-active' : ''}`}
+                    data-index={i}
+                    data-src={img}
+                    aria-label={`View image ${i + 1}`}
+                    role="listitem"
+                  >
+                    <img src={img} alt={`${product.name} view ${i + 1}`} loading="lazy" />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <!-- RIGHT: Info panel -->
+          <div class="product-info">
+            <span class="product-info__cat">{product.catLabel}</span>
+            <h1 class="product-info__name">{product.name}</h1>
+            <p class="product-info__finish">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" />
+              </svg>
+              {product.finish}
+            </p>
+            <p class="product-info__tagline">{product.tagline}</p>
+            <p class="product-info__desc">{product.description}</p>
+
+            <!-- Specs table -->
+            <div class="product-specs">
+              <h3 class="product-specs__heading">Standard Specifications</h3>
+              <dl class="product-specs__list">
+                {Object.entries(product.specs).map(([key, val]) => (
+                  <>
+                    <dt>{key}</dt>
+                    <dd>{val as string}</dd>
+                  </>
+                ))}
+              </dl>
+              <p class="product-specs__note">All dimensions are starting points — every piece is made to order.</p>
+            </div>
+
+            <!-- CTAs -->
+            <div class="product-info__actions">
+              <a href="/contact" class="btn btn-primary" style="flex:1; justify-content:center;">
+                Request a Custom Quote
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </a>
+              <a href="tel:+12146214820" class="btn btn-outline-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                </svg>
+                Call Us
+              </a>
+            </div>
+
+            <!-- Trust row -->
+            <div class="product-info__trust">
+              <div class="product-info__trust-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Made to order
+              </div>
+              <div class="product-info__trust-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Free consultation
+              </div>
+              <div class="product-info__trust-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                DFW delivery & install
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ RELATED PRODUCTS ═══ -->
+  {relatedProducts.length > 0 && (
+    <section class="product-related" aria-labelledby="related-products-heading">
+      <div class="container">
+        <h2 class="product-related__heading" id="related-products-heading">You Might Also Like</h2>
+        <div class="gallery-grid gallery-grid--3">
+          {relatedProducts.map((rp: any) => (
+            <a href={`/gallery/${rp.slug}`} class="gallery-card" aria-label={`View ${rp.name}`}>
+              <div class="gallery-card__img-wrap">
+                <img src={rp.cover} alt={rp.name} loading="lazy" class="gallery-card__img" />
+                <div class="gallery-card__overlay" aria-hidden="true">
+                  <span class="gallery-card__view">
+                    View Product
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+              <div class="gallery-card__body">
+                <span class="gallery-card__cat">{rp.catLabel}</span>
+                <h3 class="gallery-card__name">{rp.name}</h3>
+                <p class="gallery-card__tagline">{rp.tagline}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div style="text-align:center; margin-top:48px;">
+          <a href="/gallery" class="btn btn-outline-dark">← Back to Full Gallery</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Image viewer JS -->
+  <script>
+    const mainImg   = document.getElementById('viewer-main-img') as HTMLImageElement | null;
+    const thumbBtns = document.querySelectorAll<HTMLButtonElement>('.product-viewer__thumb');
+    const prevBtn   = document.getElementById('viewer-prev') as HTMLButtonElement | null;
+    const nextBtn   = document.getElementById('viewer-next') as HTMLButtonElement | null;
+    const counter   = document.getElementById('viewer-counter') as HTMLElement | null;
+    const total     = thumbBtns.length;
+
+    let current = 0;
+
+    function goTo(index: number) {
+      if (!mainImg || total === 0) return;
+      current = (index + total) % total;
+      const thumb = thumbBtns[current];
+      const src = thumb?.dataset.src;
+      if (src) {
+        mainImg.style.opacity = '0';
+        setTimeout(() => {
+          mainImg.src = src;
+          mainImg.style.opacity = '1';
+        }, 150);
+      }
+      thumbBtns.forEach((b, i) => b.classList.toggle('is-active', i === current));
+      if (counter) counter.textContent = `${current + 1} / ${total}`;
+    }
+
+    thumbBtns.forEach((btn, i) => btn.addEventListener('click', () => goTo(i)));
+    prevBtn?.addEventListener('click', () => goTo(current - 1));
+    nextBtn?.addEventListener('click', () => goTo(current + 1));
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft')  goTo(current - 1);
+      if (e.key === 'ArrowRight') goTo(current + 1);
+    });
+  </script>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer" aria-label="Site footer">
+    <div class="container">
+      <div class="footer__top">
+        <div>
+          <div class="footer__brand-name">Cast Design Fireplaces</div>
+          <div class="footer__brand-tag">DFW's Cast Stone Specialists</div>
+          <p class="footer__brand-desc">Premium cast stone fireplace mantels, surrounds, and architectural stone products handcrafted for Dallas–Fort Worth homes since 2004.</p>
+          <div class="footer__contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
+            <a href="tel:+12146214820">(214) 621-4820</a>
+          </div>
+          <div class="footer__contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+            <a href="mailto:hello@castdesignfireplaces.com">hello@castdesignfireplaces.com</a>
+          </div>
+          <div class="footer__contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+            <span>Irving, TX (Serving All DFW)</span>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h4>Products</h4>
+          <ul>
+            <li><a href="/products/fireplace-mantels">Fireplace Mantels</a></li>
+            <li><a href="/products/fireplace-surrounds">Fireplace Surrounds</a></li>
+            <li><a href="/products/outdoor-fireplaces">Outdoor Fireplaces</a></li>
+            <li><a href="/products/range-hoods">Range Hoods</a></li>
+            <li><a href="/products/corbels-columns">Corbels &amp; Columns</a></li>
+            <li><a href="/products/balustrades">Balustrades &amp; Railings</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/process">Our Process</a></li>
+            <li><a href="/gallery">Gallery</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="/blog/how-to-choose-fireplace-mantel">Choosing a Mantel</a></li>
+            <li><a href="/blog/cast-stone-vs-natural-stone">Cast Stone vs. Natural Stone</a></li>
+            <li><a href="/blog/fireplace-design-trends-2025">2025 Design Trends</a></li>
+            <li><a href="/faq">FAQs</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Areas We Serve</h4>
+          <ul>
+            <li><a href="/service-areas/dallas">Dallas</a></li>
+            <li><a href="/service-areas/fort-worth">Fort Worth</a></li>
+            <li><a href="/service-areas/plano">Plano</a></li>
+            <li><a href="/service-areas/southlake">Southlake</a></li>
+            <li><a href="/service-areas/mckinney">McKinney</a></li>
+            <li><a href="/service-areas/frisco">Frisco</a></li>
+            <li><a href="/service-areas">All DFW Areas</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; {new Date().getFullYear()} Cast Design Fireplaces. All rights reserved. Irving, TX.</p>
+        <div style="display: flex; gap: 20px;">
+          <a href="/privacy-policy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="/sitemap.xml">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</BaseLayout>

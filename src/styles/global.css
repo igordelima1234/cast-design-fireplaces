@@ -1639,20 +1639,17 @@ a.contact-detail__value:hover { color: var(--color-gold); }
 }
 .form-tile__inner {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 12px 8px;
+  padding: 13px 10px;
   border: 1.5px solid var(--color-cream-dark);
   border-radius: 8px;
   background: var(--color-cream);
   transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
   text-align: center;
-  min-height: 72px;
+  min-height: 50px;
 }
 .form-tiles--sm .form-tile__inner { min-height: 44px; padding: 10px 6px; }
-.form-tile__icon { font-size: 1.25rem; line-height: 1; }
 .form-tile__label {
   font-size: 0.78rem;
   font-weight: 600;

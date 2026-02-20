@@ -1,23 +1,16 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-// ─── Placeholder post data ─────────────────────────────────────────────────
-// When Sanity is connected:
-//   export async function getStaticPaths() {
-//     const posts = await sanityClient.fetch(`*[_type == "post"]{ slug, ... }`);
-//     return posts.map(post => ({ params: { slug: post.slug.current }, props: { post } }));
-//   }
-//   const { post } = Astro.props;
+// ─── Static post data ──────────────────────────────────────────────────────
+// When Sanity is connected, swap getStaticPaths body with:
+//   const posts = await sanityClient.fetch(`*[_type == "post"]{ slug, ... }`);
+//   return posts.map(post => ({ params: { slug: post.slug.current }, props: { post } }));
 // ──────────────────────────────────────────────────────────────────────────
 
+// Data lives inside getStaticPaths so Astro can tree-shake it correctly.
+// The same array is used for both path generation and props passing.
 export function getStaticPaths() {
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props:  { post },
-  }));
-}
-
-const posts = [
+  const posts = [
   {
     slug:        'how-to-choose-fireplace-mantel',
     title:       'How to Choose the Right Fireplace Mantel for Your Home',
@@ -254,7 +247,13 @@ const posts = [
       { slug:'cast-stone-vs-natural-stone', title:'Cast Stone vs. Natural Stone', category:'Materials', image:'/images/FM-1.jpeg', readTime:'5 min read' },
     ],
   },
-];
+  ];
+
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props:  { post },
+  }));
+}
 
 const { post } = Astro.props;
 ---

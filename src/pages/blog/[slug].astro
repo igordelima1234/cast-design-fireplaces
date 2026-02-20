@@ -1,0 +1,606 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// ─── Placeholder post data ─────────────────────────────────────────────────
+// When Sanity is connected:
+//   export async function getStaticPaths() {
+//     const posts = await sanityClient.fetch(`*[_type == "post"]{ slug, ... }`);
+//     return posts.map(post => ({ params: { slug: post.slug.current }, props: { post } }));
+//   }
+//   const { post } = Astro.props;
+// ──────────────────────────────────────────────────────────────────────────
+
+export function getStaticPaths() {
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props:  { post },
+  }));
+}
+
+const posts = [
+  {
+    slug:        'how-to-choose-fireplace-mantel',
+    title:       'How to Choose the Right Fireplace Mantel for Your Home',
+    excerpt:     'From proportion and profile to finish and material, picking the perfect mantel comes down to a handful of key decisions. Here\'s how our designers approach it.',
+    category:    'Design Tips',
+    categorySlug:'design-tips',
+    readTime:    '6 min read',
+    date:        'January 14, 2025',
+    author:      'The Cast Design Team',
+    image:       '/images/Ashton.jpeg',
+    imageAlt:    'A clean cast stone fireplace mantel in a bright living room',
+    relatedImages: [
+      '/images/FM-1.jpeg',
+      '/images/Gramercy- Meadow-257.jpg',
+    ],
+    body: [
+      {
+        type: 'intro',
+        text: 'Your fireplace mantel is the focal point of the room — the one element every eye drifts to when someone walks in the door. Getting it right matters. But with hundreds of profiles, sizes, and finishes to choose from, it can feel overwhelming. Here\'s the straightforward framework our designers use with every client.',
+      },
+      {
+        type: 'h2',
+        text: '1. Start with Proportion, Not Style',
+      },
+      {
+        type: 'p',
+        text: 'Before you fall in love with a particular profile, make sure it fits the room. A mantel that\'s too tall overwhelms a modest ceiling; one that\'s too low looks like an afterthought in a great room. The golden rule: the mantel\'s opening should be no taller than two-thirds of the distance from the floor to the ceiling. Leg height, shelf width, and overall depth all flow from that starting proportion.',
+      },
+      {
+        type: 'h2',
+        text: '2. Match the Architectural Vocabulary of Your Home',
+      },
+      {
+        type: 'p',
+        text: 'Traditional homes with crown moulding and raised-panel doors call for mantels with classically detailed legs and a substantial shelf. Modern and transitional homes tend toward clean-lined surrounds with minimal ornamentation. Transitional designs — the most requested style in DFW right now — bridge both worlds with simple corbels, a slight ogee moulding, and restrained detail.',
+      },
+      {
+        type: 'pullquote',
+        text: '"The best mantel is the one that makes you forget it\'s there — until you can\'t imagine the room without it."',
+      },
+      {
+        type: 'h2',
+        text: '3. Choose the Right Cast Stone Finish',
+      },
+      {
+        type: 'p',
+        text: 'Cast stone can be finished to mimic limestone, sandstone, or even aged concrete. Our most popular finishes for DFW homes are smooth limestone (timeless, pairs with everything), lightly textured buff (warmer, picks up natural light), and painted white or off-white (clean, contemporary, great for transitional interiors). We can match virtually any existing millwork or stone in your home.',
+      },
+      {
+        type: 'image',
+        src: '/images/FM-1.jpeg',
+        alt: 'Cast stone fireplace surround with detailed corbels',
+        caption: 'A transitional cast stone surround with refined corbel details — one of our most-requested profiles.',
+      },
+      {
+        type: 'h2',
+        text: '4. Consider the Firebox Opening',
+      },
+      {
+        type: 'p',
+        text: 'The mantel must work with your existing firebox — or we design around a planned one. Wood-burning fireplaces typically require a taller, wider opening than gas inserts. If you\'re upgrading an existing firebox, we\'ll take precise measurements before designing to ensure the proportions are perfect and clearance requirements are met.',
+      },
+      {
+        type: 'h2',
+        text: '5. Think About the Full Wall, Not Just the Mantel',
+      },
+      {
+        type: 'p',
+        text: 'The most stunning fireplace walls treat the mantel as part of a larger composition — flanking built-ins, a full-height surround, or a bold material behind the firebox opening (marble, shiplap, limewash plaster). During your free consultation, our designers will photograph your space and mock up the full wall so you can see the complete picture before committing.',
+      },
+    ],
+    relatedPosts: [
+      {
+        slug:     'cast-stone-vs-natural-stone',
+        title:    'Cast Stone vs. Natural Stone: Which Is Right for Your Project?',
+        category: 'Materials',
+        image:    '/images/FM-1.jpeg',
+        readTime: '5 min read',
+      },
+      {
+        slug:     'fireplace-design-trends-2025',
+        title:    '2025 Fireplace Design Trends: What DFW Homeowners Are Requesting',
+        category: 'Inspiration',
+        image:    '/images/Gramercy- Meadow-257.jpg',
+        readTime: '4 min read',
+      },
+      {
+        slug:     'outdoor-fireplace-planning-guide',
+        title:    'The Complete Guide to Planning an Outdoor Cast Stone Fireplace',
+        category: 'How-To',
+        image:    '/images/Gramercy Remodel- Sunnyland-188.jpg',
+        readTime: '8 min read',
+      },
+    ],
+  },
+  // Additional posts — body content is placeholder; swap with Sanity portable text
+  {
+    slug:        'cast-stone-vs-natural-stone',
+    title:       'Cast Stone vs. Natural Stone: Which Is Right for Your Project?',
+    excerpt:     'Both materials offer timeless beauty — but they differ dramatically in weight, cost, and customization potential. We break down the real differences.',
+    category:    'Materials',
+    categorySlug:'materials',
+    readTime:    '5 min read',
+    date:        'December 30, 2024',
+    author:      'The Cast Design Team',
+    image:       '/images/FM-1.jpeg',
+    imageAlt:    'Cast stone fireplace surround detail',
+    relatedImages: ['/images/Ashton.jpeg', '/images/Gramercy- Meadow-257.jpg'],
+    body: [
+      { type: 'intro', text: 'Natural stone and cast stone can look nearly identical to the untrained eye — but they behave very differently on the job site, in the budget, and over time. Here\'s an honest comparison from a studio that works with both.' },
+      { type: 'h2', text: 'Weight & Installation' },
+      { type: 'p',  text: 'Natural stone is dense. A full limestone mantel can weigh 400–600 lbs, requiring structural reinforcement in most residential settings. Cast stone — a blend of fine aggregates and Portland cement — delivers the same visual richness at roughly 40% of the weight, with no structural modifications needed in the vast majority of DFW homes.' },
+      { type: 'h2', text: 'Customization' },
+      { type: 'p',  text: 'This is where cast stone wins decisively. Natural stone is carved from existing blocks, limiting you to what\'s achievable within the stone\'s natural dimensions and grain. Cast stone is poured into molds, meaning any profile, dimension, or detail we can draw, we can produce — without premium upcharges for unusual sizes.' },
+      { type: 'h2', text: 'Cost' },
+      { type: 'p',  text: 'Natural stone mantels from quality quarries typically run 2–3× the cost of an equivalent cast stone piece, before accounting for the additional structural work. For most DFW homeowners seeking a luxury result without a renovation-scale budget, cast stone hits the sweet spot.' },
+      { type: 'pullquote', text: '"Cast stone gives you 95% of the look of natural limestone at roughly half the installed cost — with more design freedom."' },
+      { type: 'h2', text: 'Durability in the Texas Climate' },
+      { type: 'p',  text: 'Both materials handle Texas heat well. Cast stone, however, is non-porous when sealed correctly, making it more resistant to the humidity swings that can cause natural limestone to develop surface efflorescence over time.' },
+    ],
+    relatedPosts: [
+      { slug:'how-to-choose-fireplace-mantel', title:'How to Choose the Right Fireplace Mantel for Your Home', category:'Design Tips', image:'/images/Ashton.jpeg', readTime:'6 min read' },
+      { slug:'fireplace-design-trends-2025', title:'2025 Fireplace Design Trends: What DFW Homeowners Are Requesting', category:'Inspiration', image:'/images/Gramercy- Meadow-257.jpg', readTime:'4 min read' },
+      { slug:'cast-stone-care-maintenance', title:'How to Care for Your Cast Stone Fireplace: A Seasonal Guide', category:'How-To', image:'/images/FM-2.jpeg', readTime:'4 min read' },
+    ],
+  },
+  {
+    slug:'fireplace-design-trends-2025', title:'2025 Fireplace Design Trends: What DFW Homeowners Are Requesting',
+    excerpt:'Tall surrounds, limewash finishes, and organic forms are dominating our order books this year.',
+    category:'Inspiration', categorySlug:'inspiration', readTime:'4 min read', date:'December 10, 2024', author:'The Cast Design Team',
+    image:'/images/Gramercy- Meadow-257.jpg', imageAlt:'Modern fireplace in a bright DFW living room',
+    relatedImages:['/images/Gramercy- Meadow-288 Large.jpeg', '/images/Ashton 2.jpeg'],
+    body:[
+      { type:'intro', text:'Every year our order books tell us something about where design is heading. 2025 has a clear story: homeowners want fireplaces that feel grounded, organic, and a little less predictable.' },
+      { type:'h2', text:'Tall, Vertical Surrounds' },
+      { type:'p',  text:'The chunky, low-profile surround is giving way to taller proportions that draw the eye upward. We\'re seeing requests for surrounds that run floor-to-ceiling — sometimes integrated with a full accent wall — that make the fireplace feel architecturally significant rather than furniture-scaled.' },
+      { type:'h2', text:'Limewash & Venetian Plaster Finishes' },
+      { type:'p',  text:'Clients are pairing cast stone mantels with limewash plaster or Venetian plaster on the firebox surround wall. The matte, slightly aged quality of limewash reads beautifully next to the fine-grained surface of our cast stone.' },
+      { type:'pullquote', text:'"In 2025, the fireplace wall is becoming the statement piece it deserves to be — not just the mantel."' },
+      { type:'h2', text:'Organic & Arched Forms' },
+      { type:'p',  text:'Arched fireplace openings are returning — not the grand Victorian arch but a softer, more organic curve that feels more Wabi-sabi than formal. These pair naturally with rounded hearths and irregular stone textures.' },
+    ],
+    relatedPosts:[
+      { slug:'how-to-choose-fireplace-mantel', title:'How to Choose the Right Fireplace Mantel for Your Home', category:'Design Tips', image:'/images/Ashton.jpeg', readTime:'6 min read' },
+      { slug:'cast-stone-vs-natural-stone', title:'Cast Stone vs. Natural Stone', category:'Materials', image:'/images/FM-1.jpeg', readTime:'5 min read' },
+      { slug:'gramercy-meadow-project', title:'Project Spotlight: The Gramercy Surround in a Southlake New Build', category:'Inspiration', image:'/images/Gramercy- Meadow-288 Large.jpeg', readTime:'3 min read' },
+    ],
+  },
+  {
+    slug:'outdoor-fireplace-planning-guide', title:'The Complete Guide to Planning an Outdoor Cast Stone Fireplace',
+    excerpt:'Siting, sizing, fuel type, and finish — everything you need to know before breaking ground.',
+    category:'How-To', categorySlug:'how-to', readTime:'8 min read', date:'November 18, 2024', author:'The Cast Design Team',
+    image:'/images/Gramercy Remodel- Sunnyland-188.jpg', imageAlt:'Outdoor living area with a cast stone fireplace',
+    relatedImages:['/images/377950669_3593078944314893_9071390339427414552_n.jpg', '/images/Ashton.jpeg'],
+    body:[
+      { type:'intro', text:'An outdoor cast stone fireplace can transform a backyard into a true outdoor living room — usable nine months of the year in DFW. But planning one requires more forethought than an interior project.' },
+      { type:'h2', text:'Siting: Where It Goes Changes Everything' },
+      { type:'p',  text:'Position matters for both function and aesthetics. Too close to the house and smoke can blow back through windows. Too far and it loses its relationship to the seating area. We typically recommend a minimum 10-foot clearance from the structure, with the firebox face angled to catch the prevailing breeze.' },
+      { type:'h2', text:'Sizing for the Outdoor Scale' },
+      { type:'p',  text:'Outdoor fireplaces need to read at a much larger scale than interior ones. What looks imposing inside looks modest outdoors. Our outdoor designs typically feature a firebox opening 36–48 inches wide and a surround that rises 7–9 feet — substantial enough to anchor the space visually.' },
+      { type:'pullquote', text:'"An outdoor fireplace should feel like a piece of architecture, not a piece of furniture."' },
+      { type:'h2', text:'Fuel Type' },
+      { type:'p',  text:'Wood-burning is the most popular choice for outdoor use — the crackle and aroma are the whole point. Gas is more practical if you want instant-on convenience, especially for entertaining. We design for both; the firebox dimensions differ slightly between the two.' },
+    ],
+    relatedPosts:[
+      { slug:'how-to-choose-fireplace-mantel', title:'How to Choose the Right Fireplace Mantel for Your Home', category:'Design Tips', image:'/images/Ashton.jpeg', readTime:'6 min read' },
+      { slug:'cast-stone-vs-natural-stone', title:'Cast Stone vs. Natural Stone', category:'Materials', image:'/images/FM-1.jpeg', readTime:'5 min read' },
+      { slug:'gramercy-meadow-project', title:'Project Spotlight: The Gramercy Surround in a Southlake New Build', category:'Inspiration', image:'/images/Gramercy- Meadow-288 Large.jpeg', readTime:'3 min read' },
+    ],
+  },
+  {
+    slug:'range-hood-styles-kitchen', title:'Range Hood Styles That Elevate Any Kitchen Design',
+    excerpt:'A cast stone range hood isn\'t just ventilation — it\'s the centerpiece of your kitchen.',
+    category:'Inspiration', categorySlug:'inspiration', readTime:'5 min read', date:'November 2, 2024', author:'The Cast Design Team',
+    image:'/images/Ashton 2.jpeg', imageAlt:'Cast stone range hood above a kitchen range',
+    relatedImages:['/images/Ashton.jpeg', '/images/FM-2.jpeg'],
+    body:[
+      { type:'intro', text:'A cast stone range hood announces itself from across the kitchen. More than any other element, it signals that the kitchen was designed with intention. Here are the profiles our clients love most — and why.' },
+      { type:'h2', text:'The Classic Bell Curve' },
+      { type:'p',  text:'The gently curved bell profile is timeless. It works in traditional, transitional, and even contemporary kitchens because its form is simple enough to recede or advance depending on the surrounding cabinetry.' },
+      { type:'h2', text:'The Flat-Front with Corbel Detail' },
+      { type:'p',  text:'For transitional and modern-traditional kitchens, a flat-front hood with decorative corbels at the lower corners adds architectural character without going fully ornate.' },
+      { type:'pullquote', text:'"The range hood is the one place in a kitchen where you can go big and it always pays off."' },
+      { type:'h2', text:'The Full-Column Surround' },
+      { type:'p',  text:'Our most dramatic offering — a full cast stone surround that wraps the cooking alcove floor-to-ceiling, creating something that looks more like a hearth than a kitchen appliance. Spectacular in great rooms with open-plan kitchens.' },
+    ],
+    relatedPosts:[
+      { slug:'how-to-choose-fireplace-mantel', title:'How to Choose the Right Fireplace Mantel for Your Home', category:'Design Tips', image:'/images/Ashton.jpeg', readTime:'6 min read' },
+      { slug:'fireplace-design-trends-2025', title:'2025 Fireplace Design Trends', category:'Inspiration', image:'/images/Gramercy- Meadow-257.jpg', readTime:'4 min read' },
+      { slug:'cast-stone-care-maintenance', title:'How to Care for Your Cast Stone Fireplace: A Seasonal Guide', category:'How-To', image:'/images/FM-2.jpeg', readTime:'4 min read' },
+    ],
+  },
+  {
+    slug:'cast-stone-care-maintenance', title:'How to Care for Your Cast Stone Fireplace: A Seasonal Guide',
+    excerpt:'Cast stone is remarkably low-maintenance — but a little seasonal attention keeps it looking showroom-fresh for decades.',
+    category:'How-To', categorySlug:'how-to', readTime:'4 min read', date:'October 15, 2024', author:'The Cast Design Team',
+    image:'/images/FM-2.jpeg', imageAlt:'Detail of a cast stone fireplace mantel surface',
+    relatedImages:['/images/Ashton.jpeg', '/images/FM-1.jpeg'],
+    body:[
+      { type:'intro', text:'Cast stone is one of the most durable materials you can install in a home. Properly sealed, it can look as good in 30 years as it does the day it was installed. The maintenance routine is simple — here\'s what we recommend.' },
+      { type:'h2', text:'Spring: Inspect & Reseal if Needed' },
+      { type:'p',  text:'Once a year, run a damp cloth across the surface and check that water beads rather than absorbs. If the stone is drinking in water, it\'s time for a fresh coat of penetrating sealer. We recommend a silane-siloxane sealer applied with a low-pressure sprayer, wiped off after 10 minutes.' },
+      { type:'h2', text:'Fall: Clean Before Fire Season' },
+      { type:'p',  text:'Before you light the first fire of the season, wipe the mantel down with a soft cloth dampened with warm water and a drop of pH-neutral dish soap. Avoid anything acidic (no vinegar) — acid etches cast stone the same way it etches natural limestone.' },
+      { type:'pullquote', text:'"The two enemies of cast stone are acid cleaners and prolonged moisture. Avoid both and the material is virtually indestructible."' },
+      { type:'h2', text:'What to Avoid' },
+      { type:'p',  text:'Never use abrasive scrubbers, bleach, or acid-based cleaners. For stubborn soot deposits near the firebox opening, a poultice of baking soda and water left overnight will lift most stains without damaging the surface.' },
+    ],
+    relatedPosts:[
+      { slug:'how-to-choose-fireplace-mantel', title:'How to Choose the Right Fireplace Mantel for Your Home', category:'Design Tips', image:'/images/Ashton.jpeg', readTime:'6 min read' },
+      { slug:'cast-stone-vs-natural-stone', title:'Cast Stone vs. Natural Stone', category:'Materials', image:'/images/FM-1.jpeg', readTime:'5 min read' },
+      { slug:'outdoor-fireplace-planning-guide', title:'The Complete Guide to Planning an Outdoor Cast Stone Fireplace', category:'How-To', image:'/images/Gramercy Remodel- Sunnyland-188.jpg', readTime:'8 min read' },
+    ],
+  },
+  {
+    slug:'gramercy-meadow-project', title:'Project Spotlight: The Gramercy Surround in a Southlake New Build',
+    excerpt:'When the architect called for something that felt like it had been there for a century, we delivered the Gramercy — in a home that hadn\'t been built yet.',
+    category:'Inspiration', categorySlug:'inspiration', readTime:'3 min read', date:'September 28, 2024', author:'The Cast Design Team',
+    image:'/images/Gramercy- Meadow-288 Large.jpeg', imageAlt:'The Gramercy cast stone surround in a Southlake living room',
+    relatedImages:['/images/Gramercy- Meadow-257.jpg', '/images/Gramercy Remodel- Sunnyland-188.jpg'],
+    body:[
+      { type:'intro', text:'When the project\'s architect reached out, the brief was deceptively simple: "It needs to feel like it\'s always been there." The home was a 5,800-square-foot new build in Southlake. The fireplace wall was the design centerpiece. We proposed the Gramercy.' },
+      { type:'h2', text:'The Brief' },
+      { type:'p',  text:'The great room had 12-foot ceilings and a 60-inch firebox rough-in. The architect wanted a traditional profile with enough presence to anchor the room — but nothing that would look costume-y or over-the-top in what was otherwise a clean transitional interior.' },
+      { type:'h2', text:'The Design' },
+      { type:'p',  text:'We pulled the Gramercy profile from our library and scaled it to the room — 72 inches wide at the shelf, with leg height adjusted to meet the firebox opening perfectly. The finish is our smooth limestone, applied with a slightly matte sealer that gives the surface an aged, quarried quality rather than looking freshly cast.' },
+      { type:'image', src:'/images/Gramercy- Meadow-257.jpg', alt:'The completed Gramercy surround installed in the great room', caption:'The finished installation — the Gramercy profile in smooth limestone finish.' },
+      { type:'h2', text:'The Result' },
+      { type:'p',  text:'Installation took one day. The client\'s reaction, standing in the room afterward, was exactly what we aim for: "It looks like it came with the house." That\'s the goal.' },
+    ],
+    relatedPosts:[
+      { slug:'how-to-choose-fireplace-mantel', title:'How to Choose the Right Fireplace Mantel for Your Home', category:'Design Tips', image:'/images/Ashton.jpeg', readTime:'6 min read' },
+      { slug:'fireplace-design-trends-2025', title:'2025 Fireplace Design Trends', category:'Inspiration', image:'/images/Gramercy- Meadow-257.jpg', readTime:'4 min read' },
+      { slug:'cast-stone-vs-natural-stone', title:'Cast Stone vs. Natural Stone', category:'Materials', image:'/images/FM-1.jpeg', readTime:'5 min read' },
+    ],
+  },
+];
+
+const { post } = Astro.props;
+---
+
+<BaseLayout
+  title={`${post.title} | Cast Design Fireplaces Blog`}
+  description={post.excerpt}
+  canonical={`/blog/${post.slug}`}
+  ogImage={post.image}
+>
+
+  <!-- ═══ TOP BAR ═══ -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="top-bar__areas">
+        <span>Areas We Serve</span>
+        <a href="/service-areas/dallas">Dallas</a>
+        <span class="sep">·</span>
+        <a href="/service-areas/fort-worth">Fort Worth</a>
+        <span class="sep">·</span>
+        <a href="/service-areas/plano">Plano</a>
+        <span class="sep">·</span>
+        <a href="/service-areas/southlake">Southlake</a>
+        <span class="sep">·</span>
+        <a href="/service-areas/mckinney">McKinney</a>
+        <span class="sep">·</span>
+        <a href="/service-areas">All DFW</a>
+      </div>
+      <div class="top-bar__phone">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+        </svg>
+        Call for a Free Consultation&nbsp;
+        <a href="tel:+12146214820">(214) 621-4820</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ NAV ═══ -->
+  <nav class="nav" aria-label="Main navigation">
+    <div class="container">
+      <a href="/" class="nav__logo" aria-label="Cast Design Fireplaces – Home">
+        <span class="nav__logo-main">Cast Design</span>
+        <span class="nav__logo-sub">Fireplaces &amp; Stone</span>
+      </a>
+      <ul class="nav__links" role="list">
+        <li><a href="/gallery">Gallery</a></li>
+        <li><a href="/products">Products</a></li>
+        <li><a href="/process">Our Process</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/service-areas">Service Areas</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/contact" class="nav__cta">Free Consultation</a></li>
+      </ul>
+      <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══ MOBILE MENU ═══ -->
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <div class="mobile-menu__backdrop"></div>
+    <div class="mobile-menu__panel">
+      <div class="mobile-menu__header">
+        <a href="/" class="nav__logo" aria-label="Cast Design Fireplaces – Home">
+          <span class="nav__logo-main">Cast Design</span>
+          <span class="nav__logo-sub">Fireplaces &amp; Stone</span>
+        </a>
+        <button class="mobile-menu__close" aria-label="Close menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <nav class="mobile-menu__nav" aria-label="Mobile navigation">
+        <ul role="list">
+          <li><a href="/gallery">Gallery</a></li>
+          <li><a href="/products">Products</a></li>
+          <li><a href="/process">Our Process</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/service-areas">Service Areas</a></li>
+          <li><a href="/blog">Blog</a></li>
+        </ul>
+      </nav>
+      <div class="mobile-menu__footer">
+        <a href="/contact" class="mobile-menu__cta">
+          Schedule Free Consultation
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+        <a href="tel:+12146214820" class="mobile-menu__call">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+          </svg>
+          (214) 621-4820
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const hamburger = document.querySelector<HTMLButtonElement>('.nav__hamburger');
+    const closeBtn  = document.querySelector<HTMLButtonElement>('.mobile-menu__close');
+    const backdrop  = document.querySelector<HTMLElement>('.mobile-menu__backdrop');
+    const menu      = document.querySelector<HTMLElement>('.mobile-menu');
+    function openMenu()  { menu!.classList.add('is-open'); menu!.setAttribute('aria-hidden','false'); hamburger!.setAttribute('aria-expanded','true');  document.body.style.overflow='hidden'; }
+    function closeMenu() { menu!.classList.remove('is-open'); menu!.setAttribute('aria-hidden','true'); hamburger!.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+    hamburger?.addEventListener('click', openMenu);
+    closeBtn?.addEventListener('click', closeMenu);
+    backdrop?.addEventListener('click', closeMenu);
+    document.addEventListener('keydown', (e) => { if (e.key==='Escape') closeMenu(); });
+  </script>
+
+  <!-- ═══ POST HERO IMAGE ═══ -->
+  <div class="post-hero">
+    <img
+      class="post-hero__img"
+      src={post.image}
+      alt={post.imageAlt}
+      fetchpriority="high"
+    />
+    <div class="post-hero__overlay" aria-hidden="true"></div>
+  </div>
+
+  <!-- ═══ ARTICLE ═══ -->
+  <article class="post-article" itemscope itemtype="https://schema.org/Article">
+
+    <!-- Header -->
+    <header class="post-header">
+      <div class="post-header__container">
+
+        <!-- Breadcrumb -->
+        <nav class="post-breadcrumb" aria-label="Breadcrumb">
+          <a href="/blog">← Back to Blog</a>
+          <span aria-hidden="true">/</span>
+          <a href={`/blog/category/${post.categorySlug}`}>{post.category}</a>
+        </nav>
+
+        <div class="post-header__meta">
+          <span class="blog-post-cat">{post.category}</span>
+          <span class="blog-meta-sep" aria-hidden="true">·</span>
+          <span class="blog-post-time">{post.readTime}</span>
+          <span class="blog-meta-sep" aria-hidden="true">·</span>
+          <time class="blog-post-date" itemprop="datePublished">{post.date}</time>
+        </div>
+
+        <h1 class="post-header__title" itemprop="headline">{post.title}</h1>
+        <p class="post-header__excerpt">{post.excerpt}</p>
+
+        <div class="post-header__author">
+          <div class="post-header__author-avatar" aria-hidden="true">CD</div>
+          <div>
+            <div class="post-header__author-name" itemprop="author">{post.author}</div>
+            <div class="post-header__author-role">Cast Design Fireplaces · Irving, TX</div>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Body -->
+    <div class="post-body">
+      <div class="post-body__container">
+
+        <!-- Main content -->
+        <div class="post-content" itemprop="articleBody">
+          {post.body.map((block) => {
+            if (block.type === 'intro') return (
+              <p class="post-intro">{block.text}</p>
+            );
+            if (block.type === 'h2') return (
+              <h2 class="post-h2">{block.text}</h2>
+            );
+            if (block.type === 'p') return (
+              <p class="post-p">{block.text}</p>
+            );
+            if (block.type === 'pullquote') return (
+              <blockquote class="post-pullquote">
+                <p>{block.text}</p>
+              </blockquote>
+            );
+            if (block.type === 'image') return (
+              <figure class="post-figure">
+                <img src={block.src} alt={block.alt} loading="lazy" class="post-figure__img" />
+                {block.caption && <figcaption class="post-figure__caption">{block.caption}</figcaption>}
+              </figure>
+            );
+            return null;
+          })}
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="post-sidebar" aria-label="Article sidebar">
+
+          <!-- Sticky CTA card -->
+          <div class="post-sidebar__cta">
+            <div class="post-sidebar__cta-label">Ready to get started?</div>
+            <h3 class="post-sidebar__cta-title">Schedule a Free In-Home Consultation</h3>
+            <p class="post-sidebar__cta-body">Our designers come to you — no showroom visit required. Get a custom design concept and fixed-price quote at no cost.</p>
+            <a href="/contact" class="btn btn-primary" style="width:100%; justify-content:center; margin-bottom:12px;">
+              Book Free Consultation →
+            </a>
+            <a href="tel:+12146214820" class="post-sidebar__phone">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+              </svg>
+              (214) 621-4820
+            </a>
+          </div>
+
+          <!-- Gallery mini strip -->
+          {post.relatedImages && post.relatedImages.length > 0 && (
+            <div class="post-sidebar__gallery">
+              <div class="post-sidebar__gallery-label">Our Work</div>
+              <div class="post-sidebar__gallery-grid">
+                {post.relatedImages.map((img: string, i: number) => (
+                  <a href="/gallery" class="post-sidebar__gallery-item" aria-label="View gallery">
+                    <img src={img} alt="Cast Design fireplace project" loading="lazy" />
+                  </a>
+                ))}
+              </div>
+              <a href="/gallery" class="blog-read-more blog-read-more--sm" style="margin-top:12px; display:inline-flex;">
+                View Full Gallery
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </a>
+            </div>
+          )}
+
+        </aside>
+
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ═══ RELATED POSTS ═══ -->
+  <section class="post-related" aria-labelledby="related-heading">
+    <div class="container">
+      <h2 class="blog-grid-section__heading" id="related-heading">Keep Reading</h2>
+      <div class="blog-grid">
+        {post.relatedPosts.map((rp: any) => (
+          <article class="blog-card">
+            <a href={`/blog/${rp.slug}`} class="blog-card__img-wrap" tabindex="-1" aria-hidden="true">
+              <img src={rp.image} alt={rp.title} loading="lazy" class="blog-card__img" />
+            </a>
+            <div class="blog-card__body">
+              <div class="blog-card__meta">
+                <span class="blog-post-cat">{rp.category}</span>
+                <span class="blog-meta-sep" aria-hidden="true">·</span>
+                <span class="blog-post-time">{rp.readTime}</span>
+              </div>
+              <h3 class="blog-card__title">
+                <a href={`/blog/${rp.slug}`}>{rp.title}</a>
+              </h3>
+              <div class="blog-card__footer" style="margin-top:auto; padding-top:12px; border-top: 1px solid var(--color-cream-dark);">
+                <a href={`/blog/${rp.slug}`} class="blog-read-more blog-read-more--sm">
+                  Read
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer" aria-label="Site footer">
+    <div class="container">
+      <div class="footer__top">
+        <div>
+          <div class="footer__brand-name">Cast Design Fireplaces</div>
+          <div class="footer__brand-tag">DFW's Cast Stone Specialists</div>
+          <p class="footer__brand-desc">Premium cast stone fireplace mantels, surrounds, and architectural stone products handcrafted for Dallas–Fort Worth homes since 2004.</p>
+          <div class="footer__contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
+            <a href="tel:+12146214820">(214) 621-4820</a>
+          </div>
+          <div class="footer__contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+            <a href="mailto:hello@castdesignfireplaces.com">hello@castdesignfireplaces.com</a>
+          </div>
+          <div class="footer__contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+            <span>Irving, TX (Serving All DFW)</span>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h4>Products</h4>
+          <ul>
+            <li><a href="/products/fireplace-mantels">Fireplace Mantels</a></li>
+            <li><a href="/products/fireplace-surrounds">Fireplace Surrounds</a></li>
+            <li><a href="/products/outdoor-fireplaces">Outdoor Fireplaces</a></li>
+            <li><a href="/products/range-hoods">Range Hoods</a></li>
+            <li><a href="/products/corbels-columns">Corbels &amp; Columns</a></li>
+            <li><a href="/products/balustrades">Balustrades &amp; Railings</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/process">Our Process</a></li>
+            <li><a href="/gallery">Gallery</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="/blog/how-to-choose-fireplace-mantel">Choosing a Mantel</a></li>
+            <li><a href="/blog/cast-stone-vs-natural-stone">Cast Stone vs. Natural Stone</a></li>
+            <li><a href="/blog/fireplace-design-trends-2025">2025 Design Trends</a></li>
+            <li><a href="/faq">FAQs</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Areas We Serve</h4>
+          <ul>
+            <li><a href="/service-areas/dallas">Dallas</a></li>
+            <li><a href="/service-areas/fort-worth">Fort Worth</a></li>
+            <li><a href="/service-areas/plano">Plano</a></li>
+            <li><a href="/service-areas/southlake">Southlake</a></li>
+            <li><a href="/service-areas/mckinney">McKinney</a></li>
+            <li><a href="/service-areas/frisco">Frisco</a></li>
+            <li><a href="/service-areas">All DFW Areas</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; {new Date().getFullYear()} Cast Design Fireplaces. All rights reserved. Irving, TX.</p>
+        <div style="display: flex; gap: 20px;">
+          <a href="/privacy-policy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="/sitemap.xml">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</BaseLayout>

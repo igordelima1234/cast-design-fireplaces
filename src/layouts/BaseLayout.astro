@@ -1,0 +1,80 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = "Cast Design Fireplaces crafts premium cast stone fireplace mantels, surrounds, and architectural stone products for DFW area homes. Custom designs. Free consultation.",
+  canonical,
+  ogImage = "/og-image.jpg",
+} = Astro.props;
+
+const siteUrl = "https://castdesignfireplaces.com";
+const fullCanonical = canonical ? `${siteUrl}${canonical}` : siteUrl;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+
+    <!-- Primary Meta -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={fullCanonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={fullCanonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
+
+    <!-- Local Business Schema -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Cast Design Fireplaces",
+      "description": description,
+      "url": siteUrl,
+      "telephone": "+1-817-555-0100",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Fort Worth",
+        "addressRegion": "TX",
+        "addressCountry": "US"
+      },
+      "areaServed": [
+        { "@type": "City", "name": "Dallas" },
+        { "@type": "City", "name": "Fort Worth" },
+        { "@type": "City", "name": "Arlington" },
+        { "@type": "City", "name": "Plano" },
+        { "@type": "City", "name": "McKinney" }
+      ],
+      "priceRange": "$$$$",
+      "openingHours": "Mo-Fr 08:00-17:00"
+    })} />
+
+    <!-- Preconnect for Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

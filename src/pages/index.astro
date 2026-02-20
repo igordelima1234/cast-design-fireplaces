@@ -1,0 +1,564 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const products = [
+  {
+    name: "Fireplace Mantels",
+    label: "Signature Collection",
+    img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80&auto=format&fit=crop",
+    alt: "Cast stone fireplace mantel in luxury living room"
+  },
+  {
+    name: "Fireplace Surrounds",
+    label: "Custom Designs",
+    img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=600&q=80&auto=format&fit=crop",
+    alt: "Elegant cast stone fireplace surround"
+  },
+  {
+    name: "Stone Corbels & Columns",
+    label: "Architectural Accents",
+    img: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600&q=80&auto=format&fit=crop",
+    alt: "Decorative cast stone corbels and columns"
+  },
+  {
+    name: "Outdoor Fireplaces",
+    label: "Outdoor Living",
+    img: "https://images.unsplash.com/photo-1571388208497-71bedc604cb6?w=600&q=80&auto=format&fit=crop",
+    alt: "Cast stone outdoor fireplace patio"
+  },
+  {
+    name: "Range Hoods",
+    label: "Kitchen Elegance",
+    img: "https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=600&q=80&auto=format&fit=crop",
+    alt: "Custom cast stone kitchen range hood"
+  },
+  {
+    name: "Balustrades & Railings",
+    label: "Exterior Details",
+    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80&auto=format&fit=crop",
+    alt: "Cast stone balustrades and exterior railings"
+  },
+];
+
+const testimonials = [
+  {
+    quote: "Absolutely stunning work. The cast stone mantel they crafted for our living room is the centerpiece of the entire home. Every guest asks about it. The attention to detail and the custom design process made this the best home investment we've made.",
+    author: "Jennifer M.",
+    location: "Southlake, TX"
+  },
+  {
+    quote: "Cast Design was professional from start to finish. They guided us through the entire custom design process and the finished fireplace surround exceeded every expectation. The quality of the stone is remarkable — it looks like it's been there for centuries.",
+    author: "Robert & Lisa T.",
+    location: "Highland Park, Dallas"
+  },
+  {
+    quote: "We had an outdoor fireplace installed for our back patio and it transformed the entire space. The craftsmanship is impeccable and it's held up beautifully through Texas summers. Can't recommend them enough for anyone in the DFW area.",
+    author: "David K.",
+    location: "Westlake, TX"
+  },
+];
+
+const galleryImages = [
+  { src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=700&q=80&auto=format&fit=crop", alt: "Cast stone fireplace mantel", wide: true },
+  { src: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=500&q=80&auto=format&fit=crop", alt: "Stone fireplace interior" },
+  { src: "https://images.unsplash.com/photo-1571388208497-71bedc604cb6?w=500&q=80&auto=format&fit=crop", alt: "Outdoor cast stone fireplace" },
+  { src: "https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=500&q=80&auto=format&fit=crop", alt: "Stone kitchen range hood" },
+  { src: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=500&q=80&auto=format&fit=crop", alt: "Architectural stone columns" },
+  { src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=700&q=80&auto=format&fit=crop", alt: "Luxury stone exterior", wide: true },
+  { src: "https://images.unsplash.com/photo-1572120360610-d971b9d7767c?w=500&q=80&auto=format&fit=crop", alt: "Fireplace surround detail" },
+  { src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&q=80&auto=format&fit=crop", alt: "Stone mantel craftsmanship" },
+];
+---
+
+<BaseLayout
+  title="Cast Stone Fireplace Mantels & Surrounds | DFW | Cast Design Fireplaces"
+  description="Cast Design Fireplaces creates premium cast stone fireplace mantels, surrounds, outdoor fireplaces & architectural stone products for Dallas-Fort Worth homes. Custom designs. Schedule your free consultation."
+  canonical="/"
+>
+
+  <!-- ═══ TOP BAR ═══ -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="top-bar__areas">
+        <span>Areas We Serve</span>
+        <a href="/service-areas/dallas">Dallas</a>
+        <span class="sep">·</span>
+        <a href="/service-areas/fort-worth">Fort Worth</a>
+        <span class="sep">·</span>
+        <a href="/service-areas/plano">Plano</a>
+        <span class="sep">·</span>
+        <a href="/service-areas/southlake">Southlake</a>
+        <span class="sep">·</span>
+        <a href="/service-areas/mckinney">McKinney</a>
+        <span class="sep">·</span>
+        <a href="/service-areas">All DFW</a>
+      </div>
+      <div class="top-bar__phone">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+        </svg>
+        Call for a Free Consultation&nbsp;
+        <a href="tel:+18175550100">(817) 555-0100</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ NAVIGATION ═══ -->
+  <nav class="nav" aria-label="Main navigation">
+    <div class="container">
+      <a href="/" class="nav__logo" aria-label="Cast Design Fireplaces – Home">
+        <span class="nav__logo-main">Cast Design</span>
+        <span class="nav__logo-sub">Fireplaces &amp; Stone</span>
+      </a>
+
+      <ul class="nav__links" role="list">
+        <li><a href="/gallery">Gallery</a></li>
+        <li><a href="/products">Products</a></li>
+        <li><a href="/process">Our Process</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/service-areas">Service Areas</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/contact" class="nav__cta">Free Consultation</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero" aria-label="Hero">
+    <div class="hero__bg" role="img" aria-label="Luxury cast stone fireplace in a Dallas home"></div>
+    <div class="hero__overlay" aria-hidden="true"></div>
+    <div class="hero__content">
+      <div class="container">
+        <p class="hero__eyebrow">Dallas–Fort Worth's Premier Cast Stone Craftsmen</p>
+        <h1 class="hero__heading">
+          Handcrafted Cast Stone <em>Fireplaces</em> for Texas Homes
+        </h1>
+        <p class="hero__sub">
+          Custom-designed fireplace mantels, surrounds, outdoor fireplaces, and architectural stone pieces — built to become the heart of your home for generations.
+        </p>
+        <div class="hero__actions">
+          <a href="/contact" class="btn btn-primary">
+            Schedule Free Consultation
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+          <a href="/gallery" class="btn btn-outline">View Our Work</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TRUST BAR ═══ -->
+  <div class="trust-bar" aria-label="Trust indicators">
+    <div class="container">
+      <div class="trust-item">
+        <div class="trust-item__stars" aria-label="5 star rating">★★★★★</div>
+        <div class="trust-item__label">
+          <strong>4.9 Rating</strong>
+          200+ Five-Star Reviews
+        </div>
+      </div>
+      <div class="trust-sep" aria-hidden="true"></div>
+      <div class="trust-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="color: var(--color-gold)">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+        </svg>
+        <div class="trust-item__label">
+          <strong>Licensed &amp; Insured</strong>
+          Texas Certified Craftsmen
+        </div>
+      </div>
+      <div class="trust-sep" aria-hidden="true"></div>
+      <div class="trust-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="color: var(--color-gold)">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+        </svg>
+        <div class="trust-item__label">
+          <strong>500+ Projects</strong>
+          Completed in DFW
+        </div>
+      </div>
+      <div class="trust-sep" aria-hidden="true"></div>
+      <div class="trust-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="color: var(--color-gold)">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 9v7.5" />
+        </svg>
+        <div class="trust-item__label">
+          <strong>5-Year Warranty</strong>
+          On All Installations
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ VALUE PROPS ═══ -->
+  <section class="value-props" aria-labelledby="value-heading">
+    <div class="container">
+      <div class="value-props__header">
+        <p class="section-label">Why Choose Cast Design</p>
+        <h2 class="section-title" id="value-heading">
+          Your Home Deserves <em>Lasting</em> Beauty
+        </h2>
+        <div class="divider"></div>
+        <p style="color: var(--color-text-muted); font-size: 0.975rem; line-height: 1.75;">
+          We know a fireplace is more than a feature — it's the focal point of your family's most meaningful moments. Here's how we make sure you love it forever.
+        </p>
+      </div>
+      <div class="value-props__grid">
+        <div class="value-card">
+          <div class="value-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" />
+            </svg>
+          </div>
+          <h3>Custom-Crafted Designs</h3>
+          <p>Every piece is designed around your space, your style, and your vision — never off-the-shelf. Our in-house designers work with you from concept to completion.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+            </svg>
+          </div>
+          <h3>Premium Cast Stone</h3>
+          <p>Our proprietary cast stone formula delivers the beauty of natural limestone at a fraction of the weight — with superior durability for the Texas climate.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+            </svg>
+          </div>
+          <h3>White-Glove Installation</h3>
+          <p>Our experienced installation crews treat your home with the utmost respect. We handle everything — delivery, installation, cleanup — with zero stress to you.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+            </svg>
+          </div>
+          <h3>5-Year Craftsmanship Warranty</h3>
+          <p>Every Cast Design project is backed by our industry-leading 5-year warranty on materials and craftsmanship. We stand behind every stone we set.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PRODUCTS ═══ -->
+  <section class="products" aria-labelledby="products-heading">
+    <div class="container">
+      <div class="products__header">
+        <div>
+          <p class="section-label">Our Products</p>
+          <h2 class="section-title" id="products-heading">Cast Stone Expertise &amp; Collections</h2>
+          <div class="divider"></div>
+        </div>
+        <a href="/products" class="btn btn-outline-dark">
+          View All Products
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      </div>
+      <div class="products__grid">
+        {products.map((p) => (
+          <a href={`/products/${p.name.toLowerCase().replace(/\s+/g, '-').replace(/[&]/g, '')}`} class="product-card" aria-label={p.name}>
+            <img src={p.img} alt={p.alt} loading="lazy" />
+            <div class="product-card__overlay">
+              <p class="product-card__label">{p.label}</p>
+              <p class="product-card__name">{p.name}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PROCESS ═══ -->
+  <section class="process" aria-labelledby="process-heading">
+    <div class="container">
+      <div class="process__images" aria-hidden="true">
+        <img
+          src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80&auto=format&fit=crop"
+          alt="Finished cast stone fireplace mantel in Dallas home"
+          loading="lazy"
+        />
+        <img
+          src="https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=500&q=80&auto=format&fit=crop"
+          alt="Stone crafting process"
+          loading="lazy"
+        />
+        <img
+          src="https://images.unsplash.com/photo-1571388208497-71bedc604cb6?w=500&q=80&auto=format&fit=crop"
+          alt="Outdoor fireplace installation"
+          loading="lazy"
+        />
+      </div>
+      <div>
+        <div class="process__header">
+          <p class="section-label">How It Works</p>
+          <h2 class="section-title" id="process-heading">Design &amp; Build with <em>Confidence</em></h2>
+          <div class="divider"></div>
+          <p style="color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.7;">
+            Our streamlined process has been refined over hundreds of DFW projects. You'll always know what's happening and what comes next.
+          </p>
+        </div>
+        <div class="process__steps">
+          <div class="step active">
+            <div class="step__num" aria-hidden="true">1</div>
+            <div class="step__content">
+              <h4>Free In-Home Consultation</h4>
+              <p>We visit your home in the DFW area, measure your space, understand your style, and discuss your budget. No pressure, no obligation.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step__num" aria-hidden="true">2</div>
+            <div class="step__content">
+              <h4>Custom Design &amp; Selection</h4>
+              <p>Our designers create detailed drawings and help you choose profiles, finishes, and stone textures that match your home's architecture perfectly.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step__num" aria-hidden="true">3</div>
+            <div class="step__content">
+              <h4>Expert Crafting</h4>
+              <p>Your piece is hand-poured and finished in our facility using premium cast stone mixes engineered for beauty and longevity in the Texas climate.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step__num" aria-hidden="true">4</div>
+            <div class="step__content">
+              <h4>White-Glove Installation</h4>
+              <p>Our installation team arrives on schedule, installs with care, and leaves your home spotless. Then you enjoy your new fireplace for life.</p>
+            </div>
+          </div>
+        </div>
+        <div class="process__actions">
+          <a href="/process" class="btn btn-outline-dark">Learn About Our Process</a>
+          <a href="/contact" class="btn btn-primary">Schedule Consultation</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ GALLERY ═══ -->
+  <section class="gallery" aria-labelledby="gallery-heading">
+    <div class="container">
+      <div class="gallery__header">
+        <p class="section-label" style="color: var(--color-gold-light)">Our Portfolio</p>
+        <h2 class="section-title" id="gallery-heading">Gallery of Work</h2>
+        <div class="divider" style="margin: 20px auto 16px;"></div>
+        <p>Discover the cast stone fireplaces and architectural stone pieces we've crafted for DFW homeowners.</p>
+      </div>
+      <div class="gallery__grid">
+        {galleryImages.map((img) => (
+          <div class={`gallery__item${img.wide ? ' gallery__item--wide' : ''}`}>
+            <img src={img.src} alt={img.alt} loading="lazy" />
+          </div>
+        ))}
+      </div>
+      <div class="gallery__actions">
+        <a href="/gallery" class="btn btn-outline">
+          Explore Full Gallery
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+        <a href="/contact" class="btn btn-primary">Schedule Free Consultation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TESTIMONIALS ═══ -->
+  <section class="testimonials" aria-labelledby="testimonials-heading">
+    <div class="container">
+      <div class="testimonials__header">
+        <p class="section-label">Client Stories</p>
+        <h2 class="section-title" id="testimonials-heading">Hear from DFW Homeowners</h2>
+        <div class="divider"></div>
+      </div>
+      <div class="testimonials__grid">
+        {testimonials.map((t) => (
+          <div class="testimonial-card">
+            <div class="testimonial-card__stars" aria-label="5 star review">★★★★★</div>
+            <blockquote>"{t.quote}"</blockquote>
+            <p class="testimonial-card__author">— {t.author}</p>
+            <p class="testimonial-card__location">{t.location}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ABOUT ═══ -->
+  <section class="about" aria-labelledby="about-heading">
+    <div class="container">
+      <div class="about__image">
+        <img
+          src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=85&auto=format&fit=crop"
+          alt="Cast Design Fireplaces craftsmen at work in Fort Worth"
+          loading="lazy"
+        />
+        <div class="about__badge" aria-label="Over 20 years serving DFW">
+          <div class="about__badge-num">20+</div>
+          <div class="about__badge-label">Years Serving<br/>DFW Homes</div>
+        </div>
+      </div>
+      <div class="about__content">
+        <p class="section-label">Our Story</p>
+        <h2 class="section-title" id="about-heading">Cast Design. <em>Built Different.</em></h2>
+        <div class="divider"></div>
+        <p>
+          Cast Design Fireplaces was founded in Fort Worth with a single belief: that every Texas home deserves a fireplace of heirloom quality — handcrafted by people who genuinely care about their work.
+        </p>
+        <p>
+          Over two decades and 500+ completed projects across Dallas, Fort Worth, Plano, Southlake, and beyond, we've refined our craft into something we're truly proud of. Each piece begins with a conversation about your home, your family, and your vision — and ends with a cast stone fireplace that will outlast trends and generations.
+        </p>
+        <p>
+          We're a family-owned business deeply rooted in North Texas. Our team of designers and craftsmen bring an obsessive attention to detail to every project, from the smallest corbel to the grandest two-story mantel.
+        </p>
+        <a href="/about" class="btn btn-outline-dark">
+          Our Story
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA BANNER ═══ -->
+  <section class="cta-banner" aria-label="Call to action">
+    <div class="container">
+      <div>
+        <h2 class="cta-banner__heading">Ready to Transform Your Home?</h2>
+        <p class="cta-banner__sub">
+          Schedule your free, no-obligation in-home consultation. We serve Dallas, Fort Worth, Plano, Southlake, McKinney, and all surrounding DFW communities.
+        </p>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+          <a href="/contact" class="btn btn-primary">
+            Schedule Free Consultation
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+          <a href="tel:+18175550100" class="btn btn-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+            </svg>
+            (817) 555-0100
+          </a>
+        </div>
+      </div>
+      <div class="cta-banner__right">
+        <h3>Financing Available</h3>
+        <p>Make your dream fireplace a reality today. We offer flexible financing options with approved credit — ask us about 0% interest for 12 months.</p>
+        <a href="/financing" class="btn btn-outline">
+          Learn About Financing
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer" aria-label="Site footer">
+    <div class="container">
+      <div class="footer__top">
+        <!-- Brand -->
+        <div>
+          <div class="footer__brand-name">Cast Design Fireplaces</div>
+          <div class="footer__brand-tag">DFW's Cast Stone Specialists</div>
+          <p class="footer__brand-desc">
+            Premium cast stone fireplace mantels, surrounds, and architectural stone products handcrafted for Dallas–Fort Worth homes since 2004.
+          </p>
+          <div class="footer__contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+            </svg>
+            <a href="tel:+18175550100">(817) 555-0100</a>
+          </div>
+          <div class="footer__contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+            </svg>
+            <a href="mailto:hello@castdesignfireplaces.com">hello@castdesignfireplaces.com</a>
+          </div>
+          <div class="footer__contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+            </svg>
+            <span>Fort Worth, TX (Serving All DFW)</span>
+          </div>
+        </div>
+
+        <!-- Products -->
+        <div class="footer__col">
+          <h4>Products</h4>
+          <ul>
+            <li><a href="/products/fireplace-mantels">Fireplace Mantels</a></li>
+            <li><a href="/products/fireplace-surrounds">Fireplace Surrounds</a></li>
+            <li><a href="/products/outdoor-fireplaces">Outdoor Fireplaces</a></li>
+            <li><a href="/products/range-hoods">Range Hoods</a></li>
+            <li><a href="/products/corbels-columns">Corbels &amp; Columns</a></li>
+            <li><a href="/products/balustrades">Balustrades &amp; Railings</a></li>
+          </ul>
+        </div>
+
+        <!-- Company -->
+        <div class="footer__col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/process">Our Process</a></li>
+            <li><a href="/gallery">Gallery</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/financing">Financing</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Resources -->
+        <div class="footer__col">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="/blog/how-to-choose-fireplace-mantel">Choosing a Mantel</a></li>
+            <li><a href="/blog/cast-stone-vs-natural-stone">Cast Stone vs. Natural Stone</a></li>
+            <li><a href="/blog/fireplace-design-trends-2025">2025 Design Trends</a></li>
+            <li><a href="/faq">FAQs</a></li>
+            <li><a href="/financing">Financing Options</a></li>
+          </ul>
+        </div>
+
+        <!-- Areas -->
+        <div class="footer__col">
+          <h4>Areas We Serve</h4>
+          <ul>
+            <li><a href="/service-areas/dallas">Dallas</a></li>
+            <li><a href="/service-areas/fort-worth">Fort Worth</a></li>
+            <li><a href="/service-areas/plano">Plano</a></li>
+            <li><a href="/service-areas/southlake">Southlake</a></li>
+            <li><a href="/service-areas/mckinney">McKinney</a></li>
+            <li><a href="/service-areas/frisco">Frisco</a></li>
+            <li><a href="/service-areas">All DFW Areas</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p>&copy; {new Date().getFullYear()} Cast Design Fireplaces. All rights reserved. Fort Worth, TX.</p>
+        <div style="display: flex; gap: 20px;">
+          <a href="/privacy-policy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="/sitemap.xml">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</BaseLayout>

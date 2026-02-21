@@ -406,10 +406,19 @@ const galleryImages = [
         <p>Discover the cast stone fireplaces and architectural stone pieces we've crafted for DFW homeowners.</p>
       </div>
       <div class="gallery__grid">
-        {galleryImages.map((img) => (
-          <div class={`gallery__item${img.wide ? ' gallery__item--wide' : ''}`}>
+        {galleryImages.map((img, i) => (
+          <button
+            class="gallery__item"
+            data-index={i}
+            aria-label={`View full size: ${img.alt}`}
+          >
             <img src={img.src} alt={img.alt} loading="lazy" />
-          </div>
+            <div class="gallery__item-overlay" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6" />
+              </svg>
+            </div>
+          </button>
         ))}
       </div>
       <div class="gallery__actions">
@@ -423,6 +432,73 @@ const galleryImages = [
       </div>
     </div>
   </section>
+
+  <!-- ═══ LIGHTBOX ═══ -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+    <div class="lightbox__backdrop" id="lightbox-backdrop"></div>
+    <button class="lightbox__close" id="lightbox-close" aria-label="Close image viewer">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+    <button class="lightbox__arrow lightbox__arrow--prev" id="lightbox-prev" aria-label="Previous image">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+      </svg>
+    </button>
+    <div class="lightbox__img-wrap">
+      <img class="lightbox__img" id="lightbox-img" src="" alt="" />
+    </div>
+    <button class="lightbox__arrow lightbox__arrow--next" id="lightbox-next" aria-label="Next image">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+      </svg>
+    </button>
+    <div class="lightbox__counter" id="lightbox-counter" aria-live="polite"></div>
+  </div>
+
+  <script>
+    const images = document.querySelectorAll<HTMLButtonElement>('.gallery__item');
+    const lightbox   = document.getElementById('lightbox')!;
+    const lb_img     = document.getElementById('lightbox-img') as HTMLImageElement;
+    const lb_counter = document.getElementById('lightbox-counter')!;
+    const lb_close   = document.getElementById('lightbox-close')!;
+    const lb_prev    = document.getElementById('lightbox-prev')!;
+    const lb_next    = document.getElementById('lightbox-next')!;
+    const lb_backdrop = document.getElementById('lightbox-backdrop')!;
+    const total = images.length;
+    let current = 0;
+
+    function openAt(index: number) {
+      current = (index + total) % total;
+      const btn = images[current];
+      const img = btn.querySelector('img')!;
+      lb_img.src = img.src;
+      lb_img.alt = img.alt;
+      lb_counter.textContent = `${current + 1} / ${total}`;
+      lightbox.hidden = false;
+      document.body.style.overflow = 'hidden';
+      lb_close.focus();
+    }
+
+    function close() {
+      lightbox.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    images.forEach((btn, i) => btn.addEventListener('click', () => openAt(i)));
+    lb_close.addEventListener('click', close);
+    lb_backdrop.addEventListener('click', close);
+    lb_prev.addEventListener('click', () => openAt(current - 1));
+    lb_next.addEventListener('click', () => openAt(current + 1));
+
+    document.addEventListener('keydown', (e) => {
+      if (lightbox.hidden) return;
+      if (e.key === 'Escape')     close();
+      if (e.key === 'ArrowLeft')  openAt(current - 1);
+      if (e.key === 'ArrowRight') openAt(current + 1);
+    });
+  </script>
 
   <!-- ═══ TESTIMONIALS ═══ -->
   <section class="testimonials" aria-labelledby="testimonials-heading">

@@ -1693,6 +1693,79 @@ a.contact-detail__value:hover { color: var(--color-gold); }
 .contact-form-card__sub {
   font-size: 0.88rem;
   color: rgba(255,255,255,0.65);
+  margin-bottom: 16px;
+}
+
+/* ── Step progress indicator ── */
+.form-steps-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+.form-steps-indicator__track {
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.form-steps-indicator__fill {
+  height: 100%;
+  background: var(--color-gold);
+  border-radius: 99px;
+  transition: width 0.4s ease;
+  width: 33.3%;
+}
+.form-steps-indicator__label {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.55);
+  white-space: nowrap;
+  font-family: var(--font-ui);
+  letter-spacing: 0.04em;
+}
+
+/* ── Step nav row ── */
+.form-step__heading {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 12px;
+}
+.form-step__nav {
+  margin-top: 24px;
+}
+.form-step__nav .btn {
+  width: 100%;
+  justify-content: center;
+}
+.form-step__nav--split {
+  display: flex;
+  gap: 12px;
+}
+.form-step__nav--split .btn:first-child {
+  flex: 0 0 auto;
+  width: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.form-step__nav--split .btn:last-child {
+  flex: 1;
+  justify-content: center;
+}
+
+/* ── Utility ── */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
 }
 
 #quote-form {

@@ -1,5 +1,8 @@
 ---
-import { PortableText } from 'astro-portabletext';
+/**
+ * Renders Sanity Portable Text blocks as HTML.
+ * Handles paragraphs, headings (h2/h3), blockquotes, and inline text marks.
+ */
 
 interface Props {
   value: any[];
@@ -7,14 +10,53 @@ interface Props {
 
 const { value } = Astro.props;
 
-const components = {
-  block: {
-    h2: ({ children }: any) => `<h2 class="post-h2">${children}</h2>`,
-    h3: ({ children }: any) => `<h3 class="post-h3">${children}</h3>`,
-    normal: ({ children }: any) => `<p class="post-p">${children}</p>`,
-    blockquote: ({ children }: any) => `<blockquote class="post-pullquote">${children}</blockquote>`,
-  },
-};
+function renderMark(mark: string, text: string): string {
+  switch (mark) {
+    case 'strong': return `<strong>${text}</strong>`;
+    case 'em':     return `<em>${text}</em>`;
+    case 'code':   return `<code>${text}</code>`;
+    case 'underline': return `<u>${text}</u>`;
+    default:       return text;
+  }
+}
+
+function renderSpan(span: any): string {
+  let text = span.text ?? '';
+  // Escape HTML
+  text = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // Apply marks innermost-first
+  for (const mark of (span.marks ?? [])) {
+    text = renderMark(mark, text);
+  }
+  return text;
+}
+
+function renderBlock(block: any): string {
+  if (block._type === 'image') {
+    // Sanity image asset ref – skip for now (no images in imported posts)
+    return '';
+  }
+
+  if (block._type !== 'block') return '';
+
+  const children = (block.children ?? []).map(renderSpan).join('');
+
+  switch (block.style) {
+    case 'h2':
+      return `<h2 class="post-h2">${children}</h2>`;
+    case 'h3':
+      return `<h3 class="post-h3">${children}</h3>`;
+    case 'h4':
+      return `<h4 class="post-h4">${children}</h4>`;
+    case 'blockquote':
+      return `<blockquote class="post-pullquote">${children}</blockquote>`;
+    case 'normal':
+    default:
+      return `<p class="post-p">${children}</p>`;
+  }
+}
+
+const html = (value ?? []).map(renderBlock).join('\n');
 ---
 
-<PortableText value={value} components={components} />
+<Fragment set:html={html} />

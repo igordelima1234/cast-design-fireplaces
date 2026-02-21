@@ -17,6 +17,9 @@ const {
 
 const siteUrl = "https://castdesignfireplaces.com";
 const fullCanonical = canonical ? `${siteUrl}${canonical}` : siteUrl;
+// ogImage may be an absolute CDN URL (e.g. Sanity), a local /path, or null/undefined
+const resolvedOgImage = ogImage ?? "/og-image.jpg";
+const fullOgImage = resolvedOgImage.startsWith('http') ? resolvedOgImage : `${siteUrl}${resolvedOgImage}`;
 ---
 
 <!DOCTYPE html>
@@ -37,13 +40,13 @@ const fullCanonical = canonical ? `${siteUrl}${canonical}` : siteUrl;
     <meta property="og:url" content={fullCanonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+    <meta property="og:image" content={fullOgImage} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
+    <meta name="twitter:image" content={fullOgImage} />
 
     <!-- Local Business Schema -->
     <script type="application/ld+json" set:html={JSON.stringify({
@@ -78,6 +81,9 @@ const fullCanonical = canonical ? `${siteUrl}${canonical}` : siteUrl;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <!-- Page-specific head content (extra schema, meta, etc.) -->
+    <slot name="head" />
   </head>
   <body>
     <slot />

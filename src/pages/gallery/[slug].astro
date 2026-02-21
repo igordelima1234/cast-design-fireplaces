@@ -340,14 +340,59 @@ if (sanityProduct) {
 }
 
 // Active image index is managed client-side
+
+// ─── Per-product SEO ──────────────────────────────────────────────────────────
+// Title: "[Product Name] Cast Stone Fireplace Mantel | Cast Design Fireplaces | DFW"
+const seoTitle = `${product.name} Cast Stone Fireplace Mantel | Cast Design Fireplaces | Dallas–Fort Worth`;
+
+// Description: tagline + description capped at 155 chars
+const rawDesc = `${product.tagline} ${product.description}`;
+const seoDescription = rawDesc.length > 155 ? rawDesc.slice(0, 152).replace(/\s\S*$/, '') + '…' : rawDesc;
+
+// Structured data: Product schema for rich results
+const productSchema = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": `${product.name} Cast Stone Fireplace Mantel`,
+  "description": product.description,
+  "image": product.cover,
+  "brand": {
+    "@type": "Brand",
+    "name": "Cast Design Fireplaces"
+  },
+  "manufacturer": {
+    "@type": "Organization",
+    "name": "Cast Design Fireplaces",
+    "url": "https://castdesignfireplaces.com"
+  },
+  "category": product.catLabel,
+  "offers": {
+    "@type": "Offer",
+    "availability": "https://schema.org/InStock",
+    "priceCurrency": "USD",
+    "seller": {
+      "@type": "LocalBusiness",
+      "name": "Cast Design Fireplaces",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Irving",
+        "addressRegion": "TX",
+        "addressCountry": "US"
+      }
+    }
+  }
+};
 ---
 
 <BaseLayout
-  title={`${product.name} | Gallery | Cast Design Fireplaces`}
-  description={product.tagline}
+  title={seoTitle}
+  description={seoDescription}
   canonical={`/gallery/${product.slug}`}
   ogImage={product.cover}
 >
+
+  <!-- Product structured data -->
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(productSchema)} />
 
   <!-- ═══ TOP BAR ═══ -->
   <div class="top-bar">

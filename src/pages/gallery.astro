@@ -278,8 +278,8 @@ const displayProducts = products.length > 0 ? products : legacyProducts;
 ---
 
 <BaseLayout
-  title="Gallery | Cast Design Fireplaces"
-  description="Browse our portfolio of cast stone fireplace mantels, surrounds, outdoor fireplaces, and range hoods — handcrafted for DFW homes."
+  title="Cast Stone Fireplace Mantel Gallery | Cast Design Fireplaces | Dallas–Fort Worth"
+  description="Browse our portfolio of cast stone fireplace mantels handcrafted for Dallas–Fort Worth homes. Sixteen named profiles — each made to order, every piece unique."
   canonical="/gallery"
 >
 
@@ -390,8 +390,8 @@ const displayProducts = products.length > 0 ? products : legacyProducts;
     </div>
   </section>
 
-  <!-- ═══ FILTER STRIP ═══ -->
-  <div class="gallery-filter" id="gallery-filter">
+  <!-- ═══ FILTER STRIP (hidden until more categories are populated) ═══ -->
+  {/* <div class="gallery-filter" id="gallery-filter">
     <div class="container">
       <div class="gallery-filter__pills" role="tablist" aria-label="Filter gallery by category">
         {categories.map((cat) => (
@@ -406,7 +406,7 @@ const displayProducts = products.length > 0 ? products : legacyProducts;
         ))}
       </div>
     </div>
-  </div>
+  </div> */}
 
   <!-- ═══ GALLERY GRID ═══ -->
   <section class="gallery-grid-section" aria-label="Product gallery">
@@ -474,8 +474,8 @@ const displayProducts = products.length > 0 ? products : legacyProducts;
     </div>
   </section>
 
-  <!-- Filter JS -->
-  <script>
+  <!-- Filter JS (disabled while filter bar is hidden) -->
+  {/* <script>
     const pills    = document.querySelectorAll<HTMLButtonElement>('.gallery-filter__pill');
     const cards    = document.querySelectorAll<HTMLElement>('.gallery-card');
     const noResults = document.getElementById('gallery-no-results') as HTMLParagraphElement;
@@ -499,7 +499,7 @@ const displayProducts = products.length > 0 ? products : legacyProducts;
     pills.forEach((pill) => {
       pill.addEventListener('click', () => filterGallery(pill.dataset.filter!));
     });
-  </script>
+  </script> */}
 
   <!-- ═══ FOOTER ═══ -->
   <footer class="footer" aria-label="Site footer">

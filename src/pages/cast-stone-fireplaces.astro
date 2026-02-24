@@ -1,6 +1,36 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Cast Design Fireplaces",
+  "description": "Custom cast stone fireplace mantels, surrounds, and outdoor fireplaces handcrafted for Dallas–Fort Worth homes.",
+  "url": "https://dallasfireplaces.com",
+  "telephone": "+1-214-621-4820",
+  "email": "hello@dallasfireplaces.com",
+  "image": "https://dallasfireplaces.com/images/gallery/Ashton/CAST Design Fireplaces - Ashton.jpeg",
+  "priceRange": "$$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "309 N Belt Line Rd #117",
+    "addressLocality": "Irving",
+    "addressRegion": "TX",
+    "postalCode": "75061",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 32.8141,
+    "longitude": -96.9488
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "08:00", "closes": "17:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "14:00" }
+  ],
+  "areaServed": ["Dallas","Fort Worth","Plano","Southlake","McKinney","Frisco","Colleyville","Flower Mound","Keller","Irving","Westlake"]
+};
+
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -61,9 +91,11 @@ const faqSchema = {
   title="Custom Cast Stone Fireplaces Dallas | CAST Design Fireplaces"
   description="CAST Design Fireplaces crafts custom cast stone fireplaces for Dallas–Fort Worth homes. Handcrafted mantels, surrounds & outdoor fireplaces. Free in-home consultation. Serving DFW for 20+ years."
   canonical="/cast-stone-fireplaces"
+  ogImage="/images/gallery/Ashton/CAST Design Fireplaces - Ashton.jpeg"
 >
 
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
 
   <!-- ═══ TOP BAR ═══ -->
   <div class="top-bar">
@@ -167,6 +199,16 @@ const faqSchema = {
           </a>
           <a href="/gallery" class="btn btn-outline">View Our Gallery</a>
         </div>
+      </div>
+      <div class="csf-hero__img-wrap">
+        <img
+          src="/images/gallery/Ashton/CAST Design Fireplaces - Ashton.jpeg"
+          alt="Custom cast stone fireplace mantel in Dallas–Fort Worth home by Cast Design Fireplaces"
+          class="csf-hero__img"
+          width="680" height="500"
+          loading="eager"
+          fetchpriority="high"
+        />
       </div>
     </div>
   </section>
@@ -286,6 +328,21 @@ const faqSchema = {
           <a href="/products/range-hoods" class="csf-product__link">Learn About Range Hoods →</a>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ═══ PHOTO GRID ═══ -->
+  <section class="csf-section csf-section--nogap">
+    <div class="csf-photo-grid">
+      <img src="/images/gallery/Milan/CAST-Design-Company-Modern-Fireplace-Mantel-Milan.jpg" alt="Cast stone fireplace mantel Milan design in DFW home" loading="lazy" />
+      <img src="/images/gallery/Minerva/CAST-Design-Company-Modern-Fireplace-Mantel-Minerva.jpg" alt="Cast stone fireplace surround Minerva design Dallas" loading="lazy" />
+      <img src="/images/gallery/Nova/CAST-Design-Company-Modern-Fireplace-Mantel-Nova.jpg" alt="Modern cast stone fireplace Nova style Fort Worth" loading="lazy" />
+      <img src="/images/gallery/Paragon/CAST-Design-Company-Modern-Fireplace-Mantel-Paragon.jpg" alt="Custom cast stone fireplace Paragon design DFW" loading="lazy" />
+      <img src="/images/gallery/London/CAST-Design-Company---Modern-Fireplace-Mantel---London.jpg" alt="Traditional cast stone fireplace mantel London style Dallas" loading="lazy" />
+      <img src="/images/gallery/Upton/CAST-Design-Company-Modern-Fireplace-Mantel-Upton.jpg" alt="Cast stone fireplace surround Upton design Southlake TX" loading="lazy" />
+    </div>
+    <div class="container" style="padding-top: 20px; text-align: center;">
+      <a href="/gallery" class="btn btn-outline">View Full Gallery →</a>
     </div>
   </section>
 
@@ -582,7 +639,29 @@ const faqSchema = {
       background: var(--color-surface);
       border-bottom: 1px solid var(--color-border);
     }
-    .csf-hero__content { max-width: 760px; }
+    .csf-hero .container {
+      display: grid;
+      grid-template-columns: 1fr 480px;
+      gap: 56px;
+      align-items: center;
+    }
+    .csf-hero__img-wrap {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    }
+    .csf-hero__img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      display: block;
+    }
+    @media (max-width: 960px) {
+      .csf-hero .container { grid-template-columns: 1fr; }
+      .csf-hero__img-wrap { order: -1; }
+      .csf-hero__img { height: 280px; }
+    }
+    .csf-hero__content { max-width: 100%; }
     .csf-hero__eyebrow {
       font-size: 0.78rem;
       font-weight: 600;
@@ -793,6 +872,26 @@ const faqSchema = {
       transition: border-color 0.2s, color 0.2s;
     }
     .csf-local__areas a:hover { border-color: var(--color-gold); color: var(--color-gold); }
+
+    /* ── Photo grid ────────────────────────────────────────────── */
+    .csf-section--nogap { padding: 0 0 56px; }
+    .csf-photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      margin-bottom: 0;
+    }
+    .csf-photo-grid img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.2s;
+    }
+    .csf-photo-grid img:hover { opacity: 0.9; }
+    @media (max-width: 768px) {
+      .csf-photo-grid { grid-template-columns: repeat(2, 1fr); }
+    }
 
     /* ── Closing CTA ───────────────────────────────────────────── */
     .csf-cta__areas { font-size: 0.88rem; color: var(--color-muted); margin-top: 8px; margin-bottom: 0; }

@@ -57,6 +57,40 @@ if (!post) {
   ogImage={post.image}
 >
 
+  <!-- BlogPosting schema for article rich results -->
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "@id": `https://dallasfireplaces.com/blog/${post.slug}`,
+      "headline": post.title,
+      "description": post.excerpt ?? "",
+      "image": post.image ?? "https://dallasfireplaces.com/og-image.jpg",
+      "datePublished": post.date ? `${post.date}T00:00:00-06:00` : new Date().toISOString(),
+      "dateModified": post.date ? `${post.date}T00:00:00-06:00` : new Date().toISOString(),
+      "author": {
+        "@type": "Person",
+        "name": post.author || "Cast Design Team"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Cast Design Fireplaces",
+        "@id": "https://dallasfireplaces.com/#business",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://dallasfireplaces.com/favicon-32x32.png"
+        }
+      },
+      "url": `https://dallasfireplaces.com/blog/${post.slug}`,
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://dallasfireplaces.com/blog/${post.slug}`
+      },
+      "articleSection": post.category ?? "Fireplaces",
+      "keywords": `cast stone fireplaces, Dallas fireplace, DFW, ${post.category ?? ""}`
+    })} />
+  </Fragment>
+
   <!-- ═══ TOP BAR ═══ -->
   <div class="top-bar">
     <div class="container">

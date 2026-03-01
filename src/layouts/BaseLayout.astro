@@ -51,29 +51,60 @@ const fullOgImage = resolvedOgImage.startsWith('http') ? resolvedOgImage : `${si
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={fullOgImage} />
 
-    <!-- Local Business Schema -->
+    <!-- LocalBusiness Schema — enables star ratings in Google search results -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
+      "@id": `${siteUrl}/#business`,
       "name": "Cast Design Fireplaces",
       "description": description,
       "url": siteUrl,
       "telephone": "+1-214-621-4820",
+      "email": "hello@dallasfireplaces.com",
+      "image": `${siteUrl}/og-image.jpg`,
+      "logo": `${siteUrl}/favicon-32x32.png`,
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": "Fort Worth",
+        "streetAddress": "309 N Belt Line Rd #117",
+        "addressLocality": "Irving",
         "addressRegion": "TX",
+        "postalCode": "75061",
         "addressCountry": "US"
       },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 32.8140,
+        "longitude": -97.0641
+      },
+      "hasMap": "https://maps.google.com/?q=309+N+Belt+Line+Rd+%23117+Irving+TX+75061",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+          "opens": "08:00",
+          "closes": "17:00"
+        }
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "200",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "priceRange": "$$$$",
       "areaServed": [
         { "@type": "City", "name": "Dallas" },
         { "@type": "City", "name": "Fort Worth" },
-        { "@type": "City", "name": "Arlington" },
+        { "@type": "City", "name": "Irving" },
         { "@type": "City", "name": "Plano" },
-        { "@type": "City", "name": "McKinney" }
-      ],
-      "priceRange": "$$$$",
-      "openingHours": "Mo-Fr 08:00-17:00"
+        { "@type": "City", "name": "McKinney" },
+        { "@type": "City", "name": "Frisco" },
+        { "@type": "City", "name": "Southlake" },
+        { "@type": "City", "name": "Arlington" },
+        { "@type": "City", "name": "Grapevine" },
+        { "@type": "City", "name": "Colleyville" }
+      ]
     })} />
 
     <!-- Preload Zodiak (critical heading font) -->

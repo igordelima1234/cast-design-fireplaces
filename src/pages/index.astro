@@ -59,6 +59,27 @@ const testimonials = [
   },
 ];
 
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://dallasfireplaces.com/#website",
+  "url": "https://dallasfireplaces.com",
+  "name": "Cast Design Fireplaces",
+  "description": "Custom cast stone fireplace mantels, surrounds, and architectural stone products for Dallas–Fort Worth homes.",
+  "publisher": {
+    "@type": "LocalBusiness",
+    "@id": "https://dallasfireplaces.com/#business"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://dallasfireplaces.com/blog?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+};
+
 const galleryImages = [
   { src: "/images/CAST-Design-Company-Modern-Fireplace-Mantel-Modern Living Room.jpg", alt: "Modern cast stone fireplace mantel in luxury Dallas living room", wide: true },
   { src: "/images/Gramercy- Meadow-257.jpg", alt: "Elegant cream fireplace with blue and gold artwork above mantel" },
@@ -76,6 +97,8 @@ const galleryImages = [
   description="Cast Design Fireplaces creates premium cast stone fireplace mantels, surrounds, outdoor fireplaces & architectural stone products for Dallas-Fort Worth homes. Custom designs. Schedule your free consultation."
   canonical="/"
 >
+
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
 
   <!-- ═══ TOP BAR ═══ -->
   <div class="top-bar">

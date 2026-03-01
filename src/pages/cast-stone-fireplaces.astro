@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
+  "@id": "https://dallasfireplaces.com/#business",
   "name": "Cast Design Fireplaces",
   "description": "Custom cast stone fireplace mantels, surrounds, and outdoor fireplaces handcrafted for Dallas–Fort Worth homes.",
   "url": "https://dallasfireplaces.com",
@@ -22,14 +23,54 @@ const localBusinessSchema = {
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": 32.8141,
-    "longitude": -96.9488
+    "latitude": 32.8140,
+    "longitude": -97.0641
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "200",
+    "bestRating": "5",
+    "worstRating": "1"
   },
   "openingHoursSpecification": [
     { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "08:00", "closes": "17:00" },
     { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "14:00" }
   ],
   "areaServed": ["Dallas","Fort Worth","Plano","Southlake","McKinney","Frisco","Colleyville","Flower Mound","Keller","Irving","Westlake"]
+};
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Custom Cast Stone Fireplace Design & Installation",
+  "serviceType": "Fireplace Design and Installation",
+  "description": "Handcrafted cast stone fireplace mantels, surrounds, range hoods, corbels, and outdoor fireplaces for Dallas–Fort Worth homes. Custom designs with free in-home consultation.",
+  "provider": {
+    "@type": "LocalBusiness",
+    "@id": "https://dallasfireplaces.com/#business",
+    "name": "Cast Design Fireplaces"
+  },
+  "areaServed": [
+    { "@type": "City", "name": "Dallas" },
+    { "@type": "City", "name": "Fort Worth" },
+    { "@type": "City", "name": "Irving" },
+    { "@type": "City", "name": "Plano" },
+    { "@type": "City", "name": "Southlake" },
+    { "@type": "City", "name": "McKinney" },
+    { "@type": "City", "name": "Frisco" }
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Cast Stone Products & Services",
+    "itemListElement": [
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cast Stone Fireplace Mantels" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cast Stone Fireplace Surrounds" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cast Stone Range Hoods" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Outdoor Cast Stone Fireplaces" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cast Stone Corbels & Columns" } }
+    ]
+  }
 };
 
 const faqSchema = {
@@ -97,6 +138,7 @@ const faqSchema = {
 
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
 
   <!-- ═══ TOP BAR ═══ -->
   <div class="top-bar">

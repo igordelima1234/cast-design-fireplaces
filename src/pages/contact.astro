@@ -9,6 +9,138 @@ import Footer from '../components/Footer.astro';
   canonical="/contact"
 >
 
+<style>
+  /* ── Hero CTA ─────────────────────────────────────────────────────────────── */
+  .hero-cta-wrap {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .hero-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #F5F0EA;
+    color: #2C2A26;
+    border: none;
+    border-radius: 6px;
+    padding: 15px 28px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: background 0.18s, transform 0.18s;
+  }
+  .hero-cta-btn:hover { background: #fff; transform: translateY(-1px); }
+  .hero-cta-note {
+    font-size: 0.78rem;
+    color: rgba(245,240,234,0.65);
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  /* ── Contact section — single column ─────────────────────────────────────── */
+  .contact-section { padding: 80px 0; }
+  .contact-section .container {
+    display: block;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .contact-intro { margin-bottom: 52px; }
+  .contact-intro .contact-info__heading { max-width: 560px; }
+  .contact-intro .contact-info__body   { max-width: 560px; }
+
+  /* 2-column steps grid */
+  .contact-steps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 48px;
+    margin-bottom: 60px;
+  }
+  @media (max-width: 640px) {
+    .contact-steps-grid { grid-template-columns: 1fr; gap: 24px; }
+  }
+
+  /* 4-column contact details */
+  .contact-details-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    border-top: 1px solid var(--color-cream-dark);
+    padding-top: 40px;
+  }
+  @media (max-width: 860px) { .contact-details-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .contact-details-grid { grid-template-columns: 1fr; } }
+
+  /* ── CTA section ──────────────────────────────────────────────────────────── */
+  .contact-cta-section {
+    background: var(--color-stone);
+    padding: 80px 0;
+    text-align: center;
+  }
+  .contact-cta-section__label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    font-family: var(--ff-sans);
+    margin-bottom: 16px;
+  }
+  .contact-cta-section__heading {
+    font-family: var(--ff-serif);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 400;
+    color: var(--color-cream);
+    letter-spacing: var(--heading-tracking);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .contact-cta-section__sub {
+    font-size: 1rem;
+    color: rgba(245,240,234,0.65);
+    font-family: var(--ff-sans);
+    margin-bottom: 36px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+  .contact-cta-section__actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .contact-cta-section__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--color-cream);
+    color: var(--color-stone);
+    border: none;
+    border-radius: 6px;
+    padding: 15px 28px;
+    font-family: var(--ff-sans);
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.18s;
+  }
+  .contact-cta-section__btn:hover { background: #fff; }
+  .contact-cta-section__call {
+    color: rgba(245,240,234,0.7);
+    font-family: var(--ff-sans);
+    font-size: 0.88rem;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .contact-cta-section__call:hover { color: var(--color-cream); }
+</style>
+
   <!-- ═══ TOP BAR ═══ -->
   <div class="top-bar">
     <div class="container">
@@ -49,12 +181,8 @@ import Footer from '../components/Footer.astro';
         <li><a href="/blog">Blog</a></li>
         <li><a href="/contact" class="nav__cta" aria-current="page">Free Consultation</a></li>
       </ul>
-
-      <!-- Hamburger -->
       <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
       </button>
     </div>
   </nav>
@@ -74,7 +202,6 @@ import Footer from '../components/Footer.astro';
           </svg>
         </button>
       </div>
-
       <nav class="mobile-menu__nav" aria-label="Mobile navigation">
         <ul role="list">
           <li><a href="/gallery">Gallery</a></li>
@@ -82,9 +209,8 @@ import Footer from '../components/Footer.astro';
           <li><a href="/blog">Blog</a></li>
         </ul>
       </nav>
-
       <div class="mobile-menu__footer">
-        <a href="/contact" class="mobile-menu__cta" aria-current="page">
+        <a href="/consultation" class="mobile-menu__cta">
           Schedule Free Consultation
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
@@ -139,350 +265,139 @@ import Footer from '../components/Footer.astro';
           Let's Design Your<br /><em>Perfect Fireplace</em>
         </h1>
         <p class="page-hero__sub">No pressure. No obligation. Just a conversation about your vision.</p>
+        <div class="hero-cta-wrap">
+          <a href="/consultation" class="hero-cta-btn">
+            Start Your Free Consultation
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+          <span class="hero-cta-note">2-minute form · No commitment required</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══ CONTACT BODY ═══ -->
+  <!-- ═══ PROCESS + CONTACT INFO ═══ -->
   <section class="contact-section" aria-labelledby="contact-heading">
     <div class="container">
 
-      <!-- LEFT — context + trust -->
-      <div class="contact-info">
+      <div class="contact-intro">
+        <p class="section-label">What Happens Next</p>
+        <h2 id="contact-heading" class="contact-info__heading">
+          A seamless process from first call to finished piece
+        </h2>
+        <p class="contact-info__body">
+          Whether you have a clear vision or are just starting to explore ideas, our team is here to help. Fill in the form and we'll reach out within one business day to schedule your free in-home consultation.
+        </p>
+      </div>
 
-        <div class="contact-info__intro">
-          <p class="section-label">What Happens Next</p>
-          <h2 id="contact-heading" class="contact-info__heading">
-            A seamless process from first call to finished piece
-          </h2>
-          <p class="contact-info__body">
-            Whether you have a clear vision or are just starting to explore ideas, our team is here to help. Fill in the form and we'll reach out within one business day to schedule your free in-home consultation.
-          </p>
-        </div>
+      <!-- Steps 2×2 grid -->
+      <ol class="contact-steps-grid" aria-label="Our consultation process">
+        <li class="contact-step">
+          <div class="contact-step__num" aria-hidden="true">01</div>
+          <div>
+            <h3 class="contact-step__title">Submit Your Request</h3>
+            <p class="contact-step__desc">Share a few details about your project — takes about 2 minutes.</p>
+          </div>
+        </li>
+        <li class="contact-step">
+          <div class="contact-step__num" aria-hidden="true">02</div>
+          <div>
+            <h3 class="contact-step__title">We Call You Back</h3>
+            <p class="contact-step__desc">A Cast Design specialist will follow up within one business day to discuss your project.</p>
+          </div>
+        </li>
+        <li class="contact-step">
+          <div class="contact-step__num" aria-hidden="true">03</div>
+          <div>
+            <h3 class="contact-step__title">In-Home Consultation</h3>
+            <p class="contact-step__desc">We visit your home, take measurements, and present a custom design concept — free of charge.</p>
+          </div>
+        </li>
+        <li class="contact-step">
+          <div class="contact-step__num" aria-hidden="true">04</div>
+          <div>
+            <h3 class="contact-step__title">Your Quote, Guaranteed</h3>
+            <p class="contact-step__desc">Receive a detailed, fixed-price quote with no hidden fees. Approve it and we get to work.</p>
+          </div>
+        </li>
+      </ol>
 
-        <!-- Steps -->
-        <ol class="contact-steps" aria-label="Our consultation process">
-          <li class="contact-step">
-            <div class="contact-step__num" aria-hidden="true">01</div>
-            <div>
-              <h3 class="contact-step__title">Submit Your Request</h3>
-              <p class="contact-step__desc">Share a few details about your project — takes about 2 minutes.</p>
-            </div>
-          </li>
-          <li class="contact-step">
-            <div class="contact-step__num" aria-hidden="true">02</div>
-            <div>
-              <h3 class="contact-step__title">We Call You Back</h3>
-              <p class="contact-step__desc">A Cast Design specialist will follow up within one business day to discuss your project and answer questions.</p>
-            </div>
-          </li>
-          <li class="contact-step">
-            <div class="contact-step__num" aria-hidden="true">03</div>
-            <div>
-              <h3 class="contact-step__title">In-Home Consultation</h3>
-              <p class="contact-step__desc">We visit your home, take measurements, and present a custom design concept — completely free of charge.</p>
-            </div>
-          </li>
-          <li class="contact-step">
-            <div class="contact-step__num" aria-hidden="true">04</div>
-            <div>
-              <h3 class="contact-step__title">Your Quote, Guaranteed</h3>
-              <p class="contact-step__desc">Receive a detailed, fixed-price quote with no hidden fees. Approve it and we get to work crafting your piece.</p>
-            </div>
-          </li>
-        </ol>
-
-        <!-- Contact details -->
-        <div class="contact-details">
-          <div class="contact-detail">
-            <div class="contact-detail__icon" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-              </svg>
-            </div>
-            <div>
-              <div class="contact-detail__label">Call or Text</div>
-              <a href="tel:+12146214820" class="contact-detail__value">(214) 621-4820</a>
-            </div>
+      <!-- Contact details horizontal -->
+      <div class="contact-details-grid">
+        <div class="contact-detail">
+          <div class="contact-detail__icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+            </svg>
           </div>
-          <div class="contact-detail">
-            <div class="contact-detail__icon" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-              </svg>
-            </div>
-            <div>
-              <div class="contact-detail__label">Email Us</div>
-              <a href="mailto:hello@dallasfireplaces.com" class="contact-detail__value">hello@dallasfireplaces.com</a>
-            </div>
-          </div>
-          <div class="contact-detail">
-            <div class="contact-detail__icon" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-              </svg>
-            </div>
-            <div>
-              <div class="contact-detail__label">Showroom</div>
-              <div class="contact-detail__value">309 N Belt Line Rd #117<br />Irving, TX 75061</div>
-            </div>
-          </div>
-          <div class="contact-detail">
-            <div class="contact-detail__icon" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div>
-              <div class="contact-detail__label">Hours</div>
-              <div class="contact-detail__value">Mon – Fri: 8 am – 5 pm<br />Sat: By appointment</div>
-            </div>
+          <div>
+            <div class="contact-detail__label">Call or Text</div>
+            <a href="tel:+12146214820" class="contact-detail__value">(214) 621-4820</a>
           </div>
         </div>
+        <div class="contact-detail">
+          <div class="contact-detail__icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+            </svg>
+          </div>
+          <div>
+            <div class="contact-detail__label">Email Us</div>
+            <a href="mailto:hello@dallasfireplaces.com" class="contact-detail__value">hello@dallasfireplaces.com</a>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail__icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+            </svg>
+          </div>
+          <div>
+            <div class="contact-detail__label">Showroom</div>
+            <div class="contact-detail__value">309 N Belt Line Rd #117<br />Irving, TX 75061</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail__icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div>
+            <div class="contact-detail__label">Hours</div>
+            <div class="contact-detail__value">Mon – Fri: 8 am – 5 pm<br />Sat: By appointment</div>
+          </div>
+        </div>
+      </div>
 
-      </div><!-- /contact-info -->
+    </div>
+  </section>
 
-      <!-- RIGHT — the form -->
-      <div class="contact-form-wrap">
-        <div class="contact-form-card" id="form-card">
-
-          <!-- Default: form -->
-          <div id="form-view">
-            <div class="contact-form-card__header">
-              <h2 class="contact-form-card__title">Request Your Free Consultation</h2>
-              <p class="contact-form-card__sub">We'll respond within one business day.</p>
-              <!-- Step indicator -->
-              <div class="form-steps-indicator" aria-label="Form progress">
-                <div class="form-steps-indicator__track">
-                  <div class="form-steps-indicator__fill" id="steps-fill"></div>
-                </div>
-                <span class="form-steps-indicator__label" id="steps-label">Step 1 of 3</span>
-              </div>
-            </div>
-
-            <form id="quote-form" novalidate>
-
-              <!-- ── STEP 1: Project type + style ── -->
-              <div class="form-step" id="step-1">
-                <div class="form-step__heading">What are you looking for?</div>
-
-                <fieldset class="form-fieldset">
-                  <legend class="form-legend sr-only">Project type</legend>
-                  <div class="form-tiles">
-                    <label class="form-tile">
-                      <input type="radio" name="projectType" value="fireplace-mantel" required />
-                      <span class="form-tile__inner"><span class="form-tile__label">Fireplace Mantel</span></span>
-                    </label>
-                    <label class="form-tile">
-                      <input type="radio" name="projectType" value="fireplace-surround" />
-                      <span class="form-tile__inner"><span class="form-tile__label">Fireplace Surround</span></span>
-                    </label>
-                    <label class="form-tile">
-                      <input type="radio" name="projectType" value="outdoor-fireplace" />
-                      <span class="form-tile__inner"><span class="form-tile__label">Outdoor Fireplace</span></span>
-                    </label>
-                    <label class="form-tile">
-                      <input type="radio" name="projectType" value="range-hood" />
-                      <span class="form-tile__inner"><span class="form-tile__label">Range Hood</span></span>
-                    </label>
-                    <label class="form-tile">
-                      <input type="radio" name="projectType" value="corbels-columns" />
-                      <span class="form-tile__inner"><span class="form-tile__label">Corbels &amp; Columns</span></span>
-                    </label>
-                    <label class="form-tile">
-                      <input type="radio" name="projectType" value="custom" />
-                      <span class="form-tile__inner"><span class="form-tile__label">Custom Project</span></span>
-                    </label>
-                  </div>
-                  <span class="form-error" id="err-projectType" role="alert"></span>
-                </fieldset>
-
-                <div class="form-step__heading" style="margin-top: 24px;">Preferred style</div>
-                <fieldset class="form-fieldset">
-                  <legend class="form-legend sr-only">Preferred style</legend>
-                  <div class="form-tiles form-tiles--sm">
-                    <label class="form-tile">
-                      <input type="radio" name="style" value="traditional" />
-                      <span class="form-tile__inner"><span class="form-tile__label">Traditional</span></span>
-                    </label>
-                    <label class="form-tile">
-                      <input type="radio" name="style" value="transitional" />
-                      <span class="form-tile__inner"><span class="form-tile__label">Transitional</span></span>
-                    </label>
-                    <label class="form-tile">
-                      <input type="radio" name="style" value="modern" />
-                      <span class="form-tile__inner"><span class="form-tile__label">Modern</span></span>
-                    </label>
-                    <label class="form-tile">
-                      <input type="radio" name="style" value="rustic" />
-                      <span class="form-tile__inner"><span class="form-tile__label">Rustic</span></span>
-                    </label>
-                    <label class="form-tile">
-                      <input type="radio" name="style" value="not-sure" />
-                      <span class="form-tile__inner"><span class="form-tile__label">Not Sure Yet</span></span>
-                    </label>
-                  </div>
-                </fieldset>
-
-                <div class="form-step__nav">
-                  <button type="button" class="btn btn-primary form-next" data-next="2">
-                    Next: Project Details
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-
-              <!-- ── STEP 2: Project details ── -->
-              <div class="form-step" id="step-2" hidden>
-                <div class="form-step__heading">Tell us about your project</div>
-
-                <div class="form-row">
-                  <div class="form-group">
-                    <label class="form-label" for="room">Room / Location</label>
-                    <select class="form-select" id="room" name="room">
-                      <option value="">Select a room…</option>
-                      <option value="living-room">Living Room</option>
-                      <option value="master-bedroom">Master Bedroom</option>
-                      <option value="great-room">Great Room</option>
-                      <option value="dining-room">Dining Room</option>
-                      <option value="kitchen">Kitchen</option>
-                      <option value="outdoor-patio">Outdoor / Patio</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label" for="fireplaceType">Fireplace Type</label>
-                    <select class="form-select" id="fireplaceType" name="fireplaceType">
-                      <option value="">Select type…</option>
-                      <option value="wood-burning">Wood Burning</option>
-                      <option value="gas-insert">Gas Insert</option>
-                      <option value="electric">Electric</option>
-                      <option value="new-build">New Build / None Yet</option>
-                      <option value="not-sure">Not Sure</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="form-label" for="timeline">Project Timeline</label>
-                  <select class="form-select" id="timeline" name="timeline">
-                    <option value="">When are you looking to start?</option>
-                    <option value="asap">As soon as possible</option>
-                    <option value="1-3-months">1 – 3 months</option>
-                    <option value="3-6-months">3 – 6 months</option>
-                    <option value="6-plus-months">6+ months / planning ahead</option>
-                  </select>
-                </div>
-
-                <div class="form-group">
-                  <label class="form-label" for="message">Any additional details <span class="form-hint">(optional)</span></label>
-                  <textarea class="form-textarea" id="message" name="message" rows="4" placeholder="Inspiration photos, size preferences, existing decor, budget range…"></textarea>
-                </div>
-
-                <div class="form-step__nav form-step__nav--split">
-                  <button type="button" class="btn btn-outline-dark form-back" data-back="1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                    </svg>
-                    Back
-                  </button>
-                  <button type="button" class="btn btn-primary form-next" data-next="3">
-                    Next: Your Info
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-
-              <!-- ── STEP 3: Contact info ── -->
-              <div class="form-step" id="step-3" hidden>
-                <div class="form-step__heading">How can we reach you?</div>
-
-                <div class="form-row">
-                  <div class="form-group">
-                    <label class="form-label" for="fullName">Full Name <span class="form-required" aria-hidden="true">*</span></label>
-                    <input class="form-input" type="text" id="fullName" name="fullName" placeholder="Jane Smith" autocomplete="name" required />
-                    <span class="form-error" id="err-fullName" role="alert"></span>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label" for="phone">Phone Number <span class="form-required" aria-hidden="true">*</span></label>
-                    <input class="form-input" type="tel" id="phone" name="phone" placeholder="(214) 621-4820" autocomplete="tel" required />
-                    <span class="form-error" id="err-phone" role="alert"></span>
-                  </div>
-                </div>
-
-                <div class="form-row">
-                  <div class="form-group">
-                    <label class="form-label" for="email">Email Address <span class="form-required" aria-hidden="true">*</span></label>
-                    <input class="form-input" type="email" id="email" name="email" placeholder="jane@example.com" autocomplete="email" required />
-                    <span class="form-error" id="err-email" role="alert"></span>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label" for="city">City / Neighborhood</label>
-                    <input class="form-input" type="text" id="city" name="city" placeholder="Dallas, Plano, Southlake…" autocomplete="address-level2" />
-                  </div>
-                </div>
-
-                <div class="form-step__nav form-step__nav--split">
-                  <button type="button" class="btn btn-outline-dark form-back" data-back="2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                    </svg>
-                    Back
-                  </button>
-                  <button type="submit" class="btn btn-primary form-submit" id="submit-btn">
-                    <span id="submit-label">Send My Request</span>
-                    <svg id="submit-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                    </svg>
-                    <svg id="submit-spinner" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:none">
-                      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-                    </svg>
-                  </button>
-                </div>
-
-                <p class="form-privacy">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                  </svg>
-                  Your information is private and never sold.
-                </p>
-
-                <div class="form-error-banner" id="form-error-banner" role="alert" style="display:none">
-                  Something went wrong — please try again or call us at <a href="tel:+12146214820">(214) 621-4820</a>.
-                </div>
-              </div>
-
-            </form>
-          </div><!-- /form-view -->
-
-          <!-- Success state -->
-          <div id="success-view" style="display:none">
-            <div class="form-success">
-              <div class="form-success__icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h2 class="form-success__title">Request received!</h2>
-              <p class="form-success__body">
-                Thank you — a Cast Design specialist will be in touch within <strong>one business day</strong> to schedule your free consultation. In the meantime, feel free to browse our gallery for inspiration.
-              </p>
-              <div class="form-success__actions">
-                <a href="/gallery" class="btn btn-primary">Browse the Gallery →</a>
-                <a href="tel:+12146214820" class="btn btn-outline-dark">(214) 621-4820</a>
-              </div>
-            </div>
-          </div><!-- /success-view -->
-
-        </div><!-- /contact-form-card -->
-      </div><!-- /contact-form-wrap -->
-
-    </div><!-- /container -->
+  <!-- ═══ CTA SECTION ═══ -->
+  <section class="contact-cta-section" aria-label="Get started">
+    <div class="container">
+      <p class="contact-cta-section__label">Get Started Today</p>
+      <h2 class="contact-cta-section__heading">
+        Ready to bring your vision to life?
+      </h2>
+      <p class="contact-cta-section__sub">
+        Our cast stone specialists are ready to help you design the perfect fireplace. It takes about 2 minutes.
+      </p>
+      <div class="contact-cta-section__actions">
+        <a href="/consultation" class="contact-cta-section__btn">
+          Start Your Free Consultation
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+        <a href="tel:+12146214820" class="contact-cta-section__call">
+          Or call (214) 621-4820
+        </a>
+      </div>
+    </div>
   </section>
 
   <!-- ═══ TRUST STRIP ═══ -->
@@ -531,150 +446,5 @@ import Footer from '../components/Footer.astro';
 
   <!-- ═══ FOOTER ═══ -->
   <Footer />
-
-  <!-- ═══ FORM LOGIC ═══ -->
-  <script>
-    const form        = document.getElementById('quote-form') as HTMLFormElement;
-    const submitBtn   = document.getElementById('submit-btn') as HTMLButtonElement;
-    const submitLabel = document.getElementById('submit-label') as HTMLElement;
-    const submitArrow = document.getElementById('submit-arrow') as HTMLElement;
-    const submitSpinner = document.getElementById('submit-spinner') as HTMLElement;
-    const errorBanner = document.getElementById('form-error-banner') as HTMLElement;
-    const formView    = document.getElementById('form-view') as HTMLElement;
-    const successView = document.getElementById('success-view') as HTMLElement;
-    const stepsLabel  = document.getElementById('steps-label') as HTMLElement;
-    const stepsFill   = document.getElementById('steps-fill') as HTMLElement;
-
-    const TOTAL_STEPS = 3;
-    let currentStep = 1;
-
-    // ── Progress bar ──────────────────────────────────────────────
-    function updateProgress(step: number) {
-      stepsLabel.textContent = `Step ${step} of ${TOTAL_STEPS}`;
-      stepsFill.style.width = `${Math.round((step / TOTAL_STEPS) * 100)}%`;
-    }
-
-    // ── Show/hide steps ───────────────────────────────────────────
-    function showStep(step: number) {
-      for (let i = 1; i <= TOTAL_STEPS; i++) {
-        const el = document.getElementById(`step-${i}`) as HTMLElement;
-        el.hidden = i !== step;
-      }
-      currentStep = step;
-      updateProgress(step);
-      // Scroll form card into view on step change
-      document.getElementById('form-card')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    // ── Tile selection ────────────────────────────────────────────
-    document.querySelectorAll('.form-tile input[type="radio"]').forEach((radio) => {
-      radio.addEventListener('change', () => {
-        const name = (radio as HTMLInputElement).name;
-        document.querySelectorAll(`.form-tile input[name="${name}"]`).forEach((r) => {
-          (r.closest('.form-tile') as HTMLElement).classList.remove('is-selected');
-        });
-        (radio.closest('.form-tile') as HTMLElement).classList.add('is-selected');
-      });
-    });
-
-    // ── Next buttons ──────────────────────────────────────────────
-    document.querySelectorAll<HTMLButtonElement>('.form-next').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const next = parseInt(btn.dataset.next ?? '2');
-        // Validate step 1 before advancing
-        if (currentStep === 1) {
-          const projectType = (form.querySelector('input[name="projectType"]:checked') as HTMLInputElement | null)?.value;
-          if (!projectType) {
-            setError('err-projectType', 'Please select a project type.');
-            return;
-          }
-          setError('err-projectType', '');
-        }
-        showStep(next);
-      });
-    });
-
-    // ── Back buttons ──────────────────────────────────────────────
-    document.querySelectorAll<HTMLButtonElement>('.form-back').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        showStep(parseInt(btn.dataset.back ?? '1'));
-      });
-    });
-
-    // ── Validation helpers ────────────────────────────────────────
-    function setError(id: string, msg: string) {
-      const el = document.getElementById(id);
-      if (el) { el.textContent = msg; el.style.display = msg ? 'flex' : 'none'; }
-    }
-
-    function validateStep3(): boolean {
-      let ok = true;
-
-      const fullName = (form.querySelector('#fullName') as HTMLInputElement).value.trim();
-      if (!fullName) { setError('err-fullName', 'Full name is required.'); ok = false; }
-      else setError('err-fullName', '');
-
-      const phone = (form.querySelector('#phone') as HTMLInputElement).value.trim();
-      if (!phone) { setError('err-phone', 'Phone number is required.'); ok = false; }
-      else setError('err-phone', '');
-
-      const email = (form.querySelector('#email') as HTMLInputElement).value.trim();
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        setError('err-email', 'A valid email address is required.'); ok = false;
-      } else setError('err-email', '');
-
-      return ok;
-    }
-
-    // ── Submit ────────────────────────────────────────────────────
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      errorBanner.style.display = 'none';
-      if (!validateStep3()) return;
-
-      submitBtn.disabled = true;
-      submitLabel.textContent = 'Sending…';
-      submitArrow.style.display = 'none';
-      submitSpinner.style.display = 'inline';
-
-      const payload = {
-        projectType: (form.querySelector('input[name="projectType"]:checked') as HTMLInputElement | null)?.value ?? '',
-        style:       (form.querySelector('input[name="style"]:checked') as HTMLInputElement | null)?.value ?? '',
-        timeline:    (form.querySelector('#timeline') as HTMLSelectElement).value,
-        details: {
-          room:          (form.querySelector('#room') as HTMLSelectElement).value,
-          fireplaceType: (form.querySelector('#fireplaceType') as HTMLSelectElement).value,
-        },
-        contact: {
-          fullName: (form.querySelector('#fullName') as HTMLInputElement).value.trim(),
-          phone:    (form.querySelector('#phone') as HTMLInputElement).value.trim(),
-          email:    (form.querySelector('#email') as HTMLInputElement).value.trim(),
-          city:     (form.querySelector('#city') as HTMLInputElement).value.trim(),
-          message:  (form.querySelector('#message') as HTMLTextAreaElement).value.trim(),
-        },
-      };
-
-      try {
-        const res = await fetch('https://castdesign-form.vercel.app/api/quote-request', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        if (!res.ok) throw new Error('Server error');
-        formView.style.display = 'none';
-        successView.style.display = 'block';
-        successView.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } catch {
-        errorBanner.style.display = 'flex';
-        submitBtn.disabled = false;
-        submitLabel.textContent = 'Send My Request';
-        submitArrow.style.display = 'inline';
-        submitSpinner.style.display = 'none';
-      }
-    });
-
-    // Init
-    updateProgress(1);
-  </script>
 
 </BaseLayout>

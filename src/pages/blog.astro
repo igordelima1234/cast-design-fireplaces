@@ -3,15 +3,7 @@ export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { safeFetch } from '../../sanity/lib/client';
 import Footer from '../components/Footer.astro';
-
-const categories = [
-  { slug: 'all',          label: 'All Posts' },
-  { slug: 'design-tips',  label: 'Design Tips' },
-  { slug: 'materials',    label: 'Materials' },
-  { slug: 'inspiration',  label: 'Inspiration' },
-  { slug: 'how-to',       label: 'How-To' },
-  { slug: 'news',         label: 'Company News' },
-];
+import { slugify } from '../lib/slugify';
 
 // Fetch all posts from Sanity, ordered newest first
 const rawPosts = await safeFetch<any[]>(
@@ -40,6 +32,14 @@ if (posts.length > 0) posts[0].featured = true;
 
 const featured = posts.find((p: any) => p.featured) ?? null;
 const grid     = posts.filter((p: any) => !p.featured);
+
+// Categories are derived from whatever posts actually use, so the filter
+// bar never links to an empty or mismatched category.
+const categoryNames = [...new Set(posts.map((p: any) => p.category).filter(Boolean))] as string[];
+const categories = [
+  { slug: 'all', label: 'All Posts' },
+  ...categoryNames.map((name) => ({ slug: slugify(name), label: name })),
+];
 ---
 
 <BaseLayout

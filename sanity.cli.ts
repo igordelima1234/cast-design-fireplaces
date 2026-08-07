@@ -1,4 +1,5 @@
 import { defineCliConfig } from 'sanity/cli'
 export default defineCliConfig({
-  api: { projectId: 'nhzcbxp2', dataset: 'production' }
+  api: { projectId: 'nhzcbxp2', dataset: 'production' },
+  studioHost: 'cast-design-fireplaces',
 })

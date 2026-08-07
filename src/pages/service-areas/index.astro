@@ -3,6 +3,13 @@ export const prerender = true;
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { safeFetch } from '../../../sanity/lib/client';
 import Footer from '../../components/Footer.astro';
+import { formatHeading } from '../../lib/headingFormat';
+
+// Editable copy from Sanity ("Main Pages" → Service Areas), with fallbacks.
+const page = (await safeFetch<any>(`*[_type == "mainPage" && pageId == "service-areas"][0]`)) ?? {};
+const hero = page.hero ?? {};
+const intro = page.areasIntro ?? {};
+const cta = page.ctaBanner ?? {};
 
 // Fetch all service areas from Sanity
 const rawAreas = await safeFetch<any[]>(
@@ -35,8 +42,8 @@ const areas = (rawAreas && rawAreas.length > 0) ? rawAreas : legacyAreas;
 ---
 
 <BaseLayout
-  title="Service Areas | Cast Design Fireplaces | Dallas–Fort Worth"
-  description="Cast Design Fireplaces delivers and installs custom cast stone fireplace mantels, surrounds, and range hoods throughout the Dallas–Fort Worth metroplex."
+  title={page.seo?.title ?? "Service Areas | Cast Design Fireplaces | Dallas–Fort Worth"}
+  description={page.seo?.description ?? "Cast Design Fireplaces delivers and installs custom cast stone fireplace mantels, surrounds, and range hoods throughout the Dallas–Fort Worth metroplex."}
   canonical="/service-areas"
 >
 
@@ -71,8 +78,7 @@ const areas = (rawAreas && rawAreas.length > 0) ? rawAreas : legacyAreas;
   <nav class="nav" aria-label="Main navigation">
     <div class="container">
       <a href="/" class="nav__logo" aria-label="Cast Design Fireplaces – Home">
-        <span class="nav__logo-main">Cast Design</span>
-        <span class="nav__logo-sub">Fireplaces</span>
+        <img src="/images/logo/cast-design-logo-black.svg" alt="" class="nav__logo-img" />
       </a>
       <ul class="nav__links" role="list">
         <li><a href="/gallery">Gallery</a></li>
@@ -93,8 +99,7 @@ const areas = (rawAreas && rawAreas.length > 0) ? rawAreas : legacyAreas;
     <div class="mobile-menu__panel">
       <div class="mobile-menu__header">
         <a href="/" class="nav__logo" aria-label="Cast Design Fireplaces – Home">
-          <span class="nav__logo-main">Cast Design</span>
-          <span class="nav__logo-sub">Fireplaces</span>
+          <img src="/images/logo/cast-design-logo-black.svg" alt="" class="nav__logo-img" />
         </a>
         <button class="mobile-menu__close" aria-label="Close menu">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -151,12 +156,10 @@ const areas = (rawAreas && rawAreas.length > 0) ? rawAreas : legacyAreas;
     <div class="page-hero__overlay" aria-hidden="true"></div>
     <div class="page-hero__content">
       <div class="container">
-        <p class="hero__eyebrow">Serving Dallas–Fort Worth</p>
-        <h1 class="page-hero__heading">
-          Cast Stone <em>Delivered</em> Across the Metroplex
-        </h1>
+        <p class="hero__eyebrow">{hero.eyebrow ?? "Serving Dallas–Fort Worth"}</p>
+        <h1 class="page-hero__heading" set:html={formatHeading(hero.heading ?? "Cast Stone *Delivered* Across the Metroplex")} />
         <p class="page-hero__sub">
-          We design, fabricate, and install premium cast stone fireplaces throughout DFW — no showroom visit required.
+          {hero.subheading ?? "We design, fabricate, and install premium cast stone fireplaces throughout DFW — no showroom visit required."}
         </p>
       </div>
     </div>
@@ -166,10 +169,10 @@ const areas = (rawAreas && rawAreas.length > 0) ? rawAreas : legacyAreas;
   <section style="background: var(--color-white); padding: 72px 0 56px;">
     <div class="container" style="max-width: 760px; text-align: center;">
       <h2 style="font-family: var(--ff-serif); font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--color-stone); margin-bottom: 20px;">
-        Where We Work
+        {intro.heading ?? "Where We Work"}
       </h2>
       <p style="color: var(--color-text-muted); font-size: 1.05rem; line-height: 1.8;">
-        Our studio is based in Irving, TX. We deliver and install throughout the DFW metroplex — from Southlake and Keller in the west to McKinney and Allen in the north, Dallas proper, and everywhere in between. Lead times are typically 4–8 weeks from design approval.
+        {intro.body ?? "Our studio is based in Irving, TX. We deliver and install throughout the DFW metroplex — from Southlake and Keller in the west to McKinney and Allen in the north, Dallas proper, and everywhere in between. Lead times are typically 4–8 weeks from design approval."}
       </p>
     </div>
   </section>
@@ -218,12 +221,12 @@ const areas = (rawAreas && rawAreas.length > 0) ? rawAreas : legacyAreas;
     <div class="container">
       <div class="gallery-cta__inner">
         <div>
-          <p class="hero__eyebrow" style="color: var(--color-gold-light)">Don't see your city?</p>
+          <p class="hero__eyebrow" style="color: var(--color-gold-light)">{cta.label ?? "Don't see your city?"}</p>
           <h2 class="gallery-cta__title" id="service-cta-heading">
-            We serve the full DFW metroplex
+            {cta.heading ?? "We serve the full DFW metroplex"}
           </h2>
           <p class="gallery-cta__sub">
-            If you're in the greater Dallas–Fort Worth area, we can deliver and install. Call us or fill out the form — we'll confirm coverage and schedule a free consultation.
+            {cta.sub ?? "If you're in the greater Dallas–Fort Worth area, we can deliver and install. Call us or fill out the form — we'll confirm coverage and schedule a free consultation."}
           </p>
         </div>
         <div style="display:flex; flex-direction:column; gap:12px; min-width:220px;">

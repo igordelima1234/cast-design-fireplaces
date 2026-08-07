@@ -1,11 +1,23 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Footer from '../components/Footer.astro';
+import { safeFetch } from '../../sanity/lib/client';
+import { formatHeading, paragraphs } from '../lib/headingFormat';
+
+// Editable copy from Sanity ("Main Pages" → About), with hardcoded fallbacks.
+const page = (await safeFetch<any>(`*[_type == "mainPage" && pageId == "about"][0]`)) ?? {};
+const hero = page.hero ?? {};
+const story = page.story ?? {};
+const storyStats = story.stats ?? [];
+const craft = page.craft ?? {};
+const pillars = craft.pillars ?? [];
+const showroom = page.showroom ?? {};
+const cta = page.ctaBanner ?? {};
 ---
 
 <BaseLayout
-  title="About Cast Design Fireplaces | Family-Owned Cast Stone Craftsmen | DFW"
-  description="Founded over 20 years ago in Fort Worth, Cast Design Fireplaces is a family-owned cast stone studio dedicated to bringing affordable luxury to every DFW home. Meet our team."
+  title={page.seo?.title ?? "About Cast Design Fireplaces | Family-Owned Cast Stone Craftsmen | DFW"}
+  description={page.seo?.description ?? "Founded over 20 years ago in Fort Worth, Cast Design Fireplaces is a family-owned cast stone studio dedicated to bringing affordable luxury to every DFW home. Meet our team."}
   canonical="/about"
 >
 
@@ -40,8 +52,7 @@ import Footer from '../components/Footer.astro';
   <nav class="nav" aria-label="Main navigation">
     <div class="container">
       <a href="/" class="nav__logo" aria-label="Cast Design Fireplaces – Home">
-        <span class="nav__logo-main">Cast Design</span>
-        <span class="nav__logo-sub">Fireplaces</span>
+        <img src="/images/logo/cast-design-logo-black.svg" alt="" class="nav__logo-img" />
       </a>
       <ul class="nav__links" role="list">
         <li><a href="/gallery">Gallery</a></li>
@@ -65,8 +76,7 @@ import Footer from '../components/Footer.astro';
     <div class="mobile-menu__panel">
       <div class="mobile-menu__header">
         <a href="/" class="nav__logo" aria-label="Cast Design Fireplaces – Home">
-          <span class="nav__logo-main">Cast Design</span>
-          <span class="nav__logo-sub">Fireplaces</span>
+          <img src="/images/logo/cast-design-logo-black.svg" alt="" class="nav__logo-img" />
         </a>
         <button class="mobile-menu__close" aria-label="Close menu">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -141,11 +151,9 @@ import Footer from '../components/Footer.astro';
     <div class="page-hero__overlay" aria-hidden="true"></div>
     <div class="page-hero__content">
       <div class="container">
-        <p class="hero__eyebrow">Our Story</p>
-        <h1 class="page-hero__heading">
-          Elevate Your Home with<br /><em>Timeless Fireplace Elegance</em>
-        </h1>
-        <p class="page-hero__sub">Crafted for Luxury Living. Designed for You.</p>
+        <p class="hero__eyebrow">{hero.eyebrow ?? "Our Story"}</p>
+        <h1 class="page-hero__heading" set:html={formatHeading(hero.heading ?? "Elevate Your Home with\n*Timeless Fireplace Elegance*")} />
+        <p class="page-hero__sub">{hero.subheading ?? "Crafted for Luxury Living. Designed for You."}</p>
       </div>
     </div>
   </section>
@@ -173,35 +181,24 @@ import Footer from '../components/Footer.astro';
       </div>
 
       <div class="about-story__content">
-        <p class="section-label">Our Story</p>
-        <h2 class="section-title" id="story-heading">
-          Family. Passion.<br /><em>Craftsmanship.</em>
-        </h2>
+        <p class="section-label">{story.label ?? "Our Story"}</p>
+        <h2 class="section-title" id="story-heading" set:html={formatHeading(story.heading ?? "Family. Passion.\n*Craftsmanship.*")} />
         <div class="divider"></div>
-        <p>
-          Step into the heart of Cast Design Fireplaces, where family, passion, and craftsmanship intertwine to create timeless beauty. Founded over 20 years ago by Joel, a visionary artisan with a love for design and a knack for crafting cast stone masterpieces, our journey began with a simple yet profound mission: to bring affordable luxury to every home.
-        </p>
-        <p>
-          As a family-owned business, we believe in the power of connection — both with our customers and within our own ranks. From Joel's expert craftsmanship to the tireless dedication of his daughter, brother, and the entire Cast Design Fireplaces family, our shared commitment to excellence shines through in every project we undertake.
-        </p>
-        <p>
-          With over two decades of experience designing, creating, and installing cast stone products across the DFW metroplex, Joel's passion for perfection has never wavered. From humble beginnings to a legacy of elegance, Cast Design Fireplaces continues to redefine the art of luxury fireplace design, one mantel at a time.
-        </p>
-        <p>
-          Join us as we write the next chapter in our story, where every flame illuminates the warmth of family, the beauty of craftsmanship, and the promise of a hearth that feels like home. Welcome to the Cast Design Fireplaces family — where your dreams are our inspiration.
-        </p>
+        {paragraphs(story.body ?? "Step into the heart of Cast Design Fireplaces, where family, passion, and craftsmanship intertwine to create timeless beauty. Founded over 20 years ago by Joel, a visionary artisan with a love for design and a knack for crafting cast stone masterpieces, our journey began with a simple yet profound mission: to bring affordable luxury to every home.\n\nAs a family-owned business, we believe in the power of connection — both with our customers and within our own ranks. From Joel's expert craftsmanship to the tireless dedication of his daughter, brother, and the entire Cast Design Fireplaces family, our shared commitment to excellence shines through in every project we undertake.\n\nWith over two decades of experience designing, creating, and installing cast stone products across the DFW metroplex, Joel's passion for perfection has never wavered. From humble beginnings to a legacy of elegance, Cast Design Fireplaces continues to redefine the art of luxury fireplace design, one mantel at a time.\n\nJoin us as we write the next chapter in our story, where every flame illuminates the warmth of family, the beauty of craftsmanship, and the promise of a hearth that feels like home. Welcome to the Cast Design Fireplaces family — where your dreams are our inspiration.").map((p) => (
+          <p>{p}</p>
+        ))}
         <div class="about-story__stats" aria-label="Company highlights">
           <div class="about-stat">
-            <span class="about-stat__num">500+</span>
-            <span class="about-stat__label">Projects Completed</span>
+            <span class="about-stat__num">{storyStats[0]?.value ?? "500+"}</span>
+            <span class="about-stat__label">{storyStats[0]?.label ?? "Projects Completed"}</span>
           </div>
           <div class="about-stat">
-            <span class="about-stat__num">20+</span>
-            <span class="about-stat__label">Years in DFW</span>
+            <span class="about-stat__num">{storyStats[1]?.value ?? "20+"}</span>
+            <span class="about-stat__label">{storyStats[1]?.label ?? "Years in DFW"}</span>
           </div>
           <div class="about-stat">
-            <span class="about-stat__num">4.9★</span>
-            <span class="about-stat__label">Average Rating</span>
+            <span class="about-stat__num">{storyStats[2]?.value ?? "4.9★"}</span>
+            <span class="about-stat__label">{storyStats[2]?.label ?? "Average Rating"}</span>
           </div>
         </div>
       </div>
@@ -212,13 +209,11 @@ import Footer from '../components/Footer.astro';
   <section class="about-craft" aria-labelledby="craft-heading">
     <div class="container">
       <div class="about-craft__header">
-        <p class="section-label">Our Craft</p>
-        <h2 class="section-title" id="craft-heading">
-          Craftsmanship Isn't Just a Skill —<br /><em>It's a Legacy</em>
-        </h2>
+        <p class="section-label">{craft.label ?? "Our Craft"}</p>
+        <h2 class="section-title" id="craft-heading" set:html={formatHeading(craft.heading ?? "Craftsmanship Isn't Just a Skill —\n*It's a Legacy*")} />
         <div class="divider"></div>
         <p class="about-craft__intro">
-          Our team of skilled artisans absolutely loves what they do. With years of experience, they put their heart and soul into each project, paying meticulous attention to every detail to achieve perfection — from hand-carved mantels to precision-engineered range hoods.
+          {craft.intro ?? "Our team of skilled artisans absolutely loves what they do. With years of experience, they put their heart and soul into each project, paying meticulous attention to every detail to achieve perfection — from hand-carved mantels to precision-engineered range hoods."}
         </p>
       </div>
 
@@ -229,8 +224,8 @@ import Footer from '../components/Footer.astro';
               <path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" />
             </svg>
           </div>
-          <h3>Hand-Carved Mantels</h3>
-          <p>Every profile, every curve, every corbel detail is shaped with intention. Our artisans treat each mantel as a one-of-a-kind sculpture worthy of the room it anchors.</p>
+          <h3>{pillars[0]?.title ?? "Hand-Carved Mantels"}</h3>
+          <p>{pillars[0]?.body ?? "Every profile, every curve, every corbel detail is shaped with intention. Our artisans treat each mantel as a one-of-a-kind sculpture worthy of the room it anchors."}</p>
         </div>
         <div class="craft-pillar">
           <div class="craft-pillar__icon">
@@ -238,8 +233,8 @@ import Footer from '../components/Footer.astro';
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
             </svg>
           </div>
-          <h3>Premium Cast Stone</h3>
-          <p>Our proprietary cast stone formula delivers the beauty of natural limestone at a fraction of the weight — with superior durability engineered specifically for the Texas climate.</p>
+          <h3>{pillars[1]?.title ?? "Premium Cast Stone"}</h3>
+          <p>{pillars[1]?.body ?? "Our proprietary cast stone formula delivers the beauty of natural limestone at a fraction of the weight — with superior durability engineered specifically for the Texas climate."}</p>
         </div>
         <div class="craft-pillar">
           <div class="craft-pillar__icon">
@@ -247,8 +242,8 @@ import Footer from '../components/Footer.astro';
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
             </svg>
           </div>
-          <h3>Meticulous Finishing</h3>
-          <p>We take great care to bring out the best in the artistry of fire. Each piece is inspected, refined, and finished to a standard we'd be proud to install in our own homes.</p>
+          <h3>{pillars[2]?.title ?? "Meticulous Finishing"}</h3>
+          <p>{pillars[2]?.body ?? "We take great care to bring out the best in the artistry of fire. Each piece is inspected, refined, and finished to a standard we'd be proud to install in our own homes."}</p>
         </div>
         <div class="craft-pillar">
           <div class="craft-pillar__icon">
@@ -256,8 +251,8 @@ import Footer from '../components/Footer.astro';
               <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
             </svg>
           </div>
-          <h3>Passion for Every Project</h3>
-          <p>At Cast Design Fireplaces, passion for craftsmanship is at the heart of everything we do. Our team takes great pride in every custom cast stone product they create — no exceptions.</p>
+          <h3>{pillars[3]?.title ?? "Passion for Every Project"}</h3>
+          <p>{pillars[3]?.body ?? "At Cast Design Fireplaces, passion for craftsmanship is at the heart of everything we do. Our team takes great pride in every custom cast stone product they create — no exceptions."}</p>
         </div>
       </div>
 
@@ -282,22 +277,19 @@ import Footer from '../components/Footer.astro';
   <section class="about-showroom" aria-labelledby="showroom-heading">
     <div class="container">
       <div class="about-showroom__content">
-        <p class="section-label">Visit Us</p>
-        <h2 class="section-title" id="showroom-heading">Our <em>Showroom</em></h2>
+        <p class="section-label">{showroom.label ?? "Visit Us"}</p>
+        <h2 class="section-title" id="showroom-heading" set:html={formatHeading(showroom.heading ?? "Our *Showroom*")} />
         <div class="divider"></div>
-        <p>
-          Are you located in the Dallas area? You can visit our showroom in Irving to view our pre-designed mantels and range hoods, speak directly with our expert team, and receive an instant quote for your home project — all in one visit.
-        </p>
-        <p>
-          Appointments are recommended so we can dedicate our full attention to understanding your vision and your space.
-        </p>
+        {paragraphs(showroom.body ?? "Are you located in the Dallas area? You can visit our showroom in Irving to view our pre-designed mantels and range hoods, speak directly with our expert team, and receive an instant quote for your home project — all in one visit.\n\nAppointments are recommended so we can dedicate our full attention to understanding your vision and your space.").map((p) => (
+          <p>{p}</p>
+        ))}
         <address class="showroom-address" aria-label="Showroom address">
           <div class="showroom-address__item">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
             </svg>
-            <span>309 N Belt Line Rd #117<br/>Irving, TX 75061</span>
+            <span set:html={(showroom.address ?? "309 N Belt Line Rd #117\nIrving, TX 75061").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/\n/g, "<br/>")} />
           </div>
           <div class="showroom-address__item">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
@@ -309,7 +301,7 @@ import Footer from '../components/Footer.astro';
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 9v7.5" />
             </svg>
-            <span>By Appointment</span>
+            <span>{showroom.hours ?? "By Appointment"}</span>
           </div>
         </address>
         <div class="about-showroom__actions">
@@ -341,9 +333,9 @@ import Footer from '../components/Footer.astro';
   <section class="cta-banner" aria-label="Call to action">
     <div class="container">
       <div>
-        <h2 class="cta-banner__heading">Ready to Start Your Custom Build?</h2>
+        <h2 class="cta-banner__heading">{cta.heading ?? "Ready to Start Your Custom Build?"}</h2>
         <p class="cta-banner__sub">
-          Schedule your free, no-obligation in-home consultation. We serve Dallas, Fort Worth, Irving, Plano, Southlake, McKinney, and all surrounding DFW communities.
+          {cta.sub ?? "Schedule your free, no-obligation in-home consultation. We serve Dallas, Fort Worth, Irving, Plano, Southlake, McKinney, and all surrounding DFW communities."}
         </p>
         <div style="display: flex; gap: 16px; flex-wrap: wrap;">
           <a href="/contact" class="btn btn-primary">
@@ -361,8 +353,8 @@ import Footer from '../components/Footer.astro';
         </div>
       </div>
       <div class="cta-banner__right">
-        <h3>Visit Our Showroom</h3>
-        <p>Come see our pre-designed mantels and range hoods in person at our Irving, TX showroom. Our team will walk you through options and provide an instant quote.</p>
+        <h3>{cta.cardTitle ?? "Visit Our Showroom"}</h3>
+        <p>{cta.cardBody ?? "Come see our pre-designed mantels and range hoods in person at our Irving, TX showroom. Our team will walk you through options and provide an instant quote."}</p>
         <a href="/contact" class="btn btn-outline">
           Book an Appointment
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">

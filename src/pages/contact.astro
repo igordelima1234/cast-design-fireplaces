@@ -1,11 +1,24 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Footer from '../components/Footer.astro';
+import { safeFetch } from '../../sanity/lib/client';
+import { formatHeading } from '../lib/headingFormat';
+
+// Editable copy from Sanity ("Main Pages" → Contact), with hardcoded fallbacks.
+const page = (await safeFetch<any>(`*[_type == "mainPage" && pageId == "contact"][0]`)) ?? {};
+const hero = page.hero ?? {};
+const intro = page.contactIntro ?? {};
+const steps = intro.steps ?? [];
+const details = page.contactDetails ?? {};
+const cta = page.ctaBanner ?? {};
+
+const nl2br = (s: string) =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/\n/g, "<br />");
 ---
 
 <BaseLayout
-  title="Free Consultation | Cast Design Fireplaces | DFW Cast Stone"
-  description="Request a free, no-obligation consultation for your cast stone fireplace mantel, surround, or custom stone project. Serving all Dallas–Fort Worth communities."
+  title={page.seo?.title ?? "Free Consultation | Cast Design Fireplaces | DFW Cast Stone"}
+  description={page.seo?.description ?? "Request a free, no-obligation consultation for your cast stone fireplace mantel, surround, or custom stone project. Serving all Dallas–Fort Worth communities."}
   canonical="/contact"
 >
 
@@ -180,8 +193,7 @@ import Footer from '../components/Footer.astro';
   <nav class="nav" aria-label="Main navigation">
     <div class="container">
       <a href="/" class="nav__logo" aria-label="Cast Design Fireplaces – Home">
-        <span class="nav__logo-main">Cast Design</span>
-        <span class="nav__logo-sub">Fireplaces</span>
+        <img src="/images/logo/cast-design-logo-black.svg" alt="" class="nav__logo-img" />
       </a>
       <ul class="nav__links" role="list">
         <li><a href="/gallery">Gallery</a></li>
@@ -201,8 +213,7 @@ import Footer from '../components/Footer.astro';
     <div class="mobile-menu__panel">
       <div class="mobile-menu__header">
         <a href="/" class="nav__logo" aria-label="Cast Design Fireplaces – Home">
-          <span class="nav__logo-main">Cast Design</span>
-          <span class="nav__logo-sub">Fireplaces</span>
+          <img src="/images/logo/cast-design-logo-black.svg" alt="" class="nav__logo-img" />
         </a>
         <button class="mobile-menu__close" aria-label="Close menu">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -268,11 +279,9 @@ import Footer from '../components/Footer.astro';
     <div class="page-hero__overlay" aria-hidden="true"></div>
     <div class="page-hero__content">
       <div class="container">
-        <p class="hero__eyebrow">Free Consultation</p>
-        <h1 class="page-hero__heading">
-          Let's Design Your<br /><em>Perfect Fireplace</em>
-        </h1>
-        <p class="page-hero__sub">No pressure. No obligation. Just a conversation about your vision.</p>
+        <p class="hero__eyebrow">{hero.eyebrow ?? "Free Consultation"}</p>
+        <h1 class="page-hero__heading" set:html={formatHeading(hero.heading ?? "Let's Design Your\n*Perfect Fireplace*")} />
+        <p class="page-hero__sub">{hero.subheading ?? "No pressure. No obligation. Just a conversation about your vision."}</p>
         <div class="hero-cta-wrap">
           <a href="/consultation" class="hero-cta-btn">
             Start Your Free Consultation
@@ -291,45 +300,31 @@ import Footer from '../components/Footer.astro';
     <div class="container">
 
       <div class="contact-intro">
-        <p class="section-label">What Happens Next</p>
+        <p class="section-label">{intro.label ?? "What Happens Next"}</p>
         <h2 id="contact-heading" class="contact-info__heading">
-          A seamless process from first call to finished piece
+          {intro.heading ?? "A seamless process from first call to finished piece"}
         </h2>
         <p class="contact-info__body">
-          Whether you have a clear vision or are just starting to explore ideas, our team is here to help. Fill in the form and we'll reach out within one business day to schedule your free in-home consultation.
+          {intro.body ?? "Whether you have a clear vision or are just starting to explore ideas, our team is here to help. Fill in the form and we'll reach out within one business day to schedule your free in-home consultation."}
         </p>
       </div>
 
       <!-- Steps 2×2 grid -->
       <ol class="contact-steps-grid" aria-label="Our consultation process">
-        <li class="contact-step">
-          <div class="contact-step__num" aria-hidden="true">01</div>
-          <div>
-            <h3 class="contact-step__title">Submit Your Request</h3>
-            <p class="contact-step__desc">Share a few details about your project — takes about 2 minutes.</p>
-          </div>
-        </li>
-        <li class="contact-step">
-          <div class="contact-step__num" aria-hidden="true">02</div>
-          <div>
-            <h3 class="contact-step__title">We Call You Back</h3>
-            <p class="contact-step__desc">A Cast Design specialist will follow up within one business day to discuss your project.</p>
-          </div>
-        </li>
-        <li class="contact-step">
-          <div class="contact-step__num" aria-hidden="true">03</div>
-          <div>
-            <h3 class="contact-step__title">In-Home Consultation</h3>
-            <p class="contact-step__desc">We visit your home, take measurements, and present a custom design concept — free of charge.</p>
-          </div>
-        </li>
-        <li class="contact-step">
-          <div class="contact-step__num" aria-hidden="true">04</div>
-          <div>
-            <h3 class="contact-step__title">Your Quote, Guaranteed</h3>
-            <p class="contact-step__desc">Receive a detailed, fixed-price quote with no hidden fees. Approve it and we get to work.</p>
-          </div>
-        </li>
+        {(steps.length > 0 ? steps : [
+          { title: "Submit Your Request", body: "Share a few details about your project — takes about 2 minutes." },
+          { title: "We Call You Back", body: "A Cast Design specialist will follow up within one business day to discuss your project." },
+          { title: "In-Home Consultation", body: "We visit your home, take measurements, and present a custom design concept — free of charge." },
+          { title: "Your Quote, Guaranteed", body: "Receive a detailed, fixed-price quote with no hidden fees. Approve it and we get to work." },
+        ]).map((step: any, i: number) => (
+          <li class="contact-step">
+            <div class="contact-step__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</div>
+            <div>
+              <h3 class="contact-step__title">{step.title}</h3>
+              <p class="contact-step__desc">{step.body}</p>
+            </div>
+          </li>
+        ))}
       </ol>
 
       <!-- Contact details horizontal -->
@@ -342,7 +337,7 @@ import Footer from '../components/Footer.astro';
           </div>
           <div>
             <div class="contact-detail__label">Call or Text</div>
-            <a href="tel:+12146214820" class="contact-detail__value">(214) 621-4820</a>
+            <a href="tel:+12146214820" class="contact-detail__value">{details.phone ?? "(214) 621-4820"}</a>
           </div>
         </div>
         <div class="contact-detail">
@@ -353,7 +348,7 @@ import Footer from '../components/Footer.astro';
           </div>
           <div>
             <div class="contact-detail__label">Email Us</div>
-            <a href="mailto:hello@dallasfireplaces.com" class="contact-detail__value">hello@dallasfireplaces.com</a>
+            <a href={`mailto:${details.email ?? "hello@dallasfireplaces.com"}`} class="contact-detail__value">{details.email ?? "hello@dallasfireplaces.com"}</a>
           </div>
         </div>
         <div class="contact-detail">
@@ -365,7 +360,7 @@ import Footer from '../components/Footer.astro';
           </div>
           <div>
             <div class="contact-detail__label">Showroom</div>
-            <div class="contact-detail__value">309 N Belt Line Rd #117<br />Irving, TX 75061</div>
+            <div class="contact-detail__value" set:html={nl2br(details.address ?? "309 N Belt Line Rd #117\nIrving, TX 75061")} />
           </div>
         </div>
         <div class="contact-detail">
@@ -376,7 +371,7 @@ import Footer from '../components/Footer.astro';
           </div>
           <div>
             <div class="contact-detail__label">Hours</div>
-            <div class="contact-detail__value">Mon – Fri: 8 am – 5 pm<br />Sat: By appointment</div>
+            <div class="contact-detail__value" set:html={nl2br(details.hours ?? "Mon – Fri: 8 am – 5 pm\nSat: By appointment")} />
           </div>
         </div>
       </div>
@@ -387,12 +382,12 @@ import Footer from '../components/Footer.astro';
   <!-- ═══ CTA SECTION ═══ -->
   <section class="contact-cta-section" aria-label="Get started">
     <div class="container">
-      <p class="contact-cta-section__label">Get Started Today</p>
+      <p class="contact-cta-section__label">{cta.label ?? "Get Started Today"}</p>
       <h2 class="contact-cta-section__heading">
-        Ready to bring your vision to life?
+        {cta.heading ?? "Ready to bring your vision to life?"}
       </h2>
       <p class="contact-cta-section__sub">
-        Our cast stone specialists are ready to help you design the perfect fireplace. It takes about 2 minutes.
+        {cta.sub ?? "Our cast stone specialists are ready to help you design the perfect fireplace. It takes about 2 minutes."}
       </p>
       <div class="contact-cta-section__actions">
         <a href="/consultation" class="contact-cta-section__btn">

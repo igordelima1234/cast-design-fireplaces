@@ -222,23 +222,12 @@ ul { list-style: none; }
 }
 .nav__logo {
   display: flex;
-  flex-direction: column;
-  line-height: 1.1;
+  align-items: center;
 }
-.nav__logo-main {
-  font-family: var(--ff-serif);
-  font-size: 1.45rem;
-  font-weight: 700;
-  color: var(--color-stone);
-  letter-spacing: var(--heading-tracking);
-}
-.nav__logo-sub {
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--color-gold);
-  width: 100%;
+.nav__logo-img {
+  display: block;
+  height: 42px;
+  width: auto;
 }
 .nav__links {
   display: flex;
@@ -890,13 +879,11 @@ ul { list-style: none; }
   padding-bottom: 48px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
-.footer__brand-name {
-  font-family: var(--ff-serif);
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: var(--heading-tracking);
-  color: #fff;
-  margin-bottom: 4px;
+.footer__brand-logo {
+  display: block;
+  height: 36px;
+  width: auto;
+  margin-bottom: 10px;
 }
 .footer__brand-tag {
   font-size: 0.65rem;

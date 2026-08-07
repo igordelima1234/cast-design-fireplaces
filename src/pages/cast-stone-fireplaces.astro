@@ -1,6 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Footer from '../components/Footer.astro';
+import { safeFetch } from '../../sanity/lib/client';
+
+// Editable copy from Sanity ("Main Pages" → Cast Stone Fireplaces), with fallbacks.
+const page = (await safeFetch<any>(`*[_type == "mainPage" && pageId == "cast-stone-fireplaces"][0]`)) ?? {};
+const hero = page.hero ?? {};
+const longHero = page.longHero ?? {};
 
 const localBusinessSchema = {
   "@context": "https://schema.org",
@@ -130,8 +136,8 @@ const faqSchema = {
 ---
 
 <BaseLayout
-  title="Custom Cast Stone Fireplaces Dallas | CAST Design Fireplaces"
-  description="CAST Design Fireplaces crafts custom cast stone fireplaces for Dallas–Fort Worth homes. Handcrafted mantels, surrounds & outdoor fireplaces. Free in-home consultation. Serving DFW for 20+ years."
+  title={page.seo?.title ?? "Custom Cast Stone Fireplaces Dallas | CAST Design Fireplaces"}
+  description={page.seo?.description ?? "CAST Design Fireplaces crafts custom cast stone fireplaces for Dallas–Fort Worth homes. Handcrafted mantels, surrounds & outdoor fireplaces. Free in-home consultation. Serving DFW for 20+ years."}
   canonical="/cast-stone-fireplaces"
   ogImage="/images/gallery/Ashton/CAST Design Fireplaces - Ashton.jpeg"
 >
@@ -171,8 +177,7 @@ const faqSchema = {
   <nav class="nav" aria-label="Main navigation">
     <div class="container">
       <a href="/" class="nav__logo" aria-label="Cast Design Fireplaces – Home">
-        <span class="nav__logo-main">Cast Design</span>
-        <span class="nav__logo-sub">Fireplaces</span>
+        <img src="/images/logo/cast-design-logo-black.svg" alt="" class="nav__logo-img" />
       </a>
       <ul class="nav__links" role="list">
         <li><a href="/gallery">Gallery</a></li>
@@ -192,8 +197,7 @@ const faqSchema = {
     <div class="mobile-menu__panel">
       <div class="mobile-menu__header">
         <a href="/" class="nav__logo" aria-label="Cast Design Fireplaces – Home">
-          <span class="nav__logo-main">Cast Design</span>
-          <span class="nav__logo-sub">Fireplaces</span>
+          <img src="/images/logo/cast-design-logo-black.svg" alt="" class="nav__logo-img" />
         </a>
         <button class="mobile-menu__close" aria-label="Close menu">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -229,9 +233,9 @@ const faqSchema = {
   <section class="csf-hero">
     <div class="container">
       <div class="csf-hero__content">
-        <p class="csf-hero__eyebrow">Dallas–Fort Worth · 20+ Years of Craftsmanship</p>
-        <h1 class="csf-hero__title">Custom Cast Stone Fireplaces — Handcrafted for Dallas–Fort Worth Homes</h1>
-        <p class="csf-hero__lead">Every cast stone fireplace we create begins the same way: with a conversation about your home, your family, and the kind of space you want to come home to. What starts as raw stone becomes a piece of craftsmanship that will anchor your living room for generations.</p>
+        <p class="csf-hero__eyebrow">{hero.eyebrow ?? "Dallas–Fort Worth · 20+ Years of Craftsmanship"}</p>
+        <h1 class="csf-hero__title">{hero.heading ?? "Custom Cast Stone Fireplaces — Handcrafted for Dallas–Fort Worth Homes"}</h1>
+        <p class="csf-hero__lead">{longHero.lead ?? "Every cast stone fireplace we create begins the same way: with a conversation about your home, your family, and the kind of space you want to come home to. What starts as raw stone becomes a piece of craftsmanship that will anchor your living room for generations."}</p>
         <p class="csf-hero__body">CAST Design Fireplaces has been designing, building, and installing custom cast stone fireplaces across <a href="/service-areas/dallas">Dallas</a>, <a href="/service-areas/fort-worth">Fort Worth</a>, and the DFW metroplex for over 20 years. We work with a single family of materials — premium cast stone — and we've mastered it completely.</p>
         <div class="csf-hero__ctas">
           <a href="/contact" class="btn btn-primary">

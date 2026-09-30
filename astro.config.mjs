@@ -25,4 +25,11 @@ export default defineConfig({
       studioBasePath: '/studio',
     }),
   ],
+  vite: {
+    build: {
+      // Keep `max-width` media queries instead of range syntax (`width<=`),
+      // which iOS Safari < 16.4 doesn't support.
+      cssTarget: ['safari14', 'chrome90', 'firefox90', 'edge90'],
+    },
+  },
 });
